@@ -10,254 +10,321 @@ const RouteView = {
 export const asyncRouterMap = [
 
   {
-    path: '/',
-    name: 'index',
-    component: BasicLayout,
-    meta: { title: 'menu.home' },
-    redirect: '/dashboard/workplace',
-    children: [
-      // dashboard
+      path: '/',
+      name: 'index',
+      component: BasicLayout,
+      meta: { title: 'menu.home' },
+      redirect: '/dashboard/analysis',
+      children: [
+        // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
+        redirect: '/dashboard/analysis',
         component: RouteView,
-        meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        meta: { title: '首页', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
         children: [
           {
             path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
             name: 'Analysis',
             component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: [ 'dashboard' ] }
-          },
-          // 外部链接
-          {
-            path: 'https://www.baidu.com/',
-            name: 'Monitor',
-            meta: { title: 'menu.dashboard.monitor', target: '_blank' }
-          },
-          {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
-            component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: [ 'dashboard' ] }
+            meta: { title: '统计', keepAlive: false, permission: [ 'dashboard' ] }
           }
         ]
       },
 
-      // forms
       {
-        path: '/form',
-        redirect: '/form/base-form',
+        path: '/actualPopulation',
+        name: 'actualPopulation',
         component: RouteView,
-        meta: { title: '表单页', icon: 'form', permission: [ 'form' ] },
+        redirect: '/actualPopulation/censusRegister-List',
+        meta: { title: '实有人口信息', icon: 'table', permission: [ 'table' ] },
         children: [
           {
-            path: '/form/base-form',
-            name: 'BaseForm',
-            component: () => import('@/views/form/basicForm'),
-            meta: { title: '基础表单', keepAlive: true, permission: [ 'form' ] }
-          },
-          {
-            path: '/form/step-form',
-            name: 'StepForm',
-            component: () => import('@/views/form/stepForm/StepForm'),
-            meta: { title: '分步表单', keepAlive: true, permission: [ 'form' ] }
-          },
-          {
-            path: '/form/advanced-form',
-            name: 'AdvanceForm',
-            component: () => import('@/views/form/advancedForm/AdvancedForm'),
-            meta: { title: '高级表单', keepAlive: true, permission: [ 'form' ] }
-          }
-        ]
-      },
-
-      // list
-      {
-        path: '/list',
-        name: 'list',
-        component: RouteView,
-        redirect: '/list/table-list',
-        meta: { title: '列表页', icon: 'table', permission: [ 'table' ] },
-        children: [
-          {
-            path: '/list/table-list/:pageNo([1-9]\\d*)?',
-            name: 'TableListWrapper',
+            path: '/actualPopulation/censusRegister-List/:pageNo([1-9]\\d*)?',
+            name: 'censusRegisterList',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/list/TableList'),
-            meta: { title: '查询表格', keepAlive: true, permission: [ 'table' ] }
+            component: () => import('@/views/actualPopulation/censusRegister/List'),
+            meta: { title: '户籍人口', keepAlive: true, permission: [ 'table' ] }
           },
           {
-            path: '/list/basic-list',
-            name: 'BasicList',
-            component: () => import('@/views/list/BasicList'),
-            meta: { title: '标准列表', keepAlive: true, permission: [ 'table' ] }
+            path: '/actualPopulation/flow-List/:pageNo([1-9]\\d*)?',
+            name: 'flowList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/flow/List'),
+            meta: { title: '流动人口', keepAlive: true, permission: [ 'table' ] }
           },
           {
-            path: '/list/card',
-            name: 'CardList',
-            component: () => import('@/views/list/CardList'),
-            meta: { title: '卡片列表', keepAlive: true, permission: [ 'table' ] }
+            path: '/actualPopulation/rear-List/:pageNo([1-9]\\d*)?',
+            name: 'rearList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/rear/List'),
+            meta: { title: '留守人口', keepAlive: true, permission: [ 'table' ] }
           },
           {
-            path: '/list/search',
-            name: 'SearchList',
-            component: () => import('@/views/list/search/SearchLayout'),
-            redirect: '/list/search/article',
-            meta: { title: '搜索列表', keepAlive: true, permission: [ 'table' ] },
+            path: '/actualPopulation/overseasReople-List/:pageNo([1-9]\\d*)?',
+            name: 'overseasReopleList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/overseasReople/List'),
+            meta: { title: '境外人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/sanwu-List/:pageNo([1-9]\\d*)?',
+            name: 'sanwuList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/sanwu/List'),
+            meta: { title: '三无老人', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/emptyNester-List/:pageNo([1-9]\\d*)?',
+            name: 'emptyNesterList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/emptyNester/List'),
+            meta: { title: '空巢老人', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/death-List/:pageNo([1-9]\\d*)?',
+            name: 'deathList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/death/List'),
+            meta: { title: ' 死亡人口', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/disability-List/:pageNo([1-9]\\d*)?',
+              name: 'disabilityList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/disability/List'),
+            meta: { title: '残疾人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/basicLivingAllowance-List/:pageNo([1-9]\\d*)?',
+              name: 'basicLivingAllowanceList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/basicLivingAllowance/List'),
+            meta: { title: '低保人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/exceptionalPoverty-List/:pageNo([1-9]\\d*)?',
+              name: 'exceptionalPovertyList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/exceptionalPoverty/List'),
+            meta: { title: '特困人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/idleTeenager-List/:pageNo([1-9]\\d*)?',
+              name: 'idleTeenagerList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/idleTeenager/List'),
+            meta: { title: '闲散青少年', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/reproductiveHealth-List/:pageNo([1-9]\\d*)?',
+              name: 'reproductiveHealthList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/reproductiveHealth/List'),
+            meta: { title: '生殖保健', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/actualPopulation/serviceWork-List/:pageNo([1-9]\\d*)?',
+              name: 'serviceWorkList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/actualPopulation/serviceWork/List'),
+            meta: { title: '就业/失业服务', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
+      },
+
+      {
+        path: '/house',
+        name: 'house',
+        component: RouteView,
+        redirect: '/house/rentalHousing-List',
+        meta: { title: '房屋', icon: 'profile', permission: [ 'profile' ] },
+        children: [
+          {
+            path: '/house/rentalHousing-List',
+            name: 'rentalHousingList',
+            component: () => import('@/views/house/rentalHousing/List'),
+          meta: { title: '出租房', permission: [ 'profile' ] }
+          }
+        ]
+      },
+
+      {
+        path: '/specialCrowd',
+        name: 'specialCrowd',
+        component: RouteView,
+        redirect: '/specialCrowd/releasedFromPrison-List',
+        meta: { title: '特殊人群信息', icon: 'table', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/specialCrowd/releasedFromPrison-List/:pageNo([1-9]\\d*)?',
+            name: 'releasedFromPrisonList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/releasedFromPrison/List'),
+            meta: { title: '刑满释放人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/communityCorrection-List/:pageNo([1-9]\\d*)?',
+            name: 'communityCorrectionList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/communityCorrection/List'),
+            meta: { title: '社区矫正人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/psychosis-List/:pageNo([1-9]\\d*)?',
+            name: 'psychosisList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/psychosis/List'),
+            meta: { title: '肇事肇祸等严重精神障碍患者', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/takeDrugs-List/:pageNo([1-9]\\d*)?',
+            name: 'takeDrugsList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/takeDrugs/List'),
+            meta: { title: '吸毒人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/Aids-List/:pageNo([1-9]\\d*)?',
+            name: 'AidsList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/Aids/List'),
+            meta: { title: '艾滋病危险人员', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/adolescent-List/:pageNo([1-9]\\d*)?',
+            name: 'adolescentList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/adolescent/List'),
+            meta: { title: '重点青少年', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/specialCrowd/petitionLetter-List/:pageNo([1-9]\\d*)?',
+            name: 'petitionLetterList',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/specialCrowd/petitionLetter/List'),
+            meta: { title: '信访重点人员', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
+      },
+
+      {
+        path: '/twoNewGroup',
+        name: 'twoNewGroup',
+        component: RouteView,
+        redirect: '/twoNewGroup/nonpublicSectorsOfTheRconomy-List',
+        meta: { title: '两新组织', icon: 'profile', permission: [ 'profile' ] },
+        children: [
+          {
+            path: '/twoNewGroup/nonpublicSectorsOfTheRconomy-List',
+            name: 'nonpublicSectorsOfTheRconomyList',
+            component: () => import('@/views/twoNewGroup/nonpublicSectorsOfTheRconomy/List'),
+            meta: { title: '非公有制经济组织', permission: [ 'profile' ] }
+          },
+          {
+            path: '/twoNewGroup/society-List',
+            name: 'societyList',
+            component: () => import('@/views/twoNewGroup/society/List'),
+            meta: { title: '社会组织', permission: [ 'profile' ] }
+          }
+        ]
+      },
+
+      {
+        path: '/security0fSociety',
+        name: 'security0fSociety',
+        component: RouteView,
+        redirect: '/security0fSociety/keyRegion-List',
+        meta: { title: '社会治安防控', icon: 'profile', permission: [ 'profile' ] },
+        children: [
+          {
+            path: '/security0fSociety/keyRegion-List',
+            name: 'keyRegionList',
+            component: () => import('@/views/security0fSociety/keyRegion/List'),
+            meta: { title: '重点地区排查整治', permission: [ 'profile' ] }
+          },
+          {
+            path: '/security0fSociety/homicideCase',
+            name: 'homicideCase',
+            component: () => import('@/views/security0fSociety/homicideCase/SearchLayout'),
+            meta: { title: '命案防控', keepAlive: true, permission: [ 'table' ] },
             children: [
               {
-                path: '/list/search/article',
-                name: 'SearchArticles',
-                component: () => import('../views/list/search/Article'),
-                meta: { title: '搜索列表（文章）', permission: [ 'table' ] }
+                path: '/security0fSociety/homicideCase/basicInformation-List',
+                name: 'basicInformationList',
+                component: () => import('@/views/security0fSociety/homicideCase/basicInformation/List'),
+                meta: { title: '命案基本信息', permission: [ 'table' ] }
               },
               {
-                path: '/list/search/project',
-                name: 'SearchProjects',
-                component: () => import('../views/list/search/Projects'),
-                meta: { title: '搜索列表（项目）', permission: [ 'table' ] }
+                path: '/security0fSociety/homicideCase/criminalSuspect-List',
+                name: 'criminalSuspectList',
+                component: () => import('@/views/security0fSociety/homicideCase/criminalSuspect/List'),
+                meta: { title: '命案犯罪嫌疑人', permission: [ 'table' ] }
               },
               {
-                path: '/list/search/application',
-                name: 'SearchApplications',
-                component: () => import('../views/list/search/Applications'),
-                meta: { title: '搜索列表（应用）', permission: [ 'table' ] }
+                path: '/security0fSociety/homicideCase/victim-List',
+                name: 'victimList',
+                component: () => import('@/views/security0fSociety/homicideCase/victim/List'),
+                meta: { title: '命案受害人', permission: [ 'table' ] }
               }
             ]
+          },
+          {
+            path: '/security0fSociety/logistics-List',
+            name: 'logisticsList',
+            component: () => import('@/views/security0fSociety/logistics/List'),
+            meta: { title: '寄递物流安全管理', permission: [ 'profile' ] }
           }
         ]
       },
 
-      // profile
       {
-        path: '/profile',
-        name: 'profile',
+        path: '/campusSecurity',
+        name: 'campusSecurity',
         component: RouteView,
-        redirect: '/profile/basic',
-        meta: { title: '详情页', icon: 'profile', permission: [ 'profile' ] },
+        redirect: '/campusSecurity/school-List',
+        meta: { title: '校园及周边安全', icon: 'profile', permission: [ 'profile' ] },
         children: [
           {
-            path: '/profile/basic',
-            name: 'ProfileBasic',
-            component: () => import('@/views/profile/basic'),
-            meta: { title: '基础详情页', permission: [ 'profile' ] }
+            path: '/campusSecurity/school-List',
+            name: 'schoolList',
+            component: () => import('@/views/campusSecurity/school/List'),
+          meta: { title: '学校', permission: [ 'profile' ] }
           },
           {
-            path: '/profile/advanced',
-            name: 'ProfileAdvanced',
-            component: () => import('@/views/profile/advanced/Advanced'),
-            meta: { title: '高级详情页', permission: [ 'profile' ] }
+            path: '/campusSecurity/theKeyPersonnel-List',
+              name: 'theKeyPersonnelList',
+            component: () => import('@/views/campusSecurity/theKeyPersonnel/List'),
+            meta: { title: '学校周边重点人员', permission: [ 'profile' ] }
+          },
+          {
+            path: '/campusSecurity/theTeachersAndStudentsSafe-List',
+              name: 'theTeachersAndStudentsSafeList',
+            component: () => import('@/views/campusSecurity/theTeachersAndStudentsSafe/List'),
+            meta: { title: '涉及师生安全的案(事)件', permission: [ 'profile' ] }
           }
         ]
       },
 
-      // result
       {
-        path: '/result',
-        name: 'result',
+        path: '/roadConvenient',
+        name: 'roadConvenient',
         component: RouteView,
-        redirect: '/result/success',
-        meta: { title: '结果页', icon: 'check-circle-o', permission: [ 'result' ] },
+        redirect: '/roadConvenient/roadConvenient-List',
+        meta: { title: '护路护线', icon: 'profile', permission: [ 'profile' ] },
         children: [
           {
-            path: '/result/success',
-            name: 'ResultSuccess',
-            component: () => import(/* webpackChunkName: "result" */ '@/views/result/Success'),
-            meta: { title: '成功', keepAlive: false, hiddenHeaderContent: true, permission: [ 'result' ] }
+            path: '/roadConvenient/roadConvenient-List',
+            name: 'roadConvenientList',
+            component: () => import('@/views/roadConvenient/roadConvenient/List'),
+          meta: { title: '护路护线', permission: [ 'profile' ] }
           },
           {
-            path: '/result/fail',
-            name: 'ResultFail',
-            component: () => import(/* webpackChunkName: "result" */ '@/views/result/Error'),
-            meta: { title: '失败', keepAlive: false, hiddenHeaderContent: true, permission: [ 'result' ] }
-          }
-        ]
-      },
-
-      // Exception
-      {
-        path: '/exception',
-        name: 'exception',
-        component: RouteView,
-        redirect: '/exception/403',
-        meta: { title: '异常页', icon: 'warning', permission: [ 'exception' ] },
-        children: [
-          {
-            path: '/exception/403',
-            name: 'Exception403',
-            component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-            meta: { title: '403', permission: [ 'exception' ] }
-          },
-          {
-            path: '/exception/404',
-            name: 'Exception404',
-            component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
-            meta: { title: '404', permission: [ 'exception' ] }
-          },
-          {
-            path: '/exception/500',
-            name: 'Exception500',
-            component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
-            meta: { title: '500', permission: [ 'exception' ] }
-          }
-        ]
-      },
-
-      // account
-      {
-        path: '/account',
-        component: RouteView,
-        redirect: '/account/center',
-        name: 'account',
-        meta: { title: '个人页', icon: 'user', keepAlive: true, permission: [ 'user' ] },
-        children: [
-          {
-            path: '/account/center',
-            name: 'center',
-            component: () => import('@/views/account/center'),
-            meta: { title: '个人中心', keepAlive: true, permission: [ 'user' ] }
-          },
-          {
-            path: '/account/settings',
-            name: 'settings',
-            component: () => import('@/views/account/settings/Index'),
-            meta: { title: '个人设置', hideHeader: true, permission: [ 'user' ] },
-            redirect: '/account/settings/base',
-            hideChildrenInMenu: true,
-            children: [
-              {
-                path: '/account/settings/base',
-                name: 'BaseSettings',
-                component: () => import('@/views/account/settings/BaseSetting'),
-                meta: { title: '基本设置', hidden: true, permission: [ 'user' ] }
-              },
-              {
-                path: '/account/settings/security',
-                name: 'SecuritySettings',
-                component: () => import('@/views/account/settings/Security'),
-                meta: { title: '安全设置', hidden: true, keepAlive: true, permission: [ 'user' ] }
-              },
-              {
-                path: '/account/settings/custom',
-                name: 'CustomSettings',
-                component: () => import('@/views/account/settings/Custom'),
-                meta: { title: '个性化设置', hidden: true, keepAlive: true, permission: [ 'user' ] }
-              },
-              {
-                path: '/account/settings/binding',
-                name: 'BindingSettings',
-                component: () => import('@/views/account/settings/Binding'),
-                meta: { title: '账户绑定', hidden: true, keepAlive: true, permission: [ 'user' ] }
-              },
-              {
-                path: '/account/settings/notification',
-                name: 'NotificationSettings',
-                component: () => import('@/views/account/settings/Notification'),
-                meta: { title: '新消息通知', hidden: true, keepAlive: true, permission: [ 'user' ] }
-              }
-            ]
+            path: '/roadConvenient/theRoadCase-List',
+              name: 'theRoadCaseList',
+            component: () => import('@/views/roadConvenient/theRoadCase/List'),
+            meta: { title: '涉及线、路案(事)件', permission: [ 'profile' ] }
           }
         ]
       }
