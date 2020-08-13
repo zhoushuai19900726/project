@@ -144,6 +144,7 @@ export default {
     }
   },
   created () {
+    // git 测试
     get2step({ })
       .then(res => {
         this.requiredTwoStepCaptcha = res.result.stepCode
