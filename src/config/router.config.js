@@ -32,7 +32,21 @@ export const asyncRouterMap = [
           }
         ]
       },
-
+      {
+        path: '/archiveCenter',
+        name: 'archiveCenter',
+        component: RouteView,
+        redirect: '/archiveCenter/archiveManagement',
+        meta: { title: '档案中心', icon: 'profile', permission: [ 'profile' ] },
+        children: [
+          {
+            path: '/archiveCenter/archiveManagement',
+            name: 'archiveManagement',
+            component: () => import('@/views/archiveCenter/archiveManagement'),
+            meta: { title: '档案管理', permission: [ 'profile' ] }
+          }
+        ]
+      },
       {
         path: '/actualPopulation',
         name: 'actualPopulation',

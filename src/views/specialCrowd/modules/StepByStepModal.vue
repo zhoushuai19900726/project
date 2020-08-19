@@ -84,8 +84,8 @@
             </a-select>
           </a-form-item>
         </div>
-        <!-- step1 end -->
       </a-form>
+      <!-- step1 end -->
     </a-spin>
     <template slot="footer">
       <a-button key="back" @click="backward" v-if="currentStep > 0" :style="{ float: 'left' }" >上一步</a-button>
