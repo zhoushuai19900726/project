@@ -1,5 +1,6 @@
 <template>
   <page-header-wrapper>
+    <history></history>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
