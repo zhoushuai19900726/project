@@ -1,7 +1,7 @@
 <template>
   <a-config-provider :locale="locale">
     <div id="app">
-      <router-view/>
+      <router-view />
     </div>
   </a-config-provider>
 </template>
@@ -79,3 +79,26 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.table-page-search-wrapper .ant-form-inline .ant-form-item > .ant-form-item-label {
+  width: 147px;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+}
+</style>

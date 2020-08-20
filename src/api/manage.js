@@ -1,15 +1,30 @@
 import request from '@/utils/request'
 
+// 基本链接
+// const baseUrl = 'http://127.0.0.1:'
+const baseUrl = 'http://192.168.1.113:'
+
 const api = {
   user: '/user',
   role: '/role',
   service: '/service',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
-  orgTree: '/org/tree'
+  orgTree: '/org/tree',
+  // 获取人员档案
+  archiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationPage'
 }
 
 export default api
+
+//   // 获取人员档案
+export function getArchiveManagement (parameter) {
+  return request({
+    url: api.archiveManagement,
+    method: 'post',
+    params: parameter
+  })
+}
 
 export function getUserList (parameter) {
   return request({
