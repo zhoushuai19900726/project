@@ -15,9 +15,13 @@
       广告代码 真实项目中请移除
       production remove this Ads
     -->
+<!--    <div class="browseRecords">-->
+<!--      <div class="browseRecords-item" style="cursor: auto">浏览记录：</div>-->
+<!--      <div class="browseRecords-item" v-for="item in broweRecords" :key="item.path">{{ item.meta.title }}</div>-->
+<!--    </div>-->
+    <!--    <centerConter></centerConter>-->
     <ads v-if="isProPreviewSite && !collapsed"/>
     <!-- Ads end -->
-
     <setting-drawer :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
@@ -37,6 +41,7 @@ import { SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
+// import centerContent from '@/components/GlobalHeader/centerContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/logo.svg?inline'
@@ -48,9 +53,11 @@ export default {
     RightContent,
     GlobalFooter,
     Ads
+    // centerContent
   },
   data () {
     return {
+      history: [],
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
       // end
@@ -86,7 +93,8 @@ export default {
   computed: {
     ...mapState({
       // 动态主路由
-      mainMenu: state => state.permission.addRouters
+      mainMenu: state => state.permission.addRouters,
+      broweRecords: state => state.broweRecords
     })
   },
   created () {
@@ -99,8 +107,17 @@ export default {
     this.$watch('isMobile', () => {
       this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
     })
+    this.$router.beforeEach((to, from, next) => {
+      this.history = JSON.parse(localStorage.getItem('browseHistory'))
+      // console.log(this.history)
+      mapState({
+        broweRecords: state => state.broweRecords
+      })
+      next()
+    })
   },
   mounted () {
+    console.log('数据', this.broweRecords)
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
       this.$nextTick(() => {

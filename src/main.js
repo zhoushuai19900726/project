@@ -20,14 +20,17 @@ import './core/lazy_use'
 import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less'
-
+// 引入历史浏览记录组件
+import history from '@/components/history/history'
 Vue.config.productionTip = false
 
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)
 Vue.component('pro-layout', ProLayout)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
-
+// 注册全局浏览历史记录组件
+Vue.component('history', history)
+// Vue.use(history)
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({
