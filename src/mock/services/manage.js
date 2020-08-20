@@ -17,13 +17,72 @@ const serverList = (options) => {
     const tmpKey = key + i
     result.push({
       key: tmpKey,
-      id: tmpKey,
-      no: 'No ' + tmpKey,
-      description: '这是一段描述',
-      callNo: Mock.mock('@integer(1, 999)'),
-      status: Mock.mock('@integer(0, 3)'),
-      updatedAt: Mock.mock('@datetime'),
-      editable: false
+      // id: tmpKey,
+      // no: 'No ' + tmpKey,
+      // description: '这是一段描述',
+      // callNo: Mock.mock('@integer(1, 999)'),
+      // status: Mock.mock('@integer(0, 3)'),
+      // updatedAt: Mock.mock('@datetime'),
+      // editable: false
+      'id': tmpKey,
+      'idCard': '123456789',
+      'fullName': '放姓名',
+      'nameUsedBefore': '曾用名字',
+      'gender': '男',
+      'birthday': '2000-05-16',
+      'nation': '广西壮族自治区',
+      'nativePlace': '籍贯地址填写',
+      'marital': '未婚',
+      'politicalOutlook': '共青团员',
+      'education': '大专',
+      'religiousBelife': '宗教信仰',
+      'occupationCatgory': '企业单位负责人',
+      'occupation': '职业',
+      'servicePlace': '服务处所',
+      'contactType': '邮箱',
+      'contactInformation': '联系方式',
+      // 户籍地
+      'placeDomicile': '户籍地',
+      // 户籍门(楼)详址
+      'placeDomicileAddress': '户籍门(楼)详址',
+      // 现住址
+      'currentResidence': '现住址',
+      // 现住地详址
+      'currentResidenceAddress': '现住地详址',
+
+      /** 这里是 户籍人口的特殊字段    */
+      // 人户一致标识
+      'hoseholdIdentity': '人户一致标识',
+      // 户号
+      'accountNumber': '户号',
+      // 户主公民身份证号
+      'householderIdCard': '户主身份证号',
+      // 户主姓名
+      'householderName': '户主姓名',
+      // 户主性别
+      'householderGender': '户主性别',
+      // 与户主关系
+      'householderRelationship': '与户主关系',
+      // 户主联系类型
+      'householderContactType': '户主联系类型',
+      // 户主联系方式
+      'householderContactInformation': '户主联系方式',
+
+      /** 流动人口的特殊字段 */
+      // 流入原因
+      'inflowReasons': '逃荒',
+      // 证件类型
+      'documentType': '身份证',
+      // 身份证号
+      'identificationNumber': '8465132',
+      // 登记日期
+      'registrationDate': '1996-05-16',
+      // 证件到期日期
+      'certificateExpirationDate': '2011-05-16',
+      // 住所类型
+      'residenceType': '定居',
+      // 是否重点关注人员
+      'focusOnPeople': '否'
     })
   }
 

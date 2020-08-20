@@ -20,13 +20,16 @@ export default {
       type: String,
       default: 'ant-pro-ellipsis'
     },
+    // 鼠标画上显示把隐藏的左右文字显示出来
     tooltip: {
       type: Boolean
     },
+    // 当前显示的长度 可能与想要显示的字体个数有点出入
     length: {
       type: Number,
       required: true
     },
+    // 显示的行数
     lines: {
       type: Number,
       default: 1
@@ -39,14 +42,14 @@ export default {
   methods: {
     getStrDom (str, fullLength) {
       return (
-        <span>{ cutStrByFullLength(str, this.length) + (fullLength > this.length ? '...' : '') }</span>
+        <span>{cutStrByFullLength(str, this.length) + (fullLength > this.length ? '...' : '')}</span>
       )
     },
     getTooltip (fullStr, fullLength) {
       return (
         <Tooltip>
-          <template slot="title">{ fullStr }</template>
-          { this.getStrDom(fullStr, fullLength) }
+          <template slot="title">{fullStr}</template>
+          {this.getStrDom(fullStr, fullLength)}
         </Tooltip>
       )
     }
