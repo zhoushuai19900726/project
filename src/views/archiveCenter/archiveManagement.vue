@@ -85,11 +85,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯(详细)">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -227,11 +238,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'PLACE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="户籍地(详细)">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -250,11 +272,44 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'CURRENT')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住地(详细)">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住址街道">
+                  <a-input
+                    v-model="queryParam.currentResidenceCommunity"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住址社区">
+                  <a-input
+                    v-model="queryParam.currentResidenceAddress"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -474,9 +529,8 @@
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
-// import { getRoleList, getArchiveManagement } from '@/api/manage'
-
+// import { getRoleList, getServiceList } from '@/api/manage'
+import { getRoleList, getArchiveManagement, editArchiveManagement, delArchiveManagement } from '@/api/manage'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 
@@ -519,6 +573,18 @@ const columns = [
     dataIndex: 'nation'
     // width: '150px',
     // scopedSlots: { customRender: 'action' }
+  },
+  {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
   },
   {
     title: '籍贯',
@@ -568,14 +634,46 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicile' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍门(楼)详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
   },
   {
-    title: '现住址',
+    title: '现住地',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
+  },
+  {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
+  },
+  {
+    title: '现住址街道',
+    dataIndex: 'currentResidenceStreet'
+  },
+  {
+    title: '现住址社区',
+    dataIndex: 'currentResidenceCommunity'
   },
   {
     title: '现住地详址',
@@ -664,25 +762,25 @@ export default {
         }
       ],
       // 加载数据方法 必须为 Promise 对象
-      // loadData: (parameter) => {
-      //   const requestParameters = Object.assign({}, parameter, this.queryParam)
-      //   console.log('loadData request parameters:', requestParameters)
-      //   // console.log(getArchiveManagement)
-      //   // return false
-      //   return getArchiveManagement(requestParameters).then((res) => {
-      //     console.log(res)
-
-      //     return res.result
-      //   })
-      // },
-
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getServiceList(requestParameters).then((res) => {
+        // console.log(getArchiveManagement)
+        // return false
+        return getArchiveManagement(requestParameters).then((res) => {
+          console.log(res)
+
           return res.result
         })
       },
+
+      // loadData: (parameter) => {
+      //   const requestParameters = Object.assign({}, parameter, this.queryParam)
+      //   console.log('loadData request parameters:', requestParameters)
+      //   return getServiceList(requestParameters).then((res) => {
+      //     return res.result
+      //   })
+      // },
       selectedRowKeys: [],
       selectedRows: []
     }
@@ -738,6 +836,25 @@ export default {
     },
     handleDel (record) {
       // 执行删除的操作
+      console.log(record)
+      var id = record.id
+      var arr = [id]
+      return delArchiveManagement(arr).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.info('删除成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('删除失败')
+          this.$refs.table.refresh()
+        }
+      })
+    },
+    // 将utc时间解析为本地时间
+    parseUtcTime (time) {
+      var date = moment.parseZone(time).local().format('YYYY-MM-DD')
+      console.log(date)
+      return date
     },
     handleOk () {
       const form = this.$refs.createModal.form
@@ -746,40 +863,86 @@ export default {
         if (!errors) {
           // console.log('values', values.birthday._d)
           console.log(values)
-          if (values.id > 0) {
-            // 修改 e.g.
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve()
-              }, 1000)
-            }).then((res) => {
+          var obj = values
+          var nativeArr = obj.nativePlace
+          var native = obj.nativePlaceDetail
+          obj.nativePlaceProvince = nativeArr[0]
+          obj.nativePlaceCity = nativeArr[1]
+          obj.nativePlaceRegion = nativeArr[2]
+          obj.nativePlace = native
+          // 删除无用的 nativePlaceDetail 字段
+          delete obj.nativePlaceDetail
+          obj.birthday = this.parseUtcTime(obj.birthday)
+          obj.placeDomicileProvince = obj.placeDomicile[0]
+          obj.placeDomicileCity = obj.placeDomicile[1]
+          obj.placeDomicileRegion = obj.placeDomicile[2]
+          obj.placeDomicile = obj.placeDomicileDetail
+          // 删除无用的 placeDomicile 字段
+          delete obj.placeDomicileDetail
+          obj.currentResidenceProvince = obj.currentResidence[0]
+          obj.currentResidenceCity = obj.currentResidence[1]
+          obj.currentResidenceRegion = obj.currentResidence[2]
+          obj.currentResidence = obj.currentResidenceDetail
+          // 日期的处理
+          obj.birthday = obj.birthday + ' 00:00:00'
+          // 删除无用的 placeDomicile 字段
+          delete obj.currentResidenceDetail
+          delete obj.id
+          var arr = Object.keys(obj)
+          console.log(obj, arr.length)
+          // 调用接口进行修改
+
+          return editArchiveManagement(obj).then((res) => {
+            console.log(res)
+            // return res.result
+            if (res.code === 200) {
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve()
+                }, 1000)
+              }).then((res) => {
+                this.visible = false
+                this.confirmLoading = false
+                // 重置表单数据
+                form.resetFields()
+                // 刷新表格
+                this.$refs.table.refresh()
+
+                this.$message.info('新增成功')
+              })
+            } else {
               this.visible = false
               this.confirmLoading = false
               // 重置表单数据
               form.resetFields()
               // 刷新表格
               this.$refs.table.refresh()
+              this.$message.error('新增失败,请稍后重试')
+            }
+          })
 
-              this.$message.info('修改成功')
-            })
-          } else {
-            // 新增
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve()
-              }, 1000)
-            }).then((res) => {
-              this.visible = false
-              this.confirmLoading = false
-              // 重置表单数据
-              form.resetFields()
-              // 刷新表格
-              this.$refs.table.refresh()
+          // if (values.id > 0) {
+          //   // 修改 e.g.
+          //   new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       resolve()
+          //     }, 1000)
+          //   }).then((res) => {
+          //     this.visible = false
+          //     this.confirmLoading = false
+          //     // 重置表单数据
+          //     form.resetFields()
+          //     // 刷新表格
+          //     this.$refs.table.refresh()
 
-              this.$message.info('新增成功')
-            })
-          }
+          //     this.$message.info('修改成功')
+          //   })
+          // } else {
+          //   // 新增
+          // }
         } else {
+          // console.log('youwentyi')
+          this.$message.error('请填写必要信息')
           this.confirmLoading = false
         }
       })

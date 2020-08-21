@@ -32,7 +32,7 @@
                 :sm="24"
               >
                 <a-form-item label="曾用名">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.nameUsedBefore"
                     style="width: 100%"
                   />
@@ -83,11 +83,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯(详细)">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -185,7 +196,7 @@
                 :sm="24"
               >
                 <a-form-item label="服务处所">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.servicePlace"
                     style="width: 100%"
                   />
@@ -210,7 +221,7 @@
                 :sm="24"
               >
                 <a-form-item label="联系方式">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.contactInformation"
                     style="width: 100%"
                   />
@@ -220,7 +231,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -232,8 +243,19 @@
                 :md="8"
                 :sm="24"
               >
+                <a-form-item label="户籍地(详细)">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
                 <a-form-item label="户籍门(楼)详址">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.placeDomicileAddress"
                     style="width: 100%"
                   />
@@ -243,7 +265,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -255,8 +277,19 @@
                 :md="8"
                 :sm="24"
               >
+                <a-form-item label="现住地(详细)">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
                 <a-form-item label="现住门(楼)详址">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
                   />
@@ -266,9 +299,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="健康状况">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.health"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -280,9 +313,36 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="原工作单位">
+                  <a-cascader
+                    :options="options"
+                    placeholder="请选择"
+                    @change="onChange($event,'Empty')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否享有医保">
+                  <a-select
+                    v-model="queryParam.medicalInsuranceAvailable"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="医保状况">
+                  <a-input
+                    v-model="queryParam.medicalInsuranceStatus"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,76 +351,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主性别">
-                  <a-select
-                    v-model="queryParam.householderGender"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="与户主关系">
-                  <a-select
-                    v-model="queryParam.householderRelationship"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="对社区服务有何需求">
+                  <a-input
+                    v-model="queryParam.communityServiceDemand"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -535,6 +528,18 @@ const columns = [
     // scopedSlots: { customRender: 'action' }
   },
   {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
+  },
+  {
     title: '籍贯',
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
@@ -577,6 +582,18 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍地',
     dataIndex: 'placeDomicile',
     scopedSlots: { customRender: 'placeDomicile' }
@@ -585,6 +602,18 @@ const columns = [
     title: '户籍门(楼)详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
+  },
+  {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
   },
   {
     title: '现住址',
@@ -597,44 +626,29 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '健康状况',
+    dataIndex: 'health',
+    scopedSlots: { customRender: 'health' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '原工作单位',
+    dataIndex: 'originalWorkUnit',
+    scopedSlots: { customRender: 'originalWorkUnit' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '是否享有医保',
+    dataIndex: 'medicalInsuranceAvailable',
+    scopedSlots: { customRender: 'medicalInsuranceAvailable' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '医保状况',
+    dataIndex: 'medicalInsuranceStatus',
+    scopedSlots: { customRender: 'medicalInsuranceStatus' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
-  },
-  {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
-  },
-  {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
-  },
-  {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '对社区服务有何需求',
+    dataIndex: 'communityServiceDemand',
+    scopedSlots: { customRender: 'communityServiceDemand' }
   },
   {
     title: '操作',
@@ -765,6 +779,10 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
+      } else if (type === 'Empty') {
+        this.queryParam.originalWorkUnitProvince = e[0]
+        this.queryParam.originalWorkUnitCity = e[1]
+        this.queryParam.originalWorkUnitRegion = e[2]
       }
     },
     handleAdd () {

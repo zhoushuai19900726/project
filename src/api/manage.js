@@ -12,7 +12,11 @@ const api = {
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree',
   // 获取人员档案
-  archiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationPage'
+  archiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationPage',
+  // 修改人员档案
+  editArchiveManagement: baseUrl + '/smartCity/governRealPopulation/insertGovernRealPopulation',
+  // 删除人员档案
+  delArchiveManagement: baseUrl + '/smartCity/governRealPopulation/deleteGovernRealPopulation'
 }
 
 export default api
@@ -22,7 +26,27 @@ export function getArchiveManagement (parameter) {
   return request({
     url: api.archiveManagement,
     method: 'post',
-    params: parameter
+    data: parameter
+  })
+}
+
+// 新增和修改人员档案
+export function editArchiveManagement (parameter) {
+  console.log(parameter)
+  return request({
+    url: api.editArchiveManagement,
+    method: 'post',
+    data: parameter
+  })
+}
+
+// 删除人员档案
+export function delArchiveManagement (parameter) {
+  console.log(parameter)
+  return request({
+    url: api.delArchiveManagement,
+    method: 'post',
+    data: parameter
   })
 }
 

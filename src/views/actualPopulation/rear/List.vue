@@ -32,7 +32,7 @@
                 :sm="24"
               >
                 <a-form-item label="曾用名">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.nameUsedBefore"
                     style="width: 100%"
                   />
@@ -83,11 +83,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯(详细)">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -185,7 +196,7 @@
                 :sm="24"
               >
                 <a-form-item label="服务处所">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.servicePlace"
                     style="width: 100%"
                   />
@@ -210,7 +221,7 @@
                 :sm="24"
               >
                 <a-form-item label="联系方式">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.contactInformation"
                     style="width: 100%"
                   />
@@ -220,7 +231,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -232,8 +243,19 @@
                 :md="8"
                 :sm="24"
               >
+                <a-form-item label="户籍地(详细)">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
                 <a-form-item label="户籍门(楼)详址">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.placeDomicileAddress"
                     style="width: 100%"
                   />
@@ -243,7 +265,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -255,9 +277,42 @@
                 :md="8"
                 :sm="24"
               >
+                <a-form-item label="现住地(详细)">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
                 <a-form-item label="现住门(楼)详址">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.currentResidenceAddress"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="健康状况">
+                  <a-input
+                    v-model="queryParam.health"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="个人年收入">
+                  <a-input
+                    v-model="queryParam.personalAnnualIncome"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -268,7 +323,7 @@
               >
                 <a-form-item label="人户一致标识">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.householdIdentity"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -280,9 +335,23 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="留守人员类型">
+                  <a-select
+                    v-model="queryParam.leftBehindType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="家庭主要成员身份证号码">
+                  <a-input
+                    v-model="queryParam.mainFamilyMemberIdCard"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +360,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="家庭主要成员姓名">
+                  <a-input
+                    v-model="queryParam.mainFamilyMemberName"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +371,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="家庭主要成员健康状况">
+                  <a-input
+                    v-model="queryParam.mainFamilyMemberHealth"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,14 +382,14 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="与留守人员关系">
                   <a-select
-                    v-model="queryParam.householderGender"
+                    v-model="queryParam.leftBehindRelationship"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">父子</a-select-option>
+                    <a-select-option value="1">母子</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -328,14 +397,14 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
+                <a-form-item label="家庭主要成员联系类型">
                   <a-select
-                    v-model="queryParam.householderRelationship"
+                    v-model="queryParam.mainFamilyMembersContactType"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
+                    <a-select-option value="0">电脑</a-select-option>
+                    <a-select-option value="1">邮件</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -343,24 +412,54 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
+                <a-form-item label="家庭主要成员工作地">
+                  <a-cascader
+                    :options="options"
                     placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                    @change="onChange($event,'Family')"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="家庭主要成员工作详细地址">
+                  <a-input
+                    v-model="queryParam.mainFamilyMembersWorkAddress"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="家庭年收入">
+                  <a-input
+                    v-model="queryParam.annulFamilyIncome"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="困难及诉求">
+                  <a-input
+                    v-model="queryParam.difficultiesAndDemands"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="帮扶情况">
+                  <a-input
+                    v-model="queryParam.assistance"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -535,6 +634,18 @@ const columns = [
     // scopedSlots: { customRender: 'action' }
   },
   {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
+  },
+  {
     title: '籍贯',
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
@@ -577,6 +688,18 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍地',
     dataIndex: 'placeDomicile',
     scopedSlots: { customRender: 'placeDomicile' }
@@ -587,6 +710,18 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicileAddress' }
   },
   {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
+  },
+  {
     title: '现住址',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
@@ -595,6 +730,66 @@ const columns = [
     title: '现住地详址',
     dataIndex: 'currentResidenceAddress',
     scopedSlots: { customRender: 'currentResidenceAddress' }
+  },
+  {
+    title: '健康状况',
+    dataIndex: 'health'
+  },
+  {
+    title: '个人年收入',
+    dataIndex: 'personalAnnualIncome'
+  },
+  {
+    title: '人户一致标识',
+    dataIndex: 'householdIdentity'
+  },
+  {
+    title: '留守人员类型',
+    dataIndex: 'leftBehindType'
+  },
+  {
+    title: '家庭主要成员身份证号码',
+    dataIndex: 'mainFamilyMemberIdCard'
+  },
+  {
+    title: '家庭主要成员姓名',
+    dataIndex: 'mainFamilyMemberName'
+  },
+  {
+    title: '家庭主要成员健康状况',
+    dataIndex: 'mainFamilyMemberHealth'
+  },
+  {
+    title: '与留守人员关系',
+    dataIndex: 'leftBehindRelationship'
+  },
+  {
+    title: '家庭主要成员联系类型',
+    dataIndex: 'mainFamilyMembersContactType'
+  },
+  {
+    title: '家庭主要成员联系方式',
+    dataIndex: 'mainFamilyMembersContactInformation'
+  },
+  {
+    title: '家庭主要成员工作地',
+    dataIndex: 'mainFamilyMembersWork'
+  },
+  {
+    title: '家庭主要成员工作详细地址',
+    dataIndex: 'mainFamilyMembersWorkAddress'
+  },
+  {
+    title: '家庭年收入',
+    dataIndex: 'annulFamilyIncome'
+  },
+  {
+    title: '困难及诉求',
+    dataIndex: 'difficultiesAndDemands'
+  },
+  {
+    title: '帮扶情况',
+    dataIndex: 'assistance'
   },
   {
     title: '操作',
@@ -725,6 +920,10 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
+      } else if (type === 'Family') {
+        this.queryParam.mainFamilyMembersWorkProvince = e[0]
+        this.queryParam.mainFamilyMembersWorkCity = e[1]
+        this.queryParam.mainFamilyMembersWorkRegion = e[2]
       }
     },
     handleAdd () {

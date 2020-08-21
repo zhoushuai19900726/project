@@ -22,12 +22,12 @@
             disabled
           />
         </a-form-item>
-        <a-form-item label="描述">
+        <!-- <a-form-item label="描述">
           <a-input v-decorator="['description', {rules: [{required: true, min: 5, message: '请输入至少五个字符的规则描述！'}]}]" />
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="公民身份证号">
           <a-input
-            v-decorator="['idcard', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['idCard', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="公民身份证号"
           />
         </a-form-item>
@@ -39,7 +39,7 @@
         </a-form-item>
         <a-form-item label="曾用名">
           <a-input
-            v-decorator="['nameUsedBefore', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['nameUsedBefore']"
             placeholder="曾姓名"
           />
         </a-form-item>
@@ -48,13 +48,13 @@
             v-decorator="['gender', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请选择"
           >
-            <a-select-option value="男">男</a-select-option>
-            <a-select-option value="女">女</a-select-option>
+            <a-select-option value="0">男</a-select-option>
+            <a-select-option value="1">女</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="出生日期">
           <a-date-picker
-            v-decorator="['birthday', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['birthday']"
             placeholder="请输入出生日期"
           />
         </a-form-item>
@@ -63,84 +63,90 @@
             v-decorator="['nation', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请选择"
           >
-            <a-select-option value="汉">汉</a-select-option>
+            <a-select-option value="0">汉</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="籍贯">
+        <a-form-item label="籍贯(省市区)">
           <a-cascader
             :options="options"
             placeholder="籍贯"
             v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
           />
         </a-form-item>
+        <a-form-item label="籍贯">
+          <a-input
+            v-decorator="['nativePlaceDetail']"
+            placeholder="籍贯"
+          />
+        </a-form-item>
         <a-form-item label="婚姻状况">
           <a-select
             placeholder="请选择"
-            v-decorator="['marital', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['marital']"
           >
-            <a-select-option value="已婚">已婚</a-select-option>
-            <a-select-option value="未婚">未婚</a-select-option>
+            <a-select-option value="0">已婚</a-select-option>
+            <a-select-option value="1">未婚</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="政治面貌">
           <a-select
-            v-decorator="['politicalOutlook', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['politicalOutlook']"
             placeholder="请选择"
           >
-            <a-select-option value="党员">党员</a-select-option>
-            <a-select-option value="共青团员">共青团员</a-select-option>
-            <a-select-option value="群众">群众</a-select-option>
+            <a-select-option value="0">党员</a-select-option>
+            <a-select-option value="1">共青团员</a-select-option>
+            <a-select-option value="2">群众</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="学历">
           <a-select
-            v-decorator="['education', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['education']"
             placeholder="请选择"
           >
-            <a-select-option value="高中">高中</a-select-option>
-            <a-select-option value="中专">中专</a-select-option>
-            <a-select-option value="大专">大专</a-select-option>
-            <a-select-option value="大学本科">大学本科</a-select-option>
+            <a-select-option value="0">高中</a-select-option>
+            <a-select-option value="1">中专</a-select-option>
+            <a-select-option value="2">大专</a-select-option>
+            <a-select-option value="3">大学本科</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="宗教信仰">
           <a-select
-            v-decorator="['religiousBelife', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['religiousBelife']"
             placeholder="请选择"
           >
-            <a-select-option value="">无</a-select-option>
+            <a-select-option value="0">无</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="职业类别">
           <a-select
-            v-decorator="['occupationCatgory', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['occupationCatgory']"
             placeholder="请选择"
           >
-            <a-select-option value="">无</a-select-option>
+            <a-select-option value="0">无</a-select-option>
             <a-select-option value="企业单位负责人">企业单位负责人</a-select-option>
             <a-select-option value="务农">务农</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="职业">
           <a-select
-            v-decorator="['occupation', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['occupation']"
             placeholder="请选择"
           >
-            <a-select-option value="">无</a-select-option>
+            <a-select-option value="0">无</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="服务处所">
           <a-input
-            v-decorator="['servicePlace', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['servicePlace']"
             placeholder="服务处所"
           />
         </a-form-item>
         <a-form-item label="联系类型">
           <a-select
-            v-decorator="['contactType', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['contactType']"
             placeholder="请选择"
           >
-            <a-select-option value="">无</a-select-option>
+            <a-select-option value="0">无</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="联系方式">
@@ -149,29 +155,53 @@
             placeholder="请输入"
           />
         </a-form-item>
-        <a-form-item label="户籍地">
+        <a-form-item label="户籍地(省市区)">
           <a-cascader
             :options="options"
             v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请选择"
           />
         </a-form-item>
+        <a-form-item label="户籍地">
+          <a-input
+            v-decorator="['placeDomicileDetail']"
+            placeholder="户籍地"
+          />
+        </a-form-item>
         <a-form-item label="户籍门(楼)详址">
           <a-input
-            v-decorator="['placeDomicileAddress', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['placeDomicileAddress']"
             placeholder="户籍门(楼)详址"
           />
         </a-form-item>
-        <a-form-item label="现住址">
+        <a-form-item label="现住址(省市区)">
           <a-cascader
             :options="options"
             placeholder="请选择"
             v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
           />
         </a-form-item>
+        <a-form-item label="现住地">
+          <a-input
+            v-decorator="['currentResidenceDetail']"
+            placeholder="现住地"
+          />
+        </a-form-item>
+        <a-form-item label="现住地街道">
+          <a-input
+            v-decorator="['currentResidenceStreet']"
+            placeholder="现住地街道"
+          />
+        </a-form-item>
+        <a-form-item label="现住地社区">
+          <a-input
+            v-decorator="['currentResidenceCommunity']"
+            placeholder="现住地社区"
+          />
+        </a-form-item>
         <a-form-item label="现住门(楼)详址">
           <a-input
-            v-decorator="['currentResidenceAddress', {rules: [{required: true, message: '请输入'}]}]"
+            v-decorator="['currentResidenceAddress']"
             placeholder="现住门(楼)详址"
           />
         </a-form-item>
@@ -185,7 +215,7 @@ import pick from 'lodash.pick'
 
 // 表单字段
 const fields = [
-  'description',
+  // 'description',
   'id',
   'idCard',
   'fullName',
@@ -194,6 +224,7 @@ const fields = [
   'birthday',
   'nation',
   'nativePlace',
+  'nativePlaceDetail',
   'marital',
   'politicalOutlook',
   'education',
@@ -207,10 +238,16 @@ const fields = [
   'placeDomicile',
   // 户籍门(楼)详址
   'placeDomicileAddress',
+  'placeDomicileDetail',
   // 现住址
   'currentResidence',
   // 现住地详址
-  'currentResidenceAddress'
+  'currentResidenceAddress',
+  // 现住地街道
+  'currentResidenceStreet',
+  // 现住地社区
+  'currentResidenceCommunity',
+  'currentResidenceDetail'
 ]
 
 export default {
