@@ -266,7 +266,6 @@
                 :md="8"
                 :sm="24"
               >
-                INFLOW_REASONS
                 <a-form-item label="流入原因">
                   <a-input-number
                     v-model="queryParam.inflowReasons"
