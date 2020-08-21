@@ -83,11 +83,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯(详细)">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -220,11 +231,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'PLACE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="户籍地(详细)">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -243,11 +265,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'CURRENT')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住地(详细)">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -787,6 +820,18 @@ const columns = [
     // scopedSlots: { customRender: 'action' }
   },
   {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
+  },
+  {
     title: '籍贯',
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
@@ -829,6 +874,18 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍地',
     dataIndex: 'placeDomicile',
     scopedSlots: { customRender: 'placeDomicile' }
@@ -837,6 +894,23 @@ const columns = [
     title: '户籍门(楼)详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
+  },
+  {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
+  },
+  {
+    title: '现住地详址',
+    dataIndex: 'currentResidenceAddress',
+    scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
     title: '社区矫正人员编号',
