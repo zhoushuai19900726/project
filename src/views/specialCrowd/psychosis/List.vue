@@ -266,9 +266,53 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="家庭经济状况">
+                  <a-input-number
+                    v-model="queryParam.familyEconomicStatus"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否纳入低保">
+                  <a-input-number
+                    v-model="queryParam.subsistenceAllowances"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="监护人公民身份证号码">
+                  <a-input-number
+                    v-model="queryParam.guardianIdCard"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="监护人姓名">
+                  <a-input-number
+                    v-model="queryParam.guardianName"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="监护人联系类型">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.guardianContactType"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -280,9 +324,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
+                <a-form-item label="监护人联系方式">
                   <a-input-number
-                    v-model="queryParam.accountNumber"
+                    v-model="queryParam.guardianContactInformation"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +335,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="初次发病日期">
+                  <a-date-picker
+                    v-model="queryParam.firstOnsetDate"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +346,39 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
+                <a-form-item label="目前诊断类型">
+                  <a-select
+                    v-model="queryParam.currentDiagnosisType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">精神病</a-select-option>
+                    <a-select-option value="0">躁郁症</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="有无肇事肇祸史">
+                  <a-select
+                    v-model="queryParam.causingTroubleHistory"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                    <a-select-option value="1">有</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="肇事肇祸次数">
                   <a-input-number
-                    v-model="queryParam.householderName"
+                    v-model="queryParam.accidentsNumber"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,14 +387,25 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="上次肇事肇祸日期">
+                  <a-date-picker
+                    v-model="queryParam.lastIncidentDate"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="目前危险性评估等级">
                   <a-select
-                    v-model="queryParam.householderGender"
+                    v-model="queryParam.currentRiskAssessmentLevel"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">1级</a-select-option>
+                    <a-select-option value="1">2级</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -328,39 +413,64 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
-                  <a-select
-                    v-model="queryParam.householderRelationship"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
-                  </a-select>
+                <a-form-item label="治疗情况">
+                  <a-input
+                    v-model="queryParam.treatment"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                <a-form-item label="治疗医院名称">
+                  <a-input
+                    v-model="queryParam.treatmentHospitalName"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="实施住院治疗原因">
+                  <a-input
+                    v-model="queryParam.hospitalizationReasons"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="接收康复训练机构名称">
+                  <a-input
+                    v-model="queryParam.rehabilitationTrainingInstitutions"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="参与管理人员">
+                  <a-input
+                    v-model="queryParam.participatingManagers"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="帮扶情况">
+                  <a-input
+                    v-model="queryParam.assistance"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -596,45 +706,93 @@ const columns = [
     dataIndex: 'currentResidenceAddress',
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
+  // -----------------------------------------------------------
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '家庭经济状况',
+    dataIndex: 'familyEconomicStatus',
+    scopedSlots: { customRender: 'familyEconomicStatus' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '是否纳入低保',
+    dataIndex: 'subsistenceAllowances',
+    scopedSlots: { customRender: 'subsistenceAllowances' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '监护人公民身份证号码',
+    dataIndex: 'guardianIdCard',
+    scopedSlots: { customRender: 'guardianIdCard' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '监护人姓名',
+    dataIndex: 'guardianName',
+    scopedSlots: { customRender: 'guardianName' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '监护人联系类型',
+    dataIndex: 'guardianContactType',
+    scopedSlots: { customRender: 'guardianContactType' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '监护人联系方式',
+    dataIndex: 'guardianContactInformation',
+    scopedSlots: { customRender: 'guardianContactInformation' }
+  },{
+    title: '初次发病日期',
+    dataIndex: 'firstOnsetDate',
+    scopedSlots: { customRender: 'firstOnsetDate' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
+    title: '目前诊断类型',
+    dataIndex: 'currentDiagnosisType',
+    scopedSlots: { customRender: 'currentDiagnosisType' }
+  },{
+    title: '有无肇事肇祸史',
+    dataIndex: 'causingTroubleHistory',
+    scopedSlots: { customRender: 'causingTroubleHistory' }
+  },{
+    title: '肇事肇祸次数',
+    dataIndex: 'accidentsNumber',
+    scopedSlots: { customRender: 'accidentsNumber' }
   },
   {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '上次肇事肇祸日期',
+    dataIndex: 'lastIncidentDate',
+    scopedSlots: { customRender: 'lastIncidentDate' }
+  },
+  {
+    title: '目前危险性评估等级',
+    dataIndex: 'currentRiskAssessmentLevel',
+    scopedSlots: { customRender: 'currentRiskAssessmentLevel' }
+  },
+  {
+    title: '治疗情况',
+    dataIndex: 'treatment',
+    scopedSlots: { customRender: 'treatment' }
+  },
+  {
+    title: '治疗医院名称',
+    dataIndex: 'treatmentHospitalName',
+    scopedSlots: { customRender: 'treatmentHospitalName' }
+  },
+  {
+    title: '实施住院治疗原因',
+    dataIndex: 'hospitalizationReasons',
+    scopedSlots: { customRender: 'hospitalizationReasons' }
+  },
+  {
+    title: '接收康复训练机构名称',
+    dataIndex: 'rehabilitationTrainingInstitutions',
+    scopedSlots: { customRender: 'rehabilitationTrainingInstitutions' }
+  },
+  {
+    title: '参与管理人员',
+    dataIndex: 'participatingManagers',
+    scopedSlots: { customRender: 'participatingManagers' }
+  },
+  {
+    title: '帮扶情况',
+    dataIndex: 'assistance',
+    scopedSlots: { customRender: 'assistance' }
   },
   {
     title: '操作',

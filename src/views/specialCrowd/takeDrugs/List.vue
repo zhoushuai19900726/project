@@ -266,9 +266,43 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="初次发现日期">
+                  <a-date-picker
+                    v-model="queryParam.firstDiscoveryDate"
+                    style="width: 100%"
+                    placeholder="请输入"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="管控情况">
+                  <a-input
+                    v-model="queryParam.managementContro"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="管控人姓名">
+                  <a-input
+                    v-model="queryParam.controllerName"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="管控人联系类型">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.controllerContactType"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -280,9 +314,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="管控人联系方式">
+                  <a-input
+                    v-model="queryParam.controllerContactInformation"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +325,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="帮扶情况">
+                  <a-input
+                    v-model="queryParam.assistance"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +336,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="帮扶人姓名">
+                  <a-input
+                    v-model="queryParam.helperName"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,14 +347,13 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="帮扶人联系类型">
                   <a-select
-                    v-model="queryParam.householderGender"
+                    v-model="queryParam.helpersContactType"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">无</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -328,14 +361,24 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
+                <a-form-item label="帮扶人联系方式">
+                  <a-input
+                    v-model="queryParam.helpersContactInformation"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="y有无犯罪史">
                   <a-select
-                    v-model="queryParam.householderRelationship"
+                    v-model="queryParam.criminalHistory"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
+                    <a-select-option value="0">无</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -343,24 +386,31 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                <a-form-item label="犯罪情况">
+                  <a-input
+                    v-model="queryParam.crimeSituation"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="吸毒原因">
+                  <a-input
+                    v-model="queryParam.drugAbuseReasons"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="吸毒后果">
+                  <a-input
+                    v-model="queryParam.drugAbuseConsequences"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -597,44 +647,66 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '初次发现日期',
+    dataIndex: 'firstDiscoveryDate',
+    scopedSlots: { customRender: 'firstDiscoveryDate' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '管控情况',
+    dataIndex: 'managementContro',
+    scopedSlots: { customRender: 'managementContro' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '管控人姓名',
+    dataIndex: 'controllerName',
+    scopedSlots: { customRender: 'controllerName' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '管控人联系类型',
+    dataIndex: 'controllerContactType',
+    scopedSlots: { customRender: 'controllerContactType' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '管控人联系方式',
+    dataIndex: 'controllerContactInformation',
+    scopedSlots: { customRender: 'controllerContactInformation' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '帮扶情况',
+    dataIndex: 'assistance',
+    scopedSlots: { customRender: 'assistance' }
+  },{
+    title: '帮扶人姓名',
+    dataIndex: 'helperName',
+    scopedSlots: { customRender: 'helperName' }
+  },{
+    title: '帮扶人联系类型',
+    dataIndex: 'helpersContactType',
+    scopedSlots: { customRender: 'helpersContactType' }
+  },{
+    title: '帮扶人联系方式',
+    dataIndex: 'helpersContactInformation',
+    scopedSlots: { customRender: 'helpersContactInformation' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
+    title: '有无犯罪史',
+    dataIndex: 'criminalHistory',
+    scopedSlots: { customRender: 'criminalHistory' }
   },
   {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '犯罪情况',
+    dataIndex: 'crimeSituation',
+    scopedSlots: { customRender: 'crimeSituation' }
+  },
+  {
+    title: '吸毒原因',
+    dataIndex: 'drugAbuseReasons',
+    scopedSlots: { customRender: 'drugAbuseReasons' }
+  },
+  {
+    title: '吸毒后果',
+    dataIndex: 'drugAbuseConsequences',
+    scopedSlots: { customRender: 'drugAbuseConsequences' }
   },
   {
     title: '操作',
