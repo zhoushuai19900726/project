@@ -667,7 +667,7 @@ const columns = [
   },
   {
     title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
+    dataIndex: ' ',
     scopedSlots: { customRender: 'hoseholdIdentity' }
   },
   {

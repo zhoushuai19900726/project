@@ -69,7 +69,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="名族">
+                <a-form-item label="民族">
                   <a-select
                     v-model="queryParam.nation"
                     placeholder="请选择"
@@ -266,23 +266,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
-                  <a-select
-                    v-model="queryParam.hoseholdIdentity"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="社区矫正人员编号">
+                  <a-input
+                    v-model="queryParam.communityCorrectionNumber"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +277,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="原羁押场所">
+                  <a-input
+                    v-model="queryParam.originalCustodyPlace"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +288,39 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="矫正类别">
+                  <a-select
+                    v-model="queryParam.correctionCategory"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">轻度矫正</a-select-option>
+                    <a-select-option value="0">无需矫正</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="案件类别">
+                  <a-select
+                    v-model="queryParam.casesType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">轻度矫正</a-select-option>
+                    <a-select-option value="0">无需矫正</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="具体罪名">
+                  <a-input
+                    v-model="queryParam.specificCharges"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,14 +329,69 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="原判刑期">
+                  <a-input
+                    v-model="queryParam.originalSentence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="原判刑开始日期">
+                  <a-input
+                    v-model="queryParam.originalSentenceStartingDate"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="原判刑结束日期">
+                  <a-input
+                    v-model="queryParam.originalSentenceEndDate"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="矫正开始日期">
+                  <a-input
+                    v-model="queryParam.correctionStartDate"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="矫正结束日期">
+                  <a-input
+                    v-model="queryParam.correctionEndDate"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="接收方式">
                   <a-select
-                    v-model="queryParam.householderGender"
+                    v-model="queryParam.receivingMode"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">公安局</a-select-option>
+                    <a-select-option value="1">派出所</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -328,14 +399,25 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
+                <a-form-item label='"四史"情况'>
+                  <a-input
+                    v-model="queryParam.fourHistories"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否累惯犯">
                   <a-select
-                    v-model="queryParam.householderRelationship"
+                    v-model="queryParam.recidivist"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -343,14 +425,25 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
+                <a-form-item label='"三步"情况'>
+                  <a-input
+                    v-model="queryParam.threeSteps"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否建立矫正小组">
                   <a-select
-                    v-model="queryParam.householderContactType"
+                    v-model="queryParam.correctiveTeamEstablished"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -358,9 +451,168 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="矫正小组人员组成情况">
+                  <a-input
+                    v-model="queryParam.correctionTeamComposition"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="矫正解除(终止)类型">
+                  <a-select
+                    v-model="queryParam.correctionReleaseType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否有托管">
+                  <a-select
+                    v-model="queryParam.custody"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="托管原因">
+                  <a-input
+                    v-model="queryParam.trusteeshipReason"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="检查监督托管情况">
+                  <a-input
+                    v-model="queryParam.checkSuperviseTrusteeship"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="托管矫正情况">
+                  <a-input
+                    v-model="queryParam.custodyCorrection"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否有漏管">
+                  <a-select
+                    v-model="queryParam.leakage"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="漏管原因">
+                  <a-input
+                    v-model="queryParam.leakageCauses"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="检查监督漏管情况">
+                  <a-input
+                    v-model="queryParam.inspectSuperviseLeakage"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="漏管纠正情况">
+                  <a-input
+                    v-model="queryParam.leakageCorrection"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="奖惩情况">
+                  <a-input
+                    v-model="queryParam.rewardPunishment"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="刑罚变更执行情况">
+                  <a-input
+                    v-model="queryParam.penaltyChangeExecution"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否重新犯罪">
+                  <a-select
+                    v-model="queryParam.recidivism"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="重新犯罪名称">
+                  <a-input
+                    v-model="queryParam.recidivismName"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -587,54 +839,149 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicileAddress' }
   },
   {
-    title: '现住址',
-    dataIndex: 'currentResidence',
-    scopedSlots: { customRender: 'currentResidence' }
+    title: '社区矫正人员编号',
+    dataIndex: 'communityCorrectionNumber',
+    scopedSlots: { customRender: 'communityCorrectionNumber' }
   },
   {
-    title: '现住地详址',
-    dataIndex: 'currentResidenceAddress',
-    scopedSlots: { customRender: 'currentResidenceAddress' }
+    title: '原羁押场所',
+    dataIndex: 'originalCustodyPlace',
+    scopedSlots: { customRender: 'originalCustodyPlace' }
   },
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '矫正类别',
+    dataIndex: 'correctionCategory',
+    scopedSlots: { customRender: 'correctionCategory' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '案件类别',
+    dataIndex: 'casesType',
+    scopedSlots: { customRender: 'casesType' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '具体罪名',
+    dataIndex: 'specificCharges',
+    scopedSlots: { customRender: 'specificCharges' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '原判刑期',
+    dataIndex: 'originalSentence',
+    scopedSlots: { customRender: 'originalSentence' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '原判刑开始日期',
+    dataIndex: 'originalSentenceStartingDate',
+    scopedSlots: { customRender: 'originalSentenceStartingDate' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '原判刑结束日期',
+    dataIndex: 'originalSentenceEndDate',
+    scopedSlots: { customRender: 'originalSentenceEndDate' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
+    title: '矫正开始日期',
+    dataIndex: 'correctionStartDate',
+    scopedSlots: { customRender: 'correctionStartDate' }
   },
   {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '矫正结束日期',
+    dataIndex: 'correctionEndDate',
+    scopedSlots: { customRender: 'correctionEndDate' }
+  },
+  {
+    title: '接收方式',
+    dataIndex: 'receivingMode',
+    scopedSlots: { customRender: 'receivingMode' }
+  },
+  {
+    title: '"四史"情况',
+    dataIndex: 'fourHistories',
+    scopedSlots: { customRender: 'fourHistories' }
+  },
+  {
+    title: '是否累惯犯',
+    dataIndex: 'recidivist',
+    scopedSlots: { customRender: 'recidivist' }
+  },
+  {
+    title: '"三步"情况',
+    dataIndex: 'threeSteps',
+    scopedSlots: { customRender: 'threeSteps' }
+  },
+  {
+    title: '是否建立矫正小组',
+    dataIndex: 'correctiveTeamEstablished',
+    scopedSlots: { customRender: 'correctiveTeamEstablished' }
+  },
+  {
+    title: '矫正小组人员组成情况',
+    dataIndex: 'correctionTeamComposition',
+    scopedSlots: { customRender: 'correctionTeamComposition' }
+  },
+  {
+    title: '矫正解除(终止)类型',
+    dataIndex: 'correctionReleaseType',
+    scopedSlots: { customRender: 'correctionReleaseType' }
+  },
+  {
+    title: '是否有托管',
+    dataIndex: 'custody',
+    scopedSlots: { customRender: 'custody' }
+  },
+  {
+    title: '托管原因',
+    dataIndex: 'trusteeshipReason',
+    scopedSlots: { customRender: 'trusteeshipReason' }
+  },
+  {
+    title: '检查监督托管情况',
+    dataIndex: 'checkSuperviseTrusteeship',
+    scopedSlots: { customRender: 'checkSuperviseTrusteeship' }
+  },
+  {
+    title: '托管矫正情况',
+    dataIndex: 'custodyCorrection',
+    scopedSlots: { customRender: 'custodyCorrection' }
+  },
+  {
+    title: '是否有漏管',
+    dataIndex: 'leakage',
+    scopedSlots: { customRender: 'leakage' }
+  },
+  {
+    title: '漏管原因',
+    dataIndex: 'leakageCauses',
+    scopedSlots: { customRender: 'leakageCauses' }
+  },
+  {
+    title: '检查监督漏管情况',
+    dataIndex: 'inspectSuperviseLeakage',
+    scopedSlots: { customRender: 'inspectSuperviseLeakage' }
+  },
+  {
+    title: '漏管纠正情况',
+    dataIndex: 'leakageCorrection',
+    scopedSlots: { customRender: 'leakageCorrection' }
+  },
+  {
+    title: '奖惩情况',
+    dataIndex: 'rewardPunishment',
+    scopedSlots: { customRender: 'rewardPunishment' }
+  },
+  {
+    title: '刑罚变更执行情况',
+    dataIndex: 'penaltyChangeExecution',
+    scopedSlots: { customRender: 'penaltyChangeExecution' }
+  },
+  {
+    title: '是否重新犯罪',
+    dataIndex: 'recidivism',
+    scopedSlots: { customRender: 'recidivism' }
+  },
+  {
+    title: '重新犯罪名称',
+    dataIndex: 'recidivismName',
+    scopedSlots: { customRender: 'recidivismName' }
   },
   {
     title: '操作',

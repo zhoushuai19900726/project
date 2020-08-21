@@ -185,7 +185,7 @@
                 :sm="24"
               >
                 <a-form-item label="服务处所">
-                  <a-input-number
+                  <a-input
                     v-model="queryParam.servicePlace"
                     style="width: 100%"
                   />
@@ -266,13 +266,14 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="是否累犯">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.recidivist"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">无</a-select-option>
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="0">否</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -280,9 +281,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
+                <a-form-item label="原罪名">
                   <a-input-number
-                    v-model="queryParam.accountNumber"
+                    v-model="queryParam.originalSin"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +292,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="原判刑期">
+                  <a-input
+                    v-model="queryParam.originalSentence"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +303,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="服刑场所">
+                  <a-input
+                    v-model="queryParam.servicePlaces"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,14 +314,29 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="释放日期">
+<!--                  <a-input-->
+<!--                    v-model="queryParam.releaseDate"-->
+<!--                    style="width: 100%"-->
+<!--                  />-->
+                  <a-date-picker @change="onChange" style="width: 100%">
+                    <a-icon slot="suffixIcon" type="smile" />
+                  </a-date-picker>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="危险性评估类型">
                   <a-select
-                    v-model="queryParam.householderGender"
+                    v-model="queryParam.riskAssessmentType"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">危险</a-select-option>
+                    <a-select-option value="1">可疑</a-select-option>
+                    <a-select-option value="1">正常</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -328,14 +344,86 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
+                <a-form-item label="衔接日期">
+<!--                  <a-input-->
+<!--                    v-model="queryParam.connectingDate"-->
+<!--                    style="width: 100%"-->
+<!--                  />-->
+                  <a-date-picker @change="onChange" style="width: 100%">
+                    <a-icon slot="suffixIcon" type="smile" />
+                  </a-date-picker>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="衔接情况">
+                  <a-input
+                    v-model="queryParam.connection"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="安置日期">
+<!--                  <a-input-->
+<!--                    v-model="queryParam.placementDate"-->
+<!--                    style="width: 100%"-->
+<!--                  />-->
+                  <a-date-picker @change="onChange" style="width: 100%">
+                    <a-icon slot="suffixIcon" type="smile" />
+                  </a-date-picker>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="安置情况">
+                  <a-input
+                    v-model="queryParam.resettlement"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="未安置原因">
+                  <a-input
+                    v-model="queryParam.nonResettlementReasons"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="帮扶情况">
+                  <a-input
+                    v-model="queryParam.assistance"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否重新犯罪">
                   <a-select
-                    v-model="queryParam.householderRelationship"
+                    v-model="queryParam.recidivism"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
+                    <a-select-option value="0">是</a-select-option>
+                    <a-select-option value="1">否</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -343,24 +431,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="重新犯罪罪名">
+                  <a-input
+                    v-model="queryParam.recidivismName"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -474,6 +547,7 @@
         ref="createModal"
         :visible="visible"
         :loading="confirmLoading"
+        :options="options"
         :model="mdl"
         @cancel="handleCancel"
         @ok="handleOk"
@@ -491,8 +565,8 @@ import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import { getRoleList, getServiceList } from '@/api/manage'
 
-import StepByStepModal from '../modules/StepByStepModal'
-import CreateForm from '../modules/CreateForm'
+import StepByStepModal from './modules/StepByStepModal'
+import CreateForm from './modules/CreateForm'
 
 const columns = [
   {
@@ -500,141 +574,172 @@ const columns = [
     scopedSlots: { customRender: 'serial' },
     fixed: 'left'
   },
-  {
-    title: '公民身份证号',
-    dataIndex: 'idCard',
-    width: '100',
-    scopedSlots: { customRender: 'idCard' }
-  },
+  // {
+  //   title: '公民身份证号',
+  //   dataIndex: 'idCard',
+  //   width: '100',
+  //   scopedSlots: { customRender: 'idCard' }
+  // },
   {
     title: '姓名',
     dataIndex: 'fullName',
     width: 100,
     scopedSlots: { customRender: 'fullName' }
   },
-  {
-    title: '曾用名',
-    dataIndex: 'nameUsedBefore',
-    width: 100,
-    scopedSlots: { customRender: 'nameUsedBefore' }
-  },
+  // {
+  //   title: '曾用名',
+  //   dataIndex: 'nameUsedBefore',
+  //   width: 100,
+  //   scopedSlots: { customRender: 'nameUsedBefore' }
+  // },
   {
     title: '性别',
     dataIndex: 'gender'
     // scopedSlots: { customRender: 'status' }
   },
+  // {
+  //   title: '出生日期',
+  //   dataIndex: 'birthday',
+  //   sorter: true
+  // },
+  // {
+  //   title: '民族',
+  //   dataIndex: 'nation'
+  //   // width: '150px',
+  //   // scopedSlots: { customRender: 'action' }
+  // },
+  // {
+  //   title: '籍贯',
+  //   dataIndex: 'nativePlace',
+  //   scopedSlots: { customRender: 'nativePlace' }
+  // },
+  // {
+  //   title: '婚姻状况',
+  //   dataIndex: 'marital'
+  // },
+  // {
+  //   title: '政治面貌',
+  //   dataIndex: 'politicalOutlook'
+  // },
+  // {
+  //   title: '学历',
+  //   dataIndex: 'education'
+  // },
+  // {
+  //   title: '宗教信仰',
+  //   dataIndex: 'religiousBelife'
+  // },
+  // {
+  //   title: '职业类别',
+  //   dataIndex: 'occupationCatgory'
+  // },
+  // {
+  //   title: '职业',
+  //   dataIndex: 'occupation'
+  // },
+  // {
+  //   title: '服务处所',
+  //   dataIndex: 'servicePlace'
+  // },
+  // {
+  //   title: '联系类型',
+  //   dataIndex: 'contactType'
+  // },
+  // {
+  //   title: '联系方式',
+  //   dataIndex: 'contactInformation',
+  //   scopedSlots: { customRender: 'contactInformation' }
+  // },
+  // {
+  //   title: '户籍地',
+  //   dataIndex: 'placeDomicile',
+  //   scopedSlots: { customRender: 'placeDomicile' }
+  // },
+  // {
+  //   title: '户籍门(楼)详址',
+  //   dataIndex: 'placeDomicileAddress',
+  //   scopedSlots: { customRender: 'placeDomicileAddress' }
+  // },
+  // {
+  //   title: '现住址',
+  //   dataIndex: 'currentResidence',
+  //   scopedSlots: { customRender: 'currentResidence' }
+  // },
+  // {
+  //   title: '现住地详址',
+  //   dataIndex: 'currentResidenceAddress',
+  //   scopedSlots: { customRender: 'currentResidenceAddress' }
+  // },
+  // ---------------------------------------------
   {
-    title: '出生日期',
-    dataIndex: 'birthday',
-    sorter: true
+    title: '是否累犯',
+    dataIndex: 'recidivist',
+    scopedSlots: { customRender: 'recidivist' }
   },
   {
-    title: '民族',
-    dataIndex: 'nation'
-    // width: '150px',
-    // scopedSlots: { customRender: 'action' }
+    title: '原罪名',
+    dataIndex: 'originalSin',
+    scopedSlots: { customRender: 'originalSin' }
   },
   {
-    title: '籍贯',
-    dataIndex: 'nativePlace',
-    scopedSlots: { customRender: 'nativePlace' }
+    title: '原判刑期',
+    dataIndex: 'originalSentence',
+    scopedSlots: { customRender: 'originalSentence' }
   },
   {
-    title: '婚姻状况',
-    dataIndex: 'marital'
+    title: '服刑场所',
+    dataIndex: 'servicePlaces',
+    scopedSlots: { customRender: 'servicePlaces' }
   },
   {
-    title: '政治面貌',
-    dataIndex: 'politicalOutlook'
+    title: '释放日期',
+    dataIndex: 'releaseDate',
+    scopedSlots: { customRender: 'releaseDate' }
   },
   {
-    title: '学历',
-    dataIndex: 'education'
+    title: '危险性评估类型',
+    dataIndex: 'riskAssessmentType',
+    scopedSlots: { customRender: 'riskAssessmentType' }
   },
   {
-    title: '宗教信仰',
-    dataIndex: 'religiousBelife'
+    title: '衔接日期',
+    dataIndex: 'connectingDate',
+    scopedSlots: { customRender: 'connectingDate' }
   },
   {
-    title: '职业类别',
-    dataIndex: 'occupationCatgory'
+    title: '衔接情况',
+    dataIndex: 'connection',
+    scopedSlots: { customRender: 'connection' }
   },
   {
-    title: '职业',
-    dataIndex: 'occupation'
+    title: '安置日期',
+    dataIndex: 'placementDate',
+    scopedSlots: { customRender: 'placementDate' }
   },
   {
-    title: '服务处所',
-    dataIndex: 'servicePlace'
+    title: '安置情况',
+    dataIndex: 'resettlement',
+    scopedSlots: { customRender: 'resettlement' }
   },
   {
-    title: '联系类型',
-    dataIndex: 'contactType'
+    title: '未安置原因',
+    dataIndex: 'nonResettlementReasons',
+    scopedSlots: { customRender: 'nonResettlementReasons' }
   },
   {
-    title: '联系方式',
-    dataIndex: 'contactInformation',
-    scopedSlots: { customRender: 'contactInformation' }
+    title: '帮扶情况',
+    dataIndex: 'assistance',
+    scopedSlots: { customRender: 'assistance' }
   },
   {
-    title: '户籍地',
-    dataIndex: 'placeDomicile',
-    scopedSlots: { customRender: 'placeDomicile' }
+    title: '是否重新犯罪',
+    dataIndex: 'recidivism',
+    scopedSlots: { customRender: 'recidivism' }
   },
   {
-    title: '户籍门(楼)详址',
-    dataIndex: 'placeDomicileAddress',
-    scopedSlots: { customRender: 'placeDomicileAddress' }
-  },
-  {
-    title: '现住址',
-    dataIndex: 'currentResidence',
-    scopedSlots: { customRender: 'currentResidence' }
-  },
-  {
-    title: '现住地详址',
-    dataIndex: 'currentResidenceAddress',
-    scopedSlots: { customRender: 'currentResidenceAddress' }
-  },
-  {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
-  },
-  {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
-  },
-  {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
-  },
-  {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
-  },
-  {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
-  },
-  {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
-  },
-  {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
-  },
-  {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '重新犯罪罪名',
+    dataIndex: 'recidivismName',
+    scopedSlots: { customRender: 'recidivismName' }
   },
   {
     title: '操作',
@@ -681,7 +786,9 @@ export default {
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
-      queryParam: {},
+      queryParam: {
+        birthday: null
+      },
       // 籍贯的三级联动列表
       options: [
         {
