@@ -2,7 +2,10 @@ import request from '@/utils/request'
 
 // 基本链接
 // const baseUrl = 'http://127.0.0.1:'
+// 文佳406
 const baseUrl = 'http://192.168.1.113:'
+// 周帅gaopin02
+// const baseUrl = 'http://192.168.1.106:'
 
 const api = {
   user: '/user',

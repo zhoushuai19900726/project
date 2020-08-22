@@ -299,13 +299,14 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="残疾程度">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.disabilityDegree"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">无</a-select-option>
+                    <a-select-option value="0">轻度</a-select-option>
+                    <a-select-option value="1">重度</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -313,9 +314,24 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
+                <a-form-item label="残疾类型">
+                  <a-select
+                    v-model="queryParam.disabilityType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">右臂残疾</a-select-option>
+                    <a-select-option value="1">腿脚残疾</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="健康状况">
                   <a-input-number
-                    v-model="queryParam.accountNumber"
+                    v-model="queryParam.health"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -324,9 +340,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
+                <a-form-item label="评定医院">
                   <a-input-number
-                    v-model="queryParam.householderIdCard"
+                    v-model="queryParam.evaluationHospital"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -335,9 +351,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
+                <a-form-item label="评定医师">
                   <a-input-number
-                    v-model="queryParam.householderName"
+                    v-model="queryParam.assessor"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -346,14 +362,14 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
+                <a-form-item label="劳动能力">
                   <a-select
                     v-model="queryParam.householderGender"
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
+                    <a-select-option value="0">丧失劳动力</a-select-option>
+                    <a-select-option value="1">不能自理</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -361,39 +377,47 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
-                  <a-select
-                    v-model="queryParam.householderRelationship"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户主联系方式">
+                <a-form-item label="就业状况">
                   <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                    v-model="queryParam.employmentStatus"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否有残疾证">
+                  <a-select
+                    v-model="queryParam.disabilityCertificate"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">否</a-select-option>
+                    <a-select-option value="1">是</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="领证时间">
+                  <a-date-picker
+                    v-model="queryParam.obtainingCertificateDate"
+                    style="width: 100%"
+                    placeholder="请输入"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="个人收入">
+                  <a-input-number
+                    v-model="queryParam.personalIncome"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -494,7 +518,7 @@
           slot-scope="text, record"
         >
           <template>
-            <a @click="handleEdit(record)">修改</a>
+            <a @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
@@ -669,42 +693,52 @@ const columns = [
   {
     title: '残疾程度',
     dataIndex: 'disabilityDegree',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    scopedSlots: { customRender: 'disabilityDegree' }
   },
   {
     title: '残疾类型',
     dataIndex: 'disabilityType',
-    scopedSlots: { customRender: 'accountNumber' }
+    scopedSlots: { customRender: 'disabilityType' }
   },
   {
     title: '健康状况',
     dataIndex: 'health',
-    scopedSlots: { customRender: 'householderIdCard' }
+    scopedSlots: { customRender: 'health' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '评定医院',
+    dataIndex: 'evaluationHospital',
+    scopedSlots: { customRender: 'evaluationHospital' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '评定医师',
+    dataIndex: 'assessor',
+    scopedSlots: { customRender: 'assessor' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '劳动能力',
+    dataIndex: 'laborCapacity',
+    scopedSlots: { customRender: 'laborCapacity' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
+    title: '就业状况',
+    dataIndex: 'employmentStatus',
+    scopedSlots: { customRender: 'employmentStatus' }
   },
   {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '是否有残疾证',
+    dataIndex: 'disabilityCertificate',
+    scopedSlots: { customRender: 'disabilityCertificate' }
+  },
+  {
+    title: '领证时间',
+    dataIndex: 'obtainingCertificateDate',
+    scopedSlots: { customRender: 'obtainingCertificateDate' }
+  },
+  {
+    title: '个人收入',
+    dataIndex: 'personalIncome',
+    scopedSlots: { customRender: 'personalIncome' }
   },
   {
     title: '操作',
