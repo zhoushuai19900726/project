@@ -288,9 +288,20 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住门(楼)详址">
-                  <a-input-number
+                <a-form-item label="现住地详址">
+                  <a-input
                     v-model="queryParam.currentResidenceAddress"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住地">
+                  <a-input-number
+                    v-model="queryParam.currentResidence"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -405,7 +416,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="y有无犯罪史">
+                <a-form-item label="有无犯罪史">
                   <a-select
                     v-model="queryParam.criminalHistory"
                     placeholder="请选择"
@@ -706,7 +717,7 @@ const columns = [
     dataIndex: 'currentResidenceRegion'
   },
   {
-    title: '现住址',
+    title: '现住地',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
   },

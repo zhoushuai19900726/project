@@ -277,7 +277,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住地(详细)">
+                <a-form-item label="现住地">
                   <a-input
                     v-model="queryParam.currentResidence"
                     style="width: 100%"
@@ -288,7 +288,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住门(楼)详址">
+                <a-form-item label="现住地详址">
                   <a-input-number
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
@@ -766,7 +766,7 @@ const columns = [
     dataIndex: 'currentResidenceRegion'
   },
   {
-    title: '现住址',
+    title: '现住地',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
   },

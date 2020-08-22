@@ -341,6 +341,38 @@ export const asyncRouterMap = [
             meta: { title: '涉及线、路案(事)件', permission: ['profile'] }
           }
         ]
+      },
+
+      {
+        path: '/userManagement',
+        name: 'userManagement',
+        component: RouteView,
+        redirect: '/userManagement/userManagement-List',
+        meta: { title: '用户管理', icon: 'profile', permission: ['profile'] },
+        children: [
+            {
+              path: '/userManagement/userManagement-List',
+              name: 'userManagementList',
+              component: () => import('@/views/userManagement/userManagement/List'),
+              meta: { title: '用户管理', permission: ['profile'] }
+            }
+          ]
+      },
+
+      {
+        path: '/systemSetting',
+        name: 'systemSetting',
+        component: RouteView,
+        redirect: '/systemSetting/systemSetting-List',
+        meta: { title: '系统设置', icon: 'profile', permission: ['profile'] },
+        children: [
+          {
+            path: '/systemSetting/systemSetting-List',
+            name: 'systemSetting',
+            component: () => import('@/views/systemSetting/systemSetting/List'),
+            meta: { title: '系统设置', permission: ['profile'] }
+          }
+        ]
       }
 
       // other

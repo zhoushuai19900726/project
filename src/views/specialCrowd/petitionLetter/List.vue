@@ -69,7 +69,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="名族">
+                <a-form-item label="民族">
                   <a-select
                     v-model="queryParam.nation"
                     placeholder="请选择"
@@ -83,11 +83,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯(详细)">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -220,11 +231,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'PLACE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="户籍地(详细)">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -243,7 +265,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -255,8 +277,19 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住门(楼)详址">
-                  <a-input-number
+                <a-form-item label="现住地">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住地详址">
+                  <a-input
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
                   />
@@ -266,23 +299,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
-                  <a-select
-                    v-model="queryParam.hoseholdIdentity"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="诉求内容">
+                  <a-input
+                    v-model="queryParam.appealContent"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +310,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="单位或住址">
+                  <a-input
+                    v-model="queryParam.unitOrAddress"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +321,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="责任人">
+                  <a-input
+                    v-model="queryParam.personLiable"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,54 +332,42 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
-                  <a-select
-                    v-model="queryParam.householderGender"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                <a-form-item label="责任单位">
+                  <a-input
+                    v-model="queryParam.responsibleUnit"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
-                  <a-select
-                    v-model="queryParam.householderRelationship"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
-                  </a-select>
+                <a-form-item label="包案领导">
+                  <a-input
+                    v-model="queryParam.contractLeader"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                <a-form-item label="稳控责任人">
+                  <a-input
+                    v-model="queryParam.chargeStabilityControl"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="稳控责任人电话">
+                  <a-input
+                    v-model="queryParam.chargeStabilityControlTelephone"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -535,6 +542,18 @@ const columns = [
     // scopedSlots: { customRender: 'action' }
   },
   {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
+  },
+  {
     title: '籍贯',
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
@@ -577,6 +596,18 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍地',
     dataIndex: 'placeDomicile',
     scopedSlots: { customRender: 'placeDomicile' }
@@ -587,7 +618,19 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicileAddress' }
   },
   {
-    title: '现住址',
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
+  },
+  {
+    title: '现住地',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
   },
@@ -597,44 +640,39 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '诉求内容',
+    dataIndex: 'appealContent',
+    scopedSlots: { customRender: 'appealContent' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '单位或住址',
+    dataIndex: 'unitOrAddress',
+    scopedSlots: { customRender: 'unitOrAddress' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '责任人',
+    dataIndex: 'personLiable',
+    scopedSlots: { customRender: 'personLiable' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '责任单位',
+    dataIndex: 'responsibleUnit',
+    scopedSlots: { customRender: 'responsibleUnit' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '包案领导',
+    dataIndex: 'contractLeader',
+    scopedSlots: { customRender: 'contractLeader' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '稳控责任人',
+    dataIndex: 'chargeStabilityControl',
+    scopedSlots: { customRender: 'chargeStabilityControl' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
-  },
-  {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '稳控责任人电话',
+    dataIndex: 'chargeStabilityControlTelephone',
+    scopedSlots: { customRender: 'chargeStabilityControlTelephone' }
   },
   {
     title: '操作',
