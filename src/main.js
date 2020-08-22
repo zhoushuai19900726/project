@@ -35,6 +35,26 @@ window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
 new Vue({
   router,
+  data: {
+    // 性别
+    sex: [],
+    // 民族
+    nation: [],
+    // 婚姻状况
+    marray: [],
+    // 政治面貌
+    politicalOutlook: [],
+    // 学历
+    education: [],
+    // 宗教信仰
+    religiousBelife: [],
+    // 职业类别
+    occupationCatgory: [],
+    // 职业
+    occupation: [],
+    // 联系类型
+    contactType: []
+  },
   store,
   i18n,
   created: bootstrap,

@@ -69,7 +69,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="名族">
+                <a-form-item label="民族">
                   <a-select
                     v-model="queryParam.nation"
                     placeholder="请选择"
@@ -83,11 +83,22 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯">
+                <a-form-item label="籍贯(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
                     @change="onChange($event,'NATIVE')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="籍贯">
+                  <a-input
+                    v-model="queryParam.nativePlace"
+                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -220,7 +231,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地">
+                <a-form-item label="户籍地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -232,7 +243,18 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍门(楼)详址">
+                <a-form-item label="户籍地">
+                  <a-input
+                    v-model="queryParam.placeDomicile"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="户籍地详址">
                   <a-input-number
                     v-model="queryParam.placeDomicileAddress"
                     style="width: 100%"
@@ -243,7 +265,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址">
+                <a-form-item label="现住地(省市区)">
                   <a-cascader
                     :options="options"
                     placeholder="请选择"
@@ -255,7 +277,18 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住门(楼)详址">
+                <a-form-item label="现住地">
+                  <a-input
+                    v-model="queryParam.currentResidence"
+                    style="width: 100%"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="现住地详址">
                   <a-input-number
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
@@ -266,9 +299,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="人户一致标识">
+                <a-form-item label="生育证类型">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.birthCertificateType"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -280,9 +313,51 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户号">
-                  <a-input-number
-                    v-model="queryParam.accountNumber"
+                <a-form-item label="节育类型">
+                  <a-select
+                    v-model="queryParam.birthControlType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="政策生育类型">
+                  <a-select
+                    v-model="queryParam.policyFertilityType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="奖励救助类型">
+                  <a-select
+                    v-model="queryParam.rewardAssistanceType"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="奖励金额">
+                  <a-input
+                    v-model="queryParam.rewardAmount"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -291,9 +366,33 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主公民身份证号码">
-                  <a-input-number
-                    v-model="queryParam.householderIdCard"
+                <a-form-item label="初婚日期">
+                  <a-date-picker
+                    v-model="queryParam.firstMarriageDate"
+                    style="width: 100%"
+                    placeholder="请输入"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="初婚上报日期">
+                  <a-date-picker
+                    v-model="queryParam.firstMarriageReportDate"
+                    style="width: 100%"
+                    placeholder="请输入"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="出生孩次">
+                  <a-input
+                    v-model="queryParam.birthsNumber"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -302,9 +401,9 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主姓名">
-                  <a-input-number
-                    v-model="queryParam.householderName"
+                <a-form-item label="抚养关系">
+                  <a-input
+                    v-model="queryParam.raiseRelationship"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -313,54 +412,44 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主性别">
-                  <a-select
-                    v-model="queryParam.householderGender"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                <a-form-item label="出生上报日期">
+                  <a-date-picker
+                    v-model="queryParam.birthReportDate"
+                    style="width: 100%"
+                    placeholder="请输入"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="与户主关系">
-                  <a-select
-                    v-model="queryParam.householderRelationship"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">本人</a-select-option>
-                    <a-select-option value="1">父子</a-select-option>
-                  </a-select>
+                <a-form-item label="生育指标状况">
+                  <a-input
+                    v-model="queryParam.fertilityIndicators"
+                    style="width: 100%"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系类型">
-                  <a-select
-                    v-model="queryParam.householderContactType"
+                <a-form-item label="出生地(省市区)">
+                  <a-cascader
+                    :options="options"
                     placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">男</a-select-option>
-                    <a-select-option value="1">女</a-select-option>
-                  </a-select>
+                    @change="onChange($event,'birthPlace')"
+                  />
                 </a-form-item>
               </a-col>
               <a-col
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户主联系方式">
-                  <a-input-number
-                    v-model="queryParam.householderContactInformation"
+                <a-form-item label="出生地点">
+                  <a-input
+                    v-model="queryParam.birthPlace"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -535,10 +624,23 @@ const columns = [
     // scopedSlots: { customRender: 'action' }
   },
   {
+    title: '籍贯(省)',
+    dataIndex: 'nativePlaceProvince'
+  },
+  {
+    title: '籍贯(市)',
+    dataIndex: 'nativePlaceCity'
+  },
+  {
+    title: '籍贯(区)',
+    dataIndex: 'nativePlaceRegion'
+  },
+  {
     title: '籍贯',
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
   },
+
   {
     title: '婚姻状况',
     dataIndex: 'marital'
@@ -577,14 +679,38 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
+    title: '户籍地(省)',
+    dataIndex: 'placeDomicileProvince'
+  },
+  {
+    title: '户籍地(市)',
+    dataIndex: 'placeDomicileCity'
+  },
+  {
+    title: '户籍地(区)',
+    dataIndex: 'placeDomicileRegion'
+  },
+  {
     title: '户籍地',
     dataIndex: 'placeDomicile',
     scopedSlots: { customRender: 'placeDomicile' }
   },
   {
-    title: '户籍门(楼)详址',
+    title: '户籍地详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
+  },
+  {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince'
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity'
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion'
   },
   {
     title: '现住址',
@@ -597,44 +723,79 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
-    title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    title: '生育证类型',
+    dataIndex: 'birthCertificateType',
+    scopedSlots: { customRender: 'birthCertificateType' }
   },
   {
-    title: '户号',
-    dataIndex: 'accountNumber',
-    scopedSlots: { customRender: 'accountNumber' }
+    title: '节育类型',
+    dataIndex: 'birthControlType',
+    scopedSlots: { customRender: 'birthControlType' }
   },
   {
-    title: '户主公民身份证号',
-    dataIndex: 'householderIdCard',
-    scopedSlots: { customRender: 'householderIdCard' }
+    title: '政策生育类型',
+    dataIndex: 'policyFertilityType',
+    scopedSlots: { customRender: 'policyFertilityType' }
   },
   {
-    title: '户主姓名',
-    dataIndex: 'householderName',
-    scopedSlots: { customRender: 'householderName' }
+    title: '奖励救助类型',
+    dataIndex: 'rewardAssistanceType',
+    scopedSlots: { customRender: 'rewardAssistanceType' }
   },
   {
-    title: '户主性别',
-    dataIndex: 'householderGender',
-    scopedSlots: { customRender: 'householderGender' }
+    title: '奖励金额',
+    dataIndex: 'rewardAmount',
+    scopedSlots: { customRender: 'rewardAmount' }
   },
   {
-    title: '与户主关系',
-    dataIndex: 'householderRelationship',
-    scopedSlots: { customRender: 'householderRelationship' }
+    title: '初婚日期',
+    dataIndex: 'firstMarriageDate',
+    scopedSlots: { customRender: 'firstMarriageDate' }
   },
   {
-    title: '户主联系类型',
-    dataIndex: 'householderContactType',
-    scopedSlots: { customRender: 'householderContactType' }
+    title: '初婚上报日期',
+    dataIndex: 'firstMarriageReportDate',
+    scopedSlots: { customRender: 'firstMarriageReportDate' }
   },
   {
-    title: '户主联系方式',
-    dataIndex: 'householderContactInformation',
-    scopedSlots: { customRender: 'householderContactInformation' }
+    title: '出生孩次',
+    dataIndex: 'birthsNumber',
+    scopedSlots: { customRender: 'birthsNumber' }
+  },
+  {
+    title: '抚养关系',
+    dataIndex: 'raiseRelationship',
+    scopedSlots: { customRender: 'raiseRelationship' }
+  },
+  {
+    title: '出生上报日期',
+    dataIndex: 'birthReportDate',
+    scopedSlots: { customRender: 'birthReportDate' }
+  },
+  {
+    title: '生育指标状况',
+    dataIndex: 'fertilityIndicators',
+    scopedSlots: { customRender: 'fertilityIndicators' }
+  },
+  {
+    title: '出生地(省)',
+    dataIndex: 'birthPlaceProvince',
+    scopedSlots: { customRender: 'birthPlaceProvince' }
+  },
+  {
+    title: '出生地(市)',
+    dataIndex: 'birthPlaceCity',
+    scopedSlots: { customRender: 'birthPlaceCity' }
+  },
+  {
+    title: '出生地(区)',
+    dataIndex: 'birthPlaceRegion',
+    scopedSlots: { customRender: 'birthPlaceRegion' }
+  },
+  {
+    title: '出生地点',
+    dataIndex: 'birthPlace',
+    scopedSlots: { customRender: 'birthPlace' }
   },
   {
     title: '操作',
@@ -765,6 +926,10 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
+      } else if (type === 'birthPlace') {
+        this.queryParam.birthPlaceProvince = e[0]
+        this.queryParam.birthPlaceCity = e[1]
+        this.queryParam.birthPlaceRegion = e[2]
       }
     },
     handleAdd () {

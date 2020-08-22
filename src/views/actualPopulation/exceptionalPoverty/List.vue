@@ -69,7 +69,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="名族">
+                <a-form-item label="民族">
                   <a-select
                     v-model="queryParam.nation"
                     placeholder="请选择"
@@ -95,7 +95,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯(详细)">
+                <a-form-item label="籍贯">
                   <a-input
                     v-model="queryParam.nativePlace"
                     style="width: 100%"
@@ -243,7 +243,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地(详细)">
+                <a-form-item label="户籍地">
                   <a-input
                     v-model="queryParam.placeDomicile"
                     style="width: 100%"
@@ -254,7 +254,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍门(楼)详址">
+                <a-form-item label="户籍地详址">
                   <a-input-number
                     v-model="queryParam.placeDomicileAddress"
                     style="width: 100%"
@@ -277,7 +277,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住地(详细)">
+                <a-form-item label="现住地">
                   <a-input
                     v-model="queryParam.currentResidence"
                     style="width: 100%"
@@ -288,7 +288,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住门(楼)详址">
+                <a-form-item label="现住地详址">
                   <a-input-number
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
@@ -299,11 +299,28 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="审批金额">
-                  <a-input-number
-                    v-model="queryParam.approvedAmount"
-                    style="width: 100%"
-                  />
+                <a-form-item label="供养标准">
+                  <a-select
+                    v-model="queryParam.supportStandard"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="供养形式">
+                  <a-select
+                    v-model="queryParam.supportForms"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
               <a-col
@@ -312,20 +329,9 @@
               >
                 <a-form-item label="批准时间">
                   <a-date-picker
-                    v-model="queryParam.birthday"
+                    v-model="queryParam.approvalDate"
                     style="width: 100%"
                     placeholder="请输入"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="年总金额">
-                  <a-input-number
-                    v-model="queryParam.annualTotalAmount"
-                    style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
@@ -571,7 +577,7 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicile' }
   },
   {
-    title: '户籍门(楼)详址',
+    title: '户籍地详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
   },
@@ -598,19 +604,19 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
-    title: '审批金额',
-    dataIndex: 'approvedAmount',
-    scopedSlots: { customRender: 'approvedAmount' }
+    title: '供养标准',
+    dataIndex: 'supportStandard',
+    scopedSlots: { customRender: 'supportStandard' }
   },
   {
-    title: '月保障金额',
-    dataIndex: 'monthlyGuaranteeAmount',
-    scopedSlots: { customRender: 'monthlyGuaranteeAmount' }
+    title: '供养形式',
+    dataIndex: 'supportForms',
+    scopedSlots: { customRender: 'supportForms' }
   },
   {
-    title: '年总金额',
-    dataIndex: 'annualTotalAmount',
-    scopedSlots: { customRender: 'annualTotalAmount' }
+    title: '批准时间',
+    dataIndex: 'approvalDate',
+    scopedSlots: { customRender: 'approvalDate' }
   },
   {
     title: '操作',

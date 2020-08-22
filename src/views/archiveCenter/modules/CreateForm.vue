@@ -168,10 +168,10 @@
             placeholder="户籍地"
           />
         </a-form-item>
-        <a-form-item label="户籍门(楼)详址">
+        <a-form-item label="户籍地详址">
           <a-input
             v-decorator="['placeDomicileAddress']"
-            placeholder="户籍门(楼)详址"
+            placeholder="户籍地详址"
           />
         </a-form-item>
         <a-form-item label="现住址(省市区)">
@@ -199,10 +199,10 @@
             placeholder="现住地社区"
           />
         </a-form-item>
-        <a-form-item label="现住门(楼)详址">
+        <a-form-item label="现住地详址">
           <a-input
             v-decorator="['currentResidenceAddress']"
-            placeholder="现住门(楼)详址"
+            placeholder="现住地详址"
           />
         </a-form-item>
       </a-form>
