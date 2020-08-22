@@ -95,7 +95,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="籍贯(详细)">
+                <a-form-item label="籍贯">
                   <a-input
                     v-model="queryParam.nativePlace"
                     style="width: 100%"
@@ -243,7 +243,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍地(详细)">
+                <a-form-item label="户籍地">
                   <a-input
                     v-model="queryParam.placeDomicile"
                     style="width: 100%"
@@ -254,7 +254,7 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="户籍门(楼)详址">
+                <a-form-item label="户籍地详址">
                   <a-input-number
                     v-model="queryParam.placeDomicileAddress"
                     style="width: 100%"
@@ -289,40 +289,10 @@
                 :sm="24"
               >
                 <a-form-item label="现住地详址">
-                  <a-input
+                  <a-input-number
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
                   />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="危害程度">
-                  <a-select
-                    v-model="queryParam.harmDegree"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">一般</a-select-option>
-                    <a-select-option value="1">严重</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="是否关注">
-                  <a-select
-                    v-model="queryParam.concerned"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">关注</a-select-option>
-                    <a-select-option value="1">不关注</a-select-option>
-                  </a-select>
                 </a-form-item>
               </a-col>
             </template>
@@ -583,7 +553,7 @@ const columns = [
     dataIndex: 'currentResidenceRegion'
   },
   {
-    title: '现住地',
+    title: '现住址',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
   },
@@ -591,16 +561,6 @@ const columns = [
     title: '现住地详址',
     dataIndex: 'currentResidenceAddress',
     scopedSlots: { customRender: 'currentResidenceAddress' }
-  },
-  {
-    title: '危害程度',
-    dataIndex: 'harmDegree',
-    scopedSlots: { customRender: 'harmDegree' }
-  },
-  {
-    title: '是否关注',
-    dataIndex: 'concerned',
-    scopedSlots: { customRender: 'concerned' }
   },
   {
     title: '操作',
