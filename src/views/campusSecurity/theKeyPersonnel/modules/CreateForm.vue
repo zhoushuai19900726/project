@@ -1,0 +1,491 @@
+<template>
+  <a-modal
+    title="学校周边重点人员"
+    :width="1200"
+    :visible="visible"
+    :confirmLoading="loading"
+    :footer="null"
+    @ok="() => { $emit('ok') }"
+    @cancel="() => { $emit('cancel') }"
+  >
+    <a-spin :spinning="loading">
+      <div v-if="openType === 0" style="text-align: center; margin-bottom: 20px;">
+<!--        这个地方要写一个搜索框，新增数据的时候显示     -->
+<!--        <a-input-search placeholder="请输入查询条件" style="width: 500px;" enter-button />-->
+        <a-select
+          mode="multiple"
+          label-in-value
+          :value="value"
+          placeholder="请输入想要新增用户的信息  如身份证号码/姓名等  选中后点击回车"
+          style="width: 500px"
+          :filter-option="false"
+          :not-found-content="fetching ? undefined : null"
+          @search="fetchUser"
+          @change="handleChange"
+        >
+          <a-spin v-if="fetching" slot="notFoundContent" size="small" />
+          <a-select-option v-for="d in data" :key="d.value">
+            {{ d.text }}
+          </a-select-option>
+        </a-select>
+      </div>
+      <a-form
+        :form="form"
+        v-bind="formLayout"
+      >
+        <a-card title="档案资料">
+          <a-row>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="公民身份证号">
+              <a-input
+                v-decorator="['idCard', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="公民身份证号"
+                :disabled="openType === 1 || openType === 2"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="姓名">
+              <a-input
+                v-decorator="['fullName', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="姓名"
+                :disabled="openType === 1 || openType === 2"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="曾用名">
+              <a-input
+                v-decorator="['nameUsedBefore']"
+                placeholder="曾用名"
+                :disabled="openType === 1 || openType === 2"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="性别">
+              <a-select
+                v-decorator="['gender', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="请选择"
+                :disabled="openType === 1 || openType === 2"
+              >
+                <a-select-option value="0">男</a-select-option>
+                <a-select-option value="1">女</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="出生日期">
+              <a-date-picker
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['birthday']"
+                placeholder="请输入出生日期"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="民族">
+              <a-select
+                v-decorator="['nation', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="请选择"
+                :disabled="openType === 1 || openType === 2"
+              >
+                <a-select-option value="0">汉</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="籍贯(省市区)">
+              <a-cascader
+                :options="options"
+                placeholder="籍贯"
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="籍贯">
+              <a-input
+                v-decorator="['nativePlaceDetail']"
+                placeholder="籍贯"
+                :disabled="openType === 1 || openType === 2"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="婚姻状况">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                placeholder="请选择"
+                v-decorator="['marital']"
+              >
+                <a-select-option value="0">已婚</a-select-option>
+                <a-select-option value="1">未婚</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="政治面貌">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['politicalOutlook']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">党员</a-select-option>
+                <a-select-option value="1">共青团员</a-select-option>
+                <a-select-option value="2">群众</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="学历">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['education']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">高中</a-select-option>
+                <a-select-option value="1">中专</a-select-option>
+                <a-select-option value="2">大专</a-select-option>
+                <a-select-option value="3">大学本科</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="宗教信仰">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['religiousBelife']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="职业类别">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['occupationCatgory']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">无</a-select-option>
+                <a-select-option value="企业单位负责人">企业单位负责人</a-select-option>
+                <a-select-option value="务农">务农</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="职业">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['occupation']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="服务处所">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['servicePlace']"
+                placeholder="服务处所"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="联系类型">
+              <a-select
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['contactType']"
+                placeholder="请选择"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="联系方式">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['contactInformation', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="请输入"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="户籍地(省市区)">
+              <a-cascader
+                :disabled="openType === 1 || openType === 2"
+                :options="options"
+                v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
+                placeholder="请选择"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="户籍地">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['placeDomicileDetail']"
+                placeholder="户籍地"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="户籍门(楼)详址">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['placeDomicileAddress']"
+                placeholder="户籍门(楼)详址"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="现住址(省市区)">
+              <a-cascader
+                :disabled="openType === 1 || openType === 2"
+                :options="options"
+                placeholder="请选择"
+                v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="现住地">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['currentResidenceDetail']"
+                placeholder="现住地"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="现住地街道">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['currentResidenceStreet']"
+                placeholder="现住地街道"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="现住地社区">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['currentResidenceCommunity']"
+                placeholder="现住地社区"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="现住门(楼)详址">
+              <a-input
+                :disabled="openType === 1 || openType === 2"
+                v-decorator="['currentResidenceAddress']"
+                placeholder="现住门(楼)详址"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="8"
+            :sm="24"
+            style="float: right;text-align: right"
+          >
+              <span class="table-page-search-submitButtons">
+                <a-button
+                  type="primary"
+                >编辑</a-button>
+                <a-button
+                  style="margin-left: 8px"
+                >提交</a-button>
+              </span>
+          </a-col>
+        </a-row>
+        </a-card>
+        <a-card title="新增学校周边重点人员信息">
+          <a-row>
+            <a-col :md="8" :sm="24">
+              <a-form-item label="危害程度">
+                <a-select
+                  placeholder="请选择"
+                >
+                  <a-select-option value="0">严重</a-select-option>
+                  <a-select-option value="1">一般</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item label="是否关注">
+                <a-select
+                  placeholder="请选择"
+                >
+                  <a-select-option value="0">是</a-select-option>
+                  <a-select-option value="1">否</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="8"
+              :sm="24"
+              style="float: right;text-align: right"
+            >
+              <span class="table-page-search-submitButtons">
+                <a-button
+                  type="primary"
+                  v-if="openType === 0"
+                  style="margin-left: 8px"
+                >提交</a-button>
+                <a-button
+                  type="primary"
+                  v-if="openType === 1"
+                  style="margin-left: 8px"
+                >保存</a-button>
+              </span>
+            </a-col>
+          </a-row>
+        </a-card>
+      </a-form>
+    </a-spin>
+  </a-modal>
+</template>
+
+<script>
+import pick from 'lodash.pick'
+import debounce from 'lodash/debounce'
+
+// 表单字段
+const fields = [
+  // 'description',
+  'id',
+  'idCard',
+  'fullName',
+  'nameUsedBefore',
+  'gender',
+  'birthday',
+  'nation',
+  'nativePlace',
+  'nativePlaceDetail',
+  'marital',
+  'politicalOutlook',
+  'education',
+  'religiousBelife',
+  'occupationCatgory',
+  'occupation',
+  'servicePlace',
+  'contactType',
+  'contactInformation',
+  // 户籍地
+  'placeDomicile',
+  // 户籍门(楼)详址
+  'placeDomicileAddress',
+  'placeDomicileDetail',
+  // 现住址
+  'currentResidence',
+  // 现住地详址
+  'currentResidenceAddress',
+  // 现住地街道
+  'currentResidenceStreet',
+  // 现住地社区
+  'currentResidenceCommunity',
+  'currentResidenceDetail'
+]
+
+export default {
+  props: {
+    visible: {
+      type: Boolean,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      default: () => false
+    },
+    model: {
+      type: Object,
+      default: () => null
+    },
+    options: {
+      type: Array,
+      default: () => null
+    },
+    // 打开modal的方式  0.新增/ 1.编辑/2.查看
+    openType: {
+      type: Number,
+      default: () => 0
+    }
+  },
+  data () {
+    this.formLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 13 }
+      }
+    }
+    this.lastFetchId = 0
+    this.fetchUser = debounce(this.fetchUser, 800)
+    return {
+      form: this.$form.createForm(this),
+      isDisabled: {
+        default: true,
+        type: Boolean
+      },
+     data: [],
+       value: [],
+      fetching: false
+    }
+  },
+  created () {
+    console.log('custom modal created')
+
+    // 防止表单未注册
+    fields.forEach(v => this.form.getFieldDecorator(v))
+
+    // 当 model 发生改变时，为表单设置值
+    this.$watch('model', () => {
+      console.log(this.model)
+      this.model && this.form.setFieldsValue(pick(this.model, fields))
+    })
+  },
+  mounted () {
+    console.log(this.openType)
+  },
+  methods: {
+    fetchUser (value) {
+      console.log('fetching user', value)
+      this.lastFetchId += 1
+      const fetchId = this.lastFetchId
+      this.data = []
+      this.fetching = true
+      fetch('https://randomuser.me/api/?results=5')
+        .then(response => response.json())
+        .then(body => {
+          if (fetchId !== this.lastFetchId) {
+            // for fetch callback order
+            return
+          }
+          const data = body.results.map(user => ({
+            text: `${user.name.first} ${user.name.last}`,
+            value: user.login.username
+          }))
+          this.data = data
+          this.fetching = false
+        })
+    },
+    handleChange (value) {
+      Object.assign(this, {
+        value,
+        data: [],
+        fetching: false
+      })
+    }
+  }
+}
+</script>

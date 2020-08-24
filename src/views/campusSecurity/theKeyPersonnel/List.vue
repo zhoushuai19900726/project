@@ -2,8 +2,10 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
+        <a-form
+          v-bind="formLayout"
+        >
+          <a-row>
             <a-col
               :md="8"
               :sm="24"
@@ -435,6 +437,7 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :openType="openType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -451,8 +454,8 @@ import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import { getRoleList, getServiceList } from '@/api/manage'
 
-import StepByStepModal from '../modules/StepByStepModal'
-import CreateForm from '../modules/CreateForm'
+import StepByStepModal from './modules/StepByStepModal'
+import CreateForm from './modules/CreateForm'
 
 const columns = [
   {
@@ -639,7 +642,19 @@ export default {
   },
   data () {
     this.columns = columns
+    this.formLayout = {
+      labelCol: {
+        xs: { span: 1 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 2 },
+        sm: { span: 15 }
+      }
+    }
     return {
+      // 弹出框的打开属性  0：新增 1： 编辑   2：修改
+      openType: 0,
       // create model
       visible: false,
       confirmLoading: false,
@@ -735,10 +750,12 @@ export default {
     },
     handleAdd () {
       this.mdl = null
+      this.openType = 0
       this.visible = true
     },
     handleEdit (record) {
       this.visible = true
+      this.openType = 1
       this.mdl = { ...record }
     },
     handleOk () {
@@ -792,11 +809,13 @@ export default {
       form.resetFields() // 清理表单数据（可不做）
     },
     handleSub (record) {
-      if (record.status !== 0) {
-        this.$message.info(`${record.no} 订阅成功`)
-      } else {
-        this.$message.error(`${record.no} 订阅失败，规则已关闭`)
-      }
+      this.visible = true
+      this.openType = 2
+      // if (record.status !== 0) {
+      //   this.$message.info(`${record.no} 订阅成功`)
+      // } else {
+      //   this.$message.error(`${record.no} 订阅失败，规则已关闭`)
+      // }
     },
     handleDel (record) {
       //  执行删除的操作

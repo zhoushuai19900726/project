@@ -515,6 +515,7 @@
         :loading="confirmLoading"
         :options="options"
         :model="mdl"
+        :openType="openType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -718,6 +719,8 @@ export default {
   data () {
     this.columns = columns
     return {
+      // 选对弹出框的操作
+      openType: 0,
       // create model
       visible: false,
       confirmLoading: false,
@@ -805,6 +808,10 @@ export default {
     }
   },
   methods: {
+    // 选择对数据进行增、查‘改
+    changeOpenType (num) {
+      this.openType = num
+    },
     // 籍贯更改的时候
     onChange (e, type) {
       // console.log(e, type)
@@ -825,10 +832,12 @@ export default {
     },
     handleAdd () {
       this.mdl = null
+      this.openType = 0
       this.visible = true
     },
     handleEdit (record) {
       console.log(record)
+      this.openType = 1
       this.visible = true
       this.mdl = { ...record }
       // 地址的处理
