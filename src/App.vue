@@ -10,9 +10,48 @@
 import { domTitle, setDocumentTitle } from '@/utils/domUtil'
 import { i18nRender } from '@/locales'
 import { mapState, mapMutations } from 'vuex'
+// import { getSelect } from '@/api/manage'
 export default {
   data () {
     return {
+      commonSelect: [
+        {
+          name: '性别',
+          type: 'sex'
+        },
+        {
+          name: '民族',
+          type: 'nation'
+        },
+        {
+          name: '婚姻状况',
+          type: 'marray'
+        },
+        {
+          name: '政治面貌',
+          type: 'politicalOutlook'
+        },
+        {
+          name: '学历',
+          type: 'education'
+        },
+        {
+          name: '宗教信仰',
+          type: 'religiousBelife'
+        },
+        {
+          name: '职业类别',
+          type: 'occupationCatgory'
+        },
+        {
+          name: '职业',
+          type: 'occupation'
+        },
+        {
+          name: '联系类型',
+          type: 'contactType'
+        }
+      ]
     }
   },
   computed: {
@@ -28,8 +67,24 @@ export default {
       browseRecords: state => state.browseRecords
     })
   },
+  created () {
+    // var that = this
+    // this.commonSelect.forEach(item => {
+    //   if (that.$root[item.type].length !== 0) {
+    //     return false
+    //   }
+    //   that.getSelect(item.name, item.type)
+    // })
+  },
   methods: {
     ...mapMutations(['addRecords'])
+    // getSelect (text, type) {
+    //   var that = this
+    //   return getSelect(text).then((res) => {
+    //     // console.log(res)
+    //     console.log(that.$root[type])
+    //   })
+    // }
   },
   mounted () {
     console.log(this.browseRecords)
