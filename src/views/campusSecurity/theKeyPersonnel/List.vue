@@ -205,19 +205,19 @@
                 </a-form-item>
               </a-col>
               <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="联系类型">
-                  <a-select
-                    v-model="queryParam.contactType"
-                    placeholder="请选择"
-                    default-value="0"
-                  >
-                    <a-select-option value="0">无</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
+              :md="8"
+              :sm="24"
+            >
+              <a-form-item label="联系类型">
+                <a-select
+                  v-model="queryParam.contactType"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
               <a-col
                 :md="8"
                 :sm="24"
@@ -295,6 +295,34 @@
                     v-model="queryParam.currentResidenceAddress"
                     style="width: 100%"
                   />
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="危害程度">
+                  <a-select
+                    v-model="queryParam.harmDegree"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否关注">
+                  <a-select
+                    v-model="queryParam.concerned"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
             </template>
@@ -564,6 +592,16 @@ const columns = [
     title: '现住地详址',
     dataIndex: 'currentResidenceAddress',
     scopedSlots: { customRender: 'currentResidenceAddress' }
+  },
+  {
+    title: '危害程度',
+    dataIndex: 'harmDegree',
+    scopedSlots: { customRender: 'harmDegree' }
+  },
+  {
+    title: '是否关注',
+    dataIndex: 'concerned',
+    scopedSlots: { customRender: 'concerned' }
   },
   {
     title: '操作',
