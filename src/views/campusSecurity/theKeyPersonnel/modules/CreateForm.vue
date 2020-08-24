@@ -353,11 +353,6 @@
               <span class="table-page-search-submitButtons">
                 <a-button
                   type="primary"
-                  v-if="openType === 0"
-                  style="margin-left: 8px"
-                >提交</a-button>
-                <a-button
-                  type="primary"
                   v-if="this.openType === 0 || this.openType === 1"
                   style="margin-left: 8px"
                 >保存</a-button>
