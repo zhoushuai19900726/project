@@ -7,6 +7,7 @@
     @ok="() => { $emit('ok') }"
     @cancel="() => { $emit('cancel') }"
   >
+    <!-- :footer="openType === 2?null:true" -->
     <a-spin :spinning="loading">
       <a-form
         :form="form"
@@ -29,24 +30,28 @@
           <a-input
             v-decorator="['idCard', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="公民身份证号"
+            :disabled="openType ===2"
           />
         </a-form-item>
         <a-form-item label="姓名">
           <a-input
             v-decorator="['fullName', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="姓名"
+            :disabled="openType ===2"
           />
         </a-form-item>
         <a-form-item label="曾用名">
           <a-input
             v-decorator="['nameUsedBefore']"
             placeholder="曾姓名"
+            :disabled="openType ===2"
           />
         </a-form-item>
         <a-form-item label="性别">
           <a-select
             v-decorator="['gender', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请选择"
+            :disabled="openType ===2"
           >
             <a-select-option value="0">男</a-select-option>
             <a-select-option value="1">女</a-select-option>
@@ -56,20 +61,25 @@
           <a-date-picker
             v-decorator="['birthday']"
             placeholder="请输入出生日期"
+            :disabled="openType ===2"
           />
         </a-form-item>
         <a-form-item label="民族">
           <a-select
             v-decorator="['nation', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请选择"
+            :disabled="openType ===2"
           >
             <a-select-option value="0">汉</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="籍贯(省市区)">
           <a-cascader
-            :options="options"
             placeholder="籍贯"
+            :disabled="openType ===2"
+            :field-names="{ label: 'name', value: 'name', children: 'children' }"
+            :options="options"
+            :loadData="loadDatas"
             v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
           />
         </a-form-item>
@@ -77,10 +87,12 @@
           <a-input
             v-decorator="['nativePlaceDetail']"
             placeholder="籍贯"
+            :disabled="openType ===2"
           />
         </a-form-item>
         <a-form-item label="婚姻状况">
           <a-select
+            :disabled="openType ===2"
             placeholder="请选择"
             v-decorator="['marital']"
           >
@@ -90,6 +102,7 @@
         </a-form-item>
         <a-form-item label="政治面貌">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['politicalOutlook']"
             placeholder="请选择"
           >
@@ -100,6 +113,7 @@
         </a-form-item>
         <a-form-item label="学历">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['education']"
             placeholder="请选择"
           >
@@ -111,6 +125,7 @@
         </a-form-item>
         <a-form-item label="宗教信仰">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['religiousBelife']"
             placeholder="请选择"
           >
@@ -119,6 +134,7 @@
         </a-form-item>
         <a-form-item label="职业类别">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['occupationCatgory']"
             placeholder="请选择"
           >
@@ -129,6 +145,7 @@
         </a-form-item>
         <a-form-item label="职业">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['occupation']"
             placeholder="请选择"
           >
@@ -137,12 +154,14 @@
         </a-form-item>
         <a-form-item label="服务处所">
           <a-input
+            :disabled="openType ===2"
             v-decorator="['servicePlace']"
             placeholder="服务处所"
           />
         </a-form-item>
         <a-form-item label="联系类型">
           <a-select
+            :disabled="openType ===2"
             v-decorator="['contactType']"
             placeholder="请选择"
           >
@@ -151,56 +170,69 @@
         </a-form-item>
         <a-form-item label="联系方式">
           <a-input
+            :disabled="openType ===2"
             v-decorator="['contactInformation', {rules: [{required: true, message: '请输入'}]}]"
             placeholder="请输入"
           />
         </a-form-item>
         <a-form-item label="户籍地(省市区)">
           <a-cascader
+            :disabled="openType ===2"
+            placeholder="户籍地"
+            :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="options"
+            :loadData="loadDatas"
             v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
-            placeholder="请选择"
           />
         </a-form-item>
         <a-form-item label="户籍地">
           <a-input
+            :disabled="openType ===2"
             v-decorator="['placeDomicileDetail']"
             placeholder="户籍地"
           />
         </a-form-item>
         <a-form-item label="户籍地详址">
           <a-input
+            :disabled="openType ===2"
             v-decorator="['placeDomicileAddress']"
             placeholder="户籍地详址"
           />
         </a-form-item>
         <a-form-item label="现住址(省市区)">
           <a-cascader
-            :options="options"
+            :disabled="openType ===2"
+            :field-names="{ label: 'name', value: 'name', children: 'children' }"
+            :options="optionss"
+            :loadData="loadDatass"
             placeholder="请选择"
             v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
           />
         </a-form-item>
         <a-form-item label="现住地">
           <a-input
+            :disabled="openType ===2"
             v-decorator="['currentResidenceDetail']"
             placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="现住地街道">
           <a-input
+            :disabled="openType === 2"
             v-decorator="['currentResidenceStreet']"
             placeholder="现住地街道"
           />
         </a-form-item>
         <a-form-item label="现住地社区">
           <a-input
+            :disabled="openType === 2"
             v-decorator="['currentResidenceCommunity']"
             placeholder="现住地社区"
           />
         </a-form-item>
         <a-form-item label="现住地详址">
           <a-input
+            :disabled="openType === 2"
             v-decorator="['currentResidenceAddress']"
             placeholder="现住地详址"
           />
@@ -211,6 +243,7 @@
 </template>
 
 <script>
+import { getAddress } from '@/api/manage'
 import pick from 'lodash.pick'
 
 // 表单字段
@@ -264,8 +297,8 @@ export default {
       type: Object,
       default: () => null
     },
-    options: {
-      type: Array,
+    openType: {
+      type: Number,
       default: () => null
     }
   },
@@ -281,21 +314,86 @@ export default {
       }
     }
     return {
-      form: this.$form.createForm(this)
-
+      form: this.$form.createForm(this),
+      options: [],
+      optionss: []
     }
   },
   created () {
-    console.log('custom modal created')
+    console.log(this.openType)
+    // console.log('custom modal created')
 
     // 防止表单未注册
     fields.forEach(v => this.form.getFieldDecorator(v))
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
-      console.log(this.model)
+      // console.log(this.model)
       this.model && this.form.setFieldsValue(pick(this.model, fields))
     })
+
+    // *************
+    var that = this
+    var option = this.$root.address.concat([])
+    // console.log(option)
+    option.forEach(item => {
+      item.isLeaf = false
+    })
+    this.options = option
+    getAddress().then((res) => {
+      res.ret.forEach(item => {
+        item.isLeaf = false
+      })
+      that.optionss = res.ret
+      // console.log(this.optionss)
+    })
+  },
+  methods: {
+    loadDatas (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      // console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        // console.log(res)
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 2) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.options = [...this.options]
+      })
+    },
+    loadDatass (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      // console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 4) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.optionss = [...this.optionss]
+      })
+    }
   }
 }
 </script>

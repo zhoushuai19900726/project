@@ -36,6 +36,8 @@ window.umi_plugin_ant_themeVar = themePluginConfig.theme
 new Vue({
   router,
   data: {
+    // 用于存放省份地址
+    address: [],
     // 性别
     sex: [],
     // 民族

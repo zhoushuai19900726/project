@@ -2,9 +2,7 @@
   <page-header-wrapper>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <a-form
-          v-bind="formLayout"
-        >
+        <a-form v-bind="formLayout">
           <a-row>
             <a-col
               :md="8"
@@ -407,7 +405,9 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        @changeModel="changeModel"
         :openType="openType"
+        @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -690,6 +690,15 @@ export default {
     }
   },
   methods: {
+    // 接收子组件的值 更改openType
+    changeType (type) {
+      console.log(type)
+      this.openType = type
+    },
+    // 当子组件查找到对应的档案管理的时候修改父级的mdl
+    changeModel (obj) {
+      this.mdl = obj
+    },
     // 籍贯更改的时候
     onChange (e, type) {
       // console.log(e, type)

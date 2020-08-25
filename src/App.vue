@@ -11,6 +11,7 @@ import { domTitle, setDocumentTitle } from '@/utils/domUtil'
 import { i18nRender } from '@/locales'
 import { mapState, mapMutations } from 'vuex'
 // import { getSelect } from '@/api/manage'
+import { getAddress } from '@/api/manage'
 export default {
   data () {
     return {
@@ -75,9 +76,12 @@ export default {
     //   }
     //   that.getSelect(item.name, item.type)
     // })
+    if (this.$root.address.length === 0) {
+      this.getAddress()
+    }
   },
   methods: {
-    ...mapMutations(['addRecords'])
+    ...mapMutations(['addRecords']),
     // getSelect (text, type) {
     //   var that = this
     //   return getSelect(text).then((res) => {
@@ -85,6 +89,13 @@ export default {
     //     console.log(that.$root[type])
     //   })
     // }
+    getAddress () {
+      var that = this
+      return getAddress().then((res) => {
+        console.log(res)
+        that.$root.address = res.ret.concat()
+      })
+    }
   },
   mounted () {
     console.log(this.browseRecords)

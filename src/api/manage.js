@@ -1,9 +1,10 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 // 基本链接
-// const baseUrl = 'http://127.0.0.1:'
+// const baseUrl = 'http://60.205.246.7:'
 // 文佳406
-const baseUrl = 'http://192.168.1.113:'
+const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
 // const baseUrl = 'http://192.168.1.106:'
 
@@ -141,8 +142,13 @@ const api = {
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree',
+  // 获取所有的省份地址
+  address: baseUrl + '/smartCity/addressLibrary/findSubordinateAddressLibrary',
   // 获取下拉的内容
   select: baseUrl + '/smartCity/dictionaryGroup/findDictionaryGroupByCode',
+  // 搜索人员档案
+  searchArchiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationByLikeContent',
+
   // 获取人员档案
   archiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationPage',
   // 修改人员档案
@@ -152,6 +158,24 @@ const api = {
 }
 
 export default api
+// 获取所有省份的地址
+export function getAddress (parameter) {
+  var data = {}
+  if (parameter) {
+    data.parentCode = parameter
+  }
+  console.log(data)
+  data = qs.stringify(data)
+  console.log(data)
+  return request({
+    url: api.address,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    method: 'post',
+    data: data
+  })
+}
 // 获取下拉框的数据
 export function getSelect (parameter) {
   console.log(parameter)
@@ -165,12 +189,35 @@ export function getSelect (parameter) {
   })
 }
 
+// 每个页面新增的时候 搜索获取档案列表
+export function searchArchiveManagement (parameter) {
+  console.log(parameter)
+  var data = {
+    content: parameter,
+    pageSize: 10,
+    pageNo: 1
+  }
+  data = qs.stringify(data)
+  return request({
+    url: api.searchArchiveManagement,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    method: 'post',
+    data: data
+  })
+}
+
 //   // 获取人员档案
 export function getArchiveManagement (parameter) {
+  // console.log(parameter)
   return request({
     url: api.archiveManagement,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
     method: 'post',
-    data: parameter
+    data: qs.stringify(parameter)
   })
 }
 

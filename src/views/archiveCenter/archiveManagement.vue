@@ -87,8 +87,11 @@
               >
                 <a-form-item label="籍贯(省市区)">
                   <a-cascader
+                    :field-names="{ label: 'name', value: 'name', children: 'children' }"
                     :options="options"
+                    :loadData="loadDatas"
                     placeholder="请选择"
+                    changeOnSelect
                     @change="onChange($event,'NATIVE')"
                   />
                 </a-form-item>
@@ -240,8 +243,11 @@
               >
                 <a-form-item label="户籍地(省市区)">
                   <a-cascader
+                    :field-names="{ label: 'name', value: 'name', children: 'children' }"
                     :options="options"
+                    :loadData="loadDatas"
                     placeholder="请选择"
+                    changeOnSelect
                     @change="onChange($event,'PLACE')"
                   />
                 </a-form-item>
@@ -274,8 +280,11 @@
               >
                 <a-form-item label="现住地(省市区)">
                   <a-cascader
-                    :options="options"
+                    :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                    :options="optionss"
+                    :loadData="loadDatass"
                     placeholder="请选择"
+                    changeOnSelect
                     @change="onChange($event,'CURRENT')"
                   />
                 </a-form-item>
@@ -513,7 +522,6 @@
         ref="createModal"
         :visible="visible"
         :loading="confirmLoading"
-        :options="options"
         :model="mdl"
         :openType="openType"
         @cancel="handleCancel"
@@ -530,8 +538,8 @@
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
-// import { getRoleList, getArchiveManagement, editArchiveManagement, delArchiveManagement } from '@/api/manage'
+// import { getRoleList, getServiceList } from '@/api/manage'
+import { getRoleList, getArchiveManagement, editArchiveManagement, delArchiveManagement, getAddress } from '@/api/manage'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 
@@ -719,7 +727,8 @@ export default {
   data () {
     this.columns = columns
     return {
-      // 选对弹出框的操作
+      type: 0,
+      // 打开createform的类型 0 新增 1 修改 2 查看
       openType: 0,
       // create model
       visible: false,
@@ -730,60 +739,30 @@ export default {
       // 查询参数
       queryParam: {},
       // 籍贯的三级联动列表
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      options: [],
+      optionss: [],
       // 加载数据方法 必须为 Promise 对象
-      // loadData: (parameter) => {
-      //   const requestParameters = Object.assign({}, parameter, this.queryParam)
-      //   console.log('loadData request parameters:', requestParameters)
-      //   // console.log(getArchiveManagement)
-      //   // return false
-      //   return getArchiveManagement(requestParameters).then((res) => {
-      //     console.log(res)
-
-      //     return res.result
-      //   })
-      // },
-
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getServiceList(requestParameters).then((res) => {
+        // console.log(getArchiveManagement)
+        // return false
+        if (requestParameters.birthday) {
+          requestParameters.birthday = this.parseUtcTime(requestParameters.birthday)
+        }
+        return getArchiveManagement(requestParameters).then((res) => {
+          console.log(res)
           return res.result
         })
       },
+
+      // loadData: (parameter) => {
+      //   const requestParameters = Object.assign({}, parameter, this.queryParam)
+      //   console.log('loadData request parameters:', requestParameters)
+      //   return getServiceList(requestParameters).then((res) => {
+      //     return res.result
+      //   })
+      // },
       selectedRowKeys: [],
       selectedRows: []
     }
@@ -797,7 +776,22 @@ export default {
     }
   },
   created () {
+    var that = this
     getRoleList({ t: new Date() })
+    var option = this.$root.address.concat([])
+    // console.log(option)
+    option.forEach(item => {
+      item.isLeaf = false
+    })
+    this.options = option
+    // *******
+    getAddress().then((res) => {
+      res.ret.forEach(item => {
+        item.isLeaf = false
+      })
+      that.optionss = res.ret
+      console.log(this.optionss)
+    })
   },
   computed: {
     rowSelection () {
@@ -812,30 +806,104 @@ export default {
     changeOpenType (num) {
       this.openType = num
     },
+    loadDatas (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        console.log(this.type)
+        console.log(res)
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 2) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.options = [...this.options]
+      })
+    },
+    loadDatass (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 4) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.optionss = [...this.optionss]
+      })
+    },
     // 籍贯更改的时候
     onChange (e, type) {
-      // console.log(e, type)
-      if (type === 'NATIVE') {
+      // console.log(e.length)
+      if (type === 'NATIVE' || type === 'PLACE') {
+        this.type = 0
+      } else if (type === 'CURRENT') {
+        this.type = 1
+      }
+      // console.log(this.type)
+      // var that = this
+      console.log(e, this.type)
+      if (this.type === 0 && e.length === 3) {
+        console.log(22222)
         this.queryParam.nativePlaceProvince = e[0]
         this.queryParam.nativePlaceCity = e[1]
         this.queryParam.nativePlaceRegion = e[2]
         console.log(this.queryParam)
-      } else if (type === 'PLACE') {
+      } else if (this.type === 0 && e.length === 3) {
         this.queryParam.placeDomicileProvince = e[0]
         this.queryParam.placeDomicileCity = e[1]
         this.queryParam.placeDomicileRegion = e[2]
-      } else if (type === 'CURRENT') {
+      } else if (this.type === 1 && e.length === 5) {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
       }
+      console.log(this.queryParam)
     },
+    // 新增档案
     handleAdd () {
       this.mdl = null
       this.openType = 0
       this.visible = true
     },
+    // 编辑档案
     handleEdit (record) {
+      // 地址的解析
+      record.nativePlace = [
+        record.currentResidenceProvince,
+        record.currentResidenceCity,
+        record.currentResidenceRegion
+      ]
+      record.placeDomicile = [
+        record.placeDomicileCity,
+        record.placeDomicileProvince,
+        record.placeDomicileRegion
+      ]
+      record.currentResidence = [
+        record.currentResidenceCity,
+        record.currentResidenceProvince,
+        record.currentResidenceRegion
+      ]
       console.log(record)
       this.openType = 1
       this.visible = true
@@ -845,19 +913,19 @@ export default {
     },
     handleDel (record) {
       // 执行删除的操作
-      // console.log(record)
-      // var id = record.id
-      // var arr = [id]
-      // return delArchiveManagement(arr).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$message.info('删除成功')
-      //     this.$refs.table.refresh()
-      //   } else {
-      //     this.$message.error('删除失败')
-      //     this.$refs.table.refresh()
-      //   }
-      // })
+      console.log(record)
+      var id = record.id
+      var arr = [id]
+      return delArchiveManagement(arr).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message.info('删除成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('删除失败')
+          this.$refs.table.refresh()
+        }
+      })
     },
     // 将utc时间解析为本地时间
     parseUtcTime (time) {
@@ -866,95 +934,101 @@ export default {
       return date
     },
     handleOk () {
-      // const form = this.$refs.createModal.form
-      // this.confirmLoading = true
-      // form.validateFields((errors, values) => {
-      //   if (!errors) {
-      //     // console.log('values', values.birthday._d)
-      //     console.log(values)
-      //     var obj = values
-      //     var nativeArr = obj.nativePlace
-      //     var native = obj.nativePlaceDetail
-      //     obj.nativePlaceProvince = nativeArr[0]
-      //     obj.nativePlaceCity = nativeArr[1]
-      //     obj.nativePlaceRegion = nativeArr[2]
-      //     obj.nativePlace = native
-      //     // 删除无用的 nativePlaceDetail 字段
-      //     delete obj.nativePlaceDetail
-      //     obj.birthday = this.parseUtcTime(obj.birthday)
-      //     obj.placeDomicileProvince = obj.placeDomicile[0]
-      //     obj.placeDomicileCity = obj.placeDomicile[1]
-      //     obj.placeDomicileRegion = obj.placeDomicile[2]
-      //     obj.placeDomicile = obj.placeDomicileDetail
-      //     // 删除无用的 placeDomicile 字段
-      //     delete obj.placeDomicileDetail
-      //     obj.currentResidenceProvince = obj.currentResidence[0]
-      //     obj.currentResidenceCity = obj.currentResidence[1]
-      //     obj.currentResidenceRegion = obj.currentResidence[2]
-      //     obj.currentResidence = obj.currentResidenceDetail
-      //     // 日期的处理
-      //     obj.birthday = obj.birthday + ' 00:00:00'
-      //     // 删除无用的 placeDomicile 字段
-      //     delete obj.currentResidenceDetail
-      //     delete obj.id
-      //     var arr = Object.keys(obj)
-      //     console.log(obj, arr.length)
-      //     // 调用接口进行修改
+      const form = this.$refs.createModal.form
+      this.confirmLoading = true
+      if (this.openType === 0) {
+        form.validateFields((errors, values) => {
+          if (!errors) {
+            // console.log('values', values.birthday._d)
+            console.log(values)
+            var obj = values
+            var nativeArr = obj.nativePlace
+            var native = obj.nativePlaceDetail
+            obj.nativePlaceProvince = nativeArr[0]
+            obj.nativePlaceCity = nativeArr[1]
+            obj.nativePlaceRegion = nativeArr[2]
+            obj.nativePlace = native
+            // 删除无用的 nativePlaceDetail 字段
+            delete obj.nativePlaceDetail
+            obj.birthday = this.parseUtcTime(obj.birthday)
+            obj.placeDomicileProvince = obj.placeDomicile[0]
+            obj.placeDomicileCity = obj.placeDomicile[1]
+            obj.placeDomicileRegion = obj.placeDomicile[2]
+            obj.placeDomicile = obj.placeDomicileDetail
+            // 删除无用的 placeDomicile 字段
+            delete obj.placeDomicileDetail
+            obj.currentResidenceProvince = obj.currentResidence[0]
+            obj.currentResidenceCity = obj.currentResidence[1]
+            obj.currentResidenceRegion = obj.currentResidence[2]
+            obj.currentResidence = obj.currentResidenceDetail
+            // 日期的处理
+            obj.birthday = obj.birthday + ' 00:00:00'
+            // 删除无用的 placeDomicile 字段
+            delete obj.currentResidenceDetail
+            delete obj.id
+            var arr = Object.keys(obj)
+            console.log(obj, arr.length)
+            // 调用接口进行修改
 
-      //     return editArchiveManagement(obj).then((res) => {
-      //       console.log(res)
-      //       // return res.result
-      //       if (res.code === 200) {
-      //         new Promise((resolve, reject) => {
-      //           setTimeout(() => {
-      //             resolve()
-      //           }, 1000)
-      //         }).then((res) => {
-      //           this.visible = false
-      //           this.confirmLoading = false
-      //           // 重置表单数据
-      //           form.resetFields()
-      //           // 刷新表格
-      //           this.$refs.table.refresh()
+            return editArchiveManagement(obj).then((res) => {
+              console.log(res)
+              // return res.result
+              if (res.code === 200) {
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve()
+                  }, 1000)
+                }).then((res) => {
+                  this.visible = false
+                  this.confirmLoading = false
+                  // 重置表单数据
+                  form.resetFields()
+                  // 刷新表格
+                  this.$refs.table.refresh()
 
-      //           this.$message.info('新增成功')
-      //         })
-      //       } else {
-      //         this.visible = false
-      //         this.confirmLoading = false
-      //         // 重置表单数据
-      //         form.resetFields()
-      //         // 刷新表格
-      //         this.$refs.table.refresh()
-      //         this.$message.error('新增失败,请稍后重试')
-      //       }
-      //     })
+                  this.$message.info('新增成功')
+                })
+              } else {
+                this.visible = false
+                this.confirmLoading = false
+                this.$message.error(res.msg)
+                // 重置表单数据
+                form.resetFields()
+                // 刷新表格
+                this.$refs.table.refresh()
+              }
+            })
 
-      //     // if (values.id > 0) {
-      //     //   // 修改 e.g.
-      //     //   new Promise((resolve, reject) => {
-      //     //     setTimeout(() => {
-      //     //       resolve()
-      //     //     }, 1000)
-      //     //   }).then((res) => {
-      //     //     this.visible = false
-      //     //     this.confirmLoading = false
-      //     //     // 重置表单数据
-      //     //     form.resetFields()
-      //     //     // 刷新表格
-      //     //     this.$refs.table.refresh()
+            // if (values.id > 0) {
+            //   // 修改 e.g.
+            //   new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //       resolve()
+            //     }, 1000)
+            //   }).then((res) => {
+            //     this.visible = false
+            //     this.confirmLoading = false
+            //     // 重置表单数据
+            //     form.resetFields()
+            //     // 刷新表格
+            //     this.$refs.table.refresh()
 
-      //     //     this.$message.info('修改成功')
-      //     //   })
-      //     // } else {
-      //     //   // 新增
-      //     // }
-      //   } else {
-      //     // console.log('youwentyi')
-      //     this.$message.error('请填写必要信息')
-      //     this.confirmLoading = false
-      //   }
-      // })
+            //     this.$message.info('修改成功')
+            //   })
+            // } else {
+            //   // 新增
+            // }
+          } else {
+            // console.log('youwentyi')
+            this.$message.error('请填写必要信息')
+            this.confirmLoading = false
+          }
+        })
+      } else if (this.openType === 1) {
+
+      } else {
+
+      }
     },
     handleCancel () {
       this.visible = false
@@ -962,12 +1036,29 @@ export default {
       const form = this.$refs.createModal.form
       form.resetFields() // 清理表单数据（可不做）
     },
+    // 修改弹框
     handleSub (record) {
-      if (record.status !== 0) {
-        this.$message.info(`${record.no} 订阅成功`)
-      } else {
-        this.$message.error(`${record.no} 订阅失败，规则已关闭`)
-      }
+      // 地址的解析
+      record.nativePlace = [
+        record.currentResidenceProvince,
+        record.currentResidenceCity,
+        record.currentResidenceRegion
+      ]
+      record.placeDomicile = [
+        record.placeDomicileCity,
+        record.placeDomicileProvince,
+        record.placeDomicileRegion
+      ]
+      record.currentResidence = [
+        record.currentResidenceCity,
+        record.currentResidenceProvince,
+        record.currentResidenceRegion
+      ]
+      console.log(record)
+      console.log(record)
+      this.openType = 2
+      this.visible = true
+      this.mdl = { ...record }
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys

@@ -4,6 +4,7 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+// import qs from 'qs'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -49,6 +50,8 @@ request.interceptors.request.use(config => {
   if (token) {
     config.headers['Access-Token'] = token
   }
+  // 转为formdata数据格式
+  // config.data = qs.stringify(config.data)
   return config
 }, errorHandler)
 
