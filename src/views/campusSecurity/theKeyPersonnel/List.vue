@@ -450,7 +450,8 @@
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getRoleList, findSubordinateAddressLibrary } from '@/api/manage'
+import { getGovernKeyAroundSchool } from '@/api/campusSecurity'
 
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
@@ -699,8 +700,10 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
+        // var sendDate = new FormData()
+        // sendDate.append('parentCode', 120000000000)
         console.log('loadData request parameters:', requestParameters)
-        return getServiceList(requestParameters).then((res) => {
+        return getGovernKeyAroundSchool(requestParameters).then((res) => {
           return res.result
         })
       },
@@ -717,6 +720,7 @@ export default {
     }
   },
   created () {
+    this.getAdr()
     getRoleList({ t: new Date() })
   },
   computed: {
@@ -728,6 +732,13 @@ export default {
     }
   },
   methods: {
+    // 获取地址
+    getAdr (parameter) {
+      const requestParameters = Object.assign({}, parameter, {})
+      return findSubordinateAddressLibrary(requestParameters).then((res) => {
+        console.log(res)
+      })
+    },
     // 籍贯更改的时候
     onChange (e, type) {
       // console.log(e, type)

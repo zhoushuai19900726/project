@@ -3,8 +3,10 @@
     <history></history>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
+        <a-form
+          v-bind="formLayout"
+        >
+          <a-row>
             <a-col
               :md="8"
               :sm="24"
@@ -718,6 +720,16 @@ export default {
   },
   data () {
     this.columns = columns
+    this.formLayout = {
+      labelCol: {
+        xs: { span: 1 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 2 },
+        sm: { span: 15 }
+      }
+    }
     return {
       // 选对弹出框的操作
       openType: 0,

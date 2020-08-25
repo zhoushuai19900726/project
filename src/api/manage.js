@@ -1,11 +1,12 @@
 import request from '@/utils/request'
+// import qs from 'qs'
 
 // 基本链接
 // const baseUrl = 'http://127.0.0.1:'
 // 文佳406
-const baseUrl = 'http://192.168.1.113:'
+const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
-// const baseUrl = 'http://192.168.1.106:'
+// const baseUrl = 'http://192.168.1.112:'
 
 const selectArr = [
   {
@@ -148,7 +149,58 @@ const api = {
   // 修改人员档案
   editArchiveManagement: baseUrl + '/smartCity/governRealPopulation/insertGovernRealPopulation',
   // 删除人员档案
-  delArchiveManagement: baseUrl + '/smartCity/governRealPopulation/deleteGovernRealPopulation'
+  delArchiveManagement: baseUrl + '/smartCity/governRealPopulation/deleteGovernRealPopulation',
+  // 查询地址库
+  findSubordinateAddressLibrary: baseUrl + '/smartCity/addressLibrary/findSubordinateAddressLibrary',
+  // 刑满释放人口 查询列表
+  getGovernReleasePrisoners: baseUrl + '/smartCity/governReleasePrisoners/findGovernReleasePrisonersPage',
+  //  刑满释放人口 详情
+  GovernReleasePrisonersDetail: baseUrl + '/smartCity/governReleasePrisoners/echoGovernReleasePrisoners',
+  // 刑满释放人口 添加修改
+  editGovernReleasePrisoners: baseUrl + '/smartCity/governReleasePrisoners/insertGovernReleasePrisoners',
+  // 刑满释放人口 删除
+  deleteGovernReleasePrisoners: baseUrl + '/smartCity/governReleasePrisoners/deleteGovernReleasePrisoners',
+  // 社区矫正人口 查询
+  getGovernCommunityCorrectionStaff: baseUrl + '/smartCity/governFloatingovernCommunityCorrectionStaffgPopulation/findGovernCommunityCorrectionStaffPage',
+  // 社区矫正人口 详情
+  governCommunityCorrectionStaffDetail: baseUrl + '/smartCity/governCommunityCorrectionStaff/echoGovernCommunityCorrectionStaff',
+  // 社区矫正人口 添加/修改
+  editgovernCommunityCorrectionStaff: baseUrl + '/smartCity/governCommunityCorrectionStaff/insertGovernCommunityCorrectionStaff',
+  // 社区矫正人口 删除
+  deletegovernCommunityCorrectionStaff: baseUrl + '/smartCity/governCommunityCorrectionStaff/deleteGovernCommunityCorrectionStaff',
+  // 肇事 精神障碍患者 查询
+  getGovernMentalDisordersPage: baseUrl + '/smartCity/governMentalDisorders/findGovernMentalDisordersPage',
+  // 肇事 精神障碍患者 详情
+  governMentalDisordersDetail: baseUrl + '/smartCity/governMentalDisorders/echoGovernMentalDisorders',
+  // 肇事 精神障碍患者 添加/修改
+  editGovernMentalDisorders: baseUrl + '/smartCity/governMentalDisorders/insertGovernMentalDisorders',
+  // 肇事 精神障碍患者 删除
+  deleteGovernMentalDisorders: baseUrl + '/smartCity/governMentalDisorders/deleteGovernMentalDisorders',
+  // 吸毒人口 查询
+  getGovernDrugAddicts: baseUrl + '/smartCity/governDrugAddicts/findGovernDrugAddictsPage',
+  // 吸毒人口 添加/修改
+  editGovernDrugAddicts: baseUrl + '/smartCity/governDrugAddicts/insertGovernDrugAddicts',
+  // 吸毒人口 删除
+  deleteGovernDrugAddicts: baseUrl + '/smartCity/governDrugAddicts/deleteGovernDrugAddicts',
+  // 艾滋病人 查询
+  getGovernAidsRisk: baseUrl + '/smartCity/governAidsRiskPersonnel/findGovernAidsRiskPersonnelPage',
+  // 艾滋病人 添加/修改
+  editGovernAidsRisk: baseUrl + '/smartCity/governAidsRiskPersonnel/insertGovernAidsRiskPersonnel',
+  // 艾滋病人 删除
+  deleteGovernAidsRisk: baseUrl + '/smartCity/governAidsRiskPersonnel/deleteGovernAidsRiskPersonnel',
+  // 重点青少年人口 查询
+  getGovernKeyYouth: baseUrl + '/smartCity/governKeyYouth/findGovernKeyYouthPage',
+  // 重点青少年人口 添加/修改
+  editGovernKeyYouth: baseUrl + '/smartCity/governKeyYouth/insertGovernKeyYouth',
+  // 重点青少年人口 删除
+  deleteGovernKeyYouth: baseUrl + '/smartCity/governKeyYouth/deleteGovernKeyYouth',
+  // 重点信访人口 查询
+  getGovernKeyPetitioners: baseUrl + '/smartCity/governKeyPetitioners/findGovernKeyPetitionersPage',
+  // 重点信访人口 添加/修改
+  editGovernKeyPetitioners: baseUrl + '/smartCity/governKeyPetitioners/insertGovernKeyPetitioners',
+  // 重点信访人口 删除
+  deleteGovernKeyPetitioners: baseUrl + '/smartCity/governKeyPetitioners/deleteGovernKeyPetitioners'
+
 }
 
 export default api
@@ -249,5 +301,207 @@ export function saveSub (sub) {
     url: '/sub',
     method: sub.id === 0 ? 'post' : 'put',
     data: sub
+  })
+}
+
+export function findSubordinateAddressLibrary (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.findSubordinateAddressLibrary,
+    method: 'post',
+    data: parameter
+  })
+}
+
+// 刑满释放人口 查询列表
+export function getGovernReleasePrisoners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernReleasePrisoners,
+    method: 'post',
+    data: parameter
+  })
+}
+
+// 刑满释放人口 添加/修改
+export function editGovernReleasePrisoners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernReleasePrisoners,
+    method: 'post',
+    data: parameter
+  })
+}
+
+// 刑满释放人口 删除
+export function deleteGovernReleasePrisoners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernReleasePrisoners,
+    method: 'post',
+    data: parameter
+  })
+}
+
+// 社区矫正人口 查询
+export function getGovernCommunityCorrectionStaff (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernCommunityCorrectionStaff,
+    method: 'post',
+    data: parameter
+  })
+}
+// 社区矫正人口 添加/修改
+export function editgovernCommunityCorrectionStaff (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editgovernCommunityCorrectionStaff,
+    method: 'post',
+    data: parameter
+  })
+}
+// 社区矫正人口 删除
+export function deletegovernCommunityCorrectionStaff (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deletegovernCommunityCorrectionStaff,
+    method: 'post',
+    data: parameter
+  })
+}
+// 肇事 精神障碍患者 查询
+export function getGovernMentalDisordersPage (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernMentalDisordersPage,
+    method: 'post',
+    data: parameter
+  })
+}
+// 肇事 精神障碍患者 添加/修改
+export function editGovernMentalDisorders (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernMentalDisorders,
+    method: 'post',
+    data: parameter
+  })
+}
+// 肇事 精神障碍患者 删除
+export function deleteGovernMentalDisorders (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernMentalDisorders,
+    method: 'post',
+    data: parameter
+  })
+}
+// 吸毒人口 查询
+export function getGovernDrugAddicts (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernDrugAddicts,
+    method: 'post',
+    data: parameter
+  })
+}
+// 吸毒人口 添加/修改
+export function editGovernDrugAddicts (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernDrugAddicts,
+    method: 'post',
+    data: parameter
+  })
+}
+// 吸毒人口 删除
+export function deleteGovernDrugAddicts (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernDrugAddicts,
+    method: 'post',
+    data: parameter
+  })
+}
+// 艾滋病人 查询
+export function getGovernAidsRisk (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernAidsRisk,
+    method: 'post',
+    data: parameter
+  })
+}
+// 艾滋病人 添加/修改
+export function editGovernAidsRisk (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernAidsRisk,
+    method: 'post',
+    data: parameter
+  })
+}
+// 艾滋病人 删除
+export function deleteGovernAidsRisk (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernAidsRisk,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点青少年人口 查询
+export function getGovernKeyYouth (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernKeyYouth,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点青少年人口 修改/新增
+export function editGovernKeyYouth (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernKeyYouth,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点青少年人口 删除
+export function deleteGovernKeyYouth (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernKeyYouth,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点信访人口 查询
+export function getGovernKeyPetitioners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.getGovernKeyPetitioners,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点信访人口 添加/修改
+export function editGovernKeyPetitioners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.editGovernKeyPetitioners,
+    method: 'post',
+    data: parameter
+  })
+}
+// 重点信访人口 删除
+export function deleteGovernKeyPetitioners (parameter) {
+  return request({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: api.deleteGovernKeyPetitioners,
+    method: 'post',
+    data: parameter
   })
 }

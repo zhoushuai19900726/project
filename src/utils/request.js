@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import qs from 'qs'
 import store from '@/store'
 import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
@@ -49,6 +50,7 @@ request.interceptors.request.use(config => {
   if (token) {
     config.headers['Access-Token'] = token
   }
+  // config.data = qs.stringify(config.data) // 转为formdata数据格式
   return config
 }, errorHandler)
 
