@@ -295,6 +295,34 @@
                   />
                 </a-form-item>
               </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="危害程度">
+                  <a-select
+                    v-model="queryParam.harmDegree"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col
+                :md="8"
+                :sm="24"
+              >
+                <a-form-item label="是否关注">
+                  <a-select
+                    v-model="queryParam.concerned"
+                    placeholder="请选择"
+                    default-value="0"
+                  >
+                    <a-select-option value="0">无</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
             </template>
             <a-col
               :md="!advanced && 8 || 24"
@@ -422,7 +450,8 @@
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getRoleList } from '@/api/manage'
+import { getGovernKeyAroundSchool } from '@/api/campusSecurity'
 
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
@@ -566,6 +595,16 @@ const columns = [
     scopedSlots: { customRender: 'currentResidenceAddress' }
   },
   {
+    title: '危害程度',
+    dataIndex: 'harmDegree',
+    scopedSlots: { customRender: 'harmDegree' }
+  },
+  {
+    title: '是否关注',
+    dataIndex: 'concerned',
+    scopedSlots: { customRender: 'concerned' }
+  },
+  {
     title: '操作',
     dataIndex: 'action',
     scopedSlots: { customRender: 'action' },
@@ -661,8 +700,10 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
+        // var sendDate = new FormData()
+        // sendDate.append('parentCode', 120000000000)
         console.log('loadData request parameters:', requestParameters)
-        return getServiceList(requestParameters).then((res) => {
+        return getGovernKeyAroundSchool(requestParameters).then((res) => {
           return res.result
         })
       },
@@ -679,6 +720,7 @@ export default {
     }
   },
   created () {
+    this.getAdr()
     getRoleList({ t: new Date() })
   },
   computed: {

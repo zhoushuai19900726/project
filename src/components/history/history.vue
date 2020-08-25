@@ -1,7 +1,7 @@
 <template>
   <div class="browseRecords">
     <div class="browseRecords-item" style="cursor: auto">浏览记录：</div>
-    <div class="browseRecords-item" v-for="item in history" :key="item.path" @click="$router.push(item.path)">{{ item.title }}</div>
+    <div class="browseRecords-item" v-for="(item, index) in history" :key="item.path" v-if="index < 6" @click="$router.push(item.path)">{{ item.title }}</div>
   </div>
 </template>
 
