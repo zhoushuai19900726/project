@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'systemSettingList'
-  }
+export default {
+  name: 'systemSettingList'
+}
 </script>

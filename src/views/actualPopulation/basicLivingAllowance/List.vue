@@ -49,8 +49,8 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="男">男</a-select-option>
-                    <a-select-option value="女">女</a-select-option>n>
+                    <a-select-option value="0">男</a-select-option>
+                    <a-select-option value="1">女</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -674,6 +674,7 @@
         :loading="confirmLoading"
         :model="mdl"
         :openType="openType"
+        :closeModal="closeModal"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -689,8 +690,8 @@
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 // import { getRoleList, getServiceList } from '@/api/manage'
-import { getRoleList, editArchiveManagement, delArchiveManagement, getAddress } from '@/api/manage'
-import { getSubsistence } from '@/api/actualPopulation'
+import { getRoleList, getAddress } from '@/api/manage'
+import { getSubsistence, deleteRegisteredPopulation } from '@/api/actualPopulation'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 
@@ -987,6 +988,12 @@ export default {
     }
   },
   methods: {
+    // 关闭createform
+    closeModal () {
+      this.visible = false
+      // 刷新表格
+      this.$refs.table.refresh()
+    },
     // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
@@ -1104,7 +1111,7 @@ export default {
       console.log(record)
       var id = record.id
       var arr = [id]
-      return delArchiveManagement(arr).then((res) => {
+      return deleteRegisteredPopulation(arr).then((res) => {
         console.log(res)
         if (res.code === 200) {
           this.$message.info('删除成功')
@@ -1121,134 +1128,7 @@ export default {
       console.log(date)
       return date
     },
-    handleOk () {
-      const form = this.$refs.createModal.form
-      this.confirmLoading = true
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          // console.log('values', values.birthday._d)
-          console.log(values)
-          var obj = values
-          var nativeArr = obj.nativePlace
-          // console.log(nativeArr)
-          var native = obj.nativePlaceDetail
-          obj.nativePlaceProvince = nativeArr[0]
-          obj.nativePlaceCity = nativeArr[1]
-          obj.nativePlaceRegion = nativeArr[2]
-          obj.nativePlace = native
-          // 删除无用的 nativePlaceDetail 字段
-          delete obj.nativePlaceDetail
-          obj.birthday = this.parseUtcTime(obj.birthday)
-          obj.placeDomicileProvince = obj.placeDomicile[0]
-          obj.placeDomicileCity = obj.placeDomicile[1]
-          obj.placeDomicileRegion = obj.placeDomicile[2]
-          obj.placeDomicile = obj.placeDomicileDetail
-          // 删除无用的 placeDomicile 字段
-          delete obj.placeDomicileDetail
-          console.log(obj.currentResidence)
-          obj.currentResidenceProvince = obj.currentResidence[0]
-          obj.currentResidenceCity = obj.currentResidence[1]
-          obj.currentResidenceRegion = obj.currentResidence[2]
-          obj.currentResidenceStreet = obj.currentResidence[3]
-          obj.currentResidenceCommunity = obj.currentResidence[4]
-          obj.currentResidence = obj.currentResidenceDetail
-          // 日期的处理
-          obj.birthday = obj.birthday + ' 00:00:00'
-          // 删除无用的 placeDomicile 字段
-          delete obj.currentResidenceDetail
-          delete obj.id
-          // var arr = Object.keys(obj)
-          // console.log(obj, arr.length)
-          // 调用接口进行修改
-          if (this.openType === 0) {
-            return editArchiveManagement(obj).then((res) => {
-              console.log(res)
-              // return res.result
-              if (res.code === 200) {
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                }).then((res) => {
-                  this.visible = false
-                  this.confirmLoading = false
-                  // 重置表单数据
-                  form.resetFields()
-                  // 刷新表格
-                  this.$refs.table.refresh()
-
-                  this.$message.info('新增成功')
-                })
-              } else {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.error(res.msg)
-                // 重置表单数据
-                form.resetFields()
-                // 刷新表格
-                this.$refs.table.refresh()
-              }
-            })
-          } else if (this.openType === 1) {
-            // console.log(this.mdl.id)
-            obj.id = this.mdl.id
-            return editArchiveManagement(obj).then((res) => {
-              console.log(res)
-              // return res.result
-              if (res.code === 200) {
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                }).then((res) => {
-                  this.visible = false
-                  this.confirmLoading = false
-                  // 重置表单数据
-                  form.resetFields()
-                  // 刷新表格
-                  this.$refs.table.refresh()
-
-                  this.$message.info('修改成功')
-                })
-              } else {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.error(res.msg)
-                // 重置表单数据
-                form.resetFields()
-                // 刷新表格
-                this.$refs.table.refresh()
-              }
-            })
-          } else {
-            return false
-          }
-          // if (values.id > 0) {
-          //   // 修改 e.g.
-          //   new Promise((resolve, reject) => {
-          //     setTimeout(() => {
-          //       resolve()
-          //     }, 1000)
-          //   }).then((res) => {
-          //     this.visible = false
-          //     this.confirmLoading = false
-          //     // 重置表单数据
-          //     form.resetFields()
-          //     // 刷新表格
-          //     this.$refs.table.refresh()
-
-          //     this.$message.info('修改成功')
-          //   })
-          // } else {
-          //   // 新增
-          // }
-        } else {
-          // console.log('youwentyi')
-          this.$message.error('请填写必要信息')
-          this.confirmLoading = false
-        }
-      })
-    },
+    handleOk () { },
     handleCancel () {
       this.visible = false
 

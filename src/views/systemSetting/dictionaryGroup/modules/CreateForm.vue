@@ -74,20 +74,21 @@
           </a-select>
         </a-form-item>
         <a-form-item label="籍贯(省市区)">
-          <a-input
-            disabled
-            v-if="openType ===1 || openType ===2 "
-            v-decorator="['nativePlaces']"
-            placeholder="初始地址为空"
-          />
           <a-cascader
             v-if="openType !==2"
-            placeholder="请选择新地址"
+            placeholder="籍贯"
+            :disabled="openType ===2"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="options"
             @change="onChange($event,'NATIVE',true)"
             :loadData="loadDatas"
             v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
+          />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['nativePlaces']"
+            placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="籍贯">
@@ -183,19 +184,20 @@
           />
         </a-form-item>
         <a-form-item label="户籍地(省市区)">
-          <a-input
-            disabled
-            v-if="openType ===1 || openType ===2 "
-            v-decorator="['placeDomiciles']"
-            placeholder="初始地址为空"
-          />
           <a-cascader
             v-if="openType!==2"
-            placeholder="请选择新地址"
+            :disabled="openType ===2"
+            placeholder="户籍地"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="options"
             :loadData="loadDatas"
             v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
+          />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['placeDomiciles']"
+            placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="户籍地">
@@ -213,19 +215,20 @@
           />
         </a-form-item>
         <a-form-item label="现住址(省市区)">
-          <a-input
-            disabled
-            v-if="openType ===1 || openType ===2 "
-            v-decorator="['currentResidences']"
-            placeholder="初始地址为空"
-          />
           <a-cascader
             v-if="openType!==2"
+            :disabled="openType ===2"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="optionss"
             :loadData="loadDatass"
-            placeholder="请选择新地址"
+            placeholder="请选择"
             v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
+          />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['currentResidences']"
+            placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="现住地">

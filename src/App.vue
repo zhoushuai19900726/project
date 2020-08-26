@@ -10,7 +10,7 @@
 import { domTitle, setDocumentTitle } from '@/utils/domUtil'
 import { i18nRender } from '@/locales'
 import { mapState, mapMutations } from 'vuex'
-import { getSelect, getAddress, group } from '@/api/manage'
+import { getSelect, getAddress } from '@/api/manage'
 export default {
   data () {
     return {
@@ -78,23 +78,16 @@ export default {
     // if (this.$root.address.length === 0) {
     //   this.getAddress()
     // }
-    this.getGroup()
   },
   methods: {
     ...mapMutations(['addRecords']),
-    // 根据id查询字典组
-    getGroup () {
-      return group().then(res => {
-        console.log(res)
-      })
-    },
     getSelect (text, type) {
       var that = this
       return getSelect(text).then((res) => {
         // console.log(res)
         if (res.ret !== null) {
           that.$root[type] = res.ret.dictionaryList
-          console.log(that.$root[type])
+          // console.log(that.$root[type])
         }
       })
     },

@@ -1307,39 +1307,39 @@ export default {
     // 编辑档案
     handleEdit (record) {
       // 地址的解析
-      record.nativePlace = [
-        record.nativePlaceProvince,
-        record.nativePlaceCity,
-        record.nativePlaceRegion
-      ]
-      record.placeDomicile = [
-        record.placeDomicileCity,
-        record.placeDomicileProvince,
-        record.placeDomicileRegion
-      ]
-      record.currentResidence = [
-        record.currentResidenceCity,
+      var arr = [
         record.currentResidenceProvince,
+        record.currentResidenceCity,
         record.currentResidenceRegion,
         record.currentResidenceStreet,
         record.currentResidenceCommunity
       ]
-      console.log(record.nativePlaceProvince)
-      var list = this.options
-      list.forEach(item => {
-        if (item.name === record.nativePlaceProvince) {
-          item.children = []
-          item.children.push({ name: record.nativePlaceCity })
-          item.children.forEach(element => {
-            if (element.name === record.nativePlaceCity) {
-              element.children = []
-              element.children.push({ name: record.nativePlaceRegion })
-            }
-          })
-        }
-      })
-      console.log(list)
-      this.options = list
+      var arr1 = [
+        record.placeDomicileProvince,
+        record.placeDomicileCity,
+        record.placeDomicileRegion
+      ]
+      var arr2 = [
+        record.nativePlaceProvince,
+        record.nativePlaceCity,
+        record.nativePlaceRegion
+      ]
+      if (record.nativePlaceProvince != null) {
+        record.nativePlaces = arr2.join('/')
+      } else {
+        record.nativePlaces = ''
+      }
+      if (record.placeDomicileProvince != null) {
+        record.placeDomiciles = arr1.join('/')
+      } else {
+        record.placeDomiciles = ''
+      }
+      if (record.currentResidenceProvince != null) {
+        record.currentResidences = arr.join('/')
+      } else {
+        record.currentResidences = ''
+      }
+
       this.openType = 1
       this.visible = true
       this.mdl = { ...record }
@@ -1379,25 +1379,32 @@ export default {
           var nativeArr = obj.nativePlace
           // console.log(nativeArr)
           var native = obj.nativePlaceDetail
-          obj.nativePlaceProvince = nativeArr[0]
-          obj.nativePlaceCity = nativeArr[1]
-          obj.nativePlaceRegion = nativeArr[2]
+          if (nativeArr != null) {
+            obj.nativePlaceProvince = nativeArr[0]
+            obj.nativePlaceCity = nativeArr[1]
+            obj.nativePlaceRegion = nativeArr[2]
+          }
+
           obj.nativePlace = native
           // 删除无用的 nativePlaceDetail 字段
           delete obj.nativePlaceDetail
           obj.birthday = this.parseUtcTime(obj.birthday)
-          obj.placeDomicileProvince = obj.placeDomicile[0]
-          obj.placeDomicileCity = obj.placeDomicile[1]
-          obj.placeDomicileRegion = obj.placeDomicile[2]
+          if (obj.placeDomicile != null) {
+            obj.placeDomicileProvince = obj.placeDomicile[0]
+            obj.placeDomicileCity = obj.placeDomicile[1]
+            obj.placeDomicileRegion = obj.placeDomicile[2]
+          }
           obj.placeDomicile = obj.placeDomicileDetail
           // 删除无用的 placeDomicile 字段
           delete obj.placeDomicileDetail
           console.log(obj.currentResidence)
-          obj.currentResidenceProvince = obj.currentResidence[0]
-          obj.currentResidenceCity = obj.currentResidence[1]
-          obj.currentResidenceRegion = obj.currentResidence[2]
-          obj.currentResidenceStreet = obj.currentResidence[3]
-          obj.currentResidenceCommunity = obj.currentResidence[4]
+          if (obj.currentResidence != null) {
+            obj.currentResidenceProvince = obj.currentResidence[0]
+            obj.currentResidenceCity = obj.currentResidence[1]
+            obj.currentResidenceRegion = obj.currentResidence[2]
+            obj.currentResidenceStreet = obj.currentResidence[3]
+            obj.currentResidenceCommunity = obj.currentResidence[4]
+          }
           obj.currentResidence = obj.currentResidenceDetail
           // 日期的处理
           obj.birthday = obj.birthday + ' 00:00:00'
@@ -1504,28 +1511,43 @@ export default {
     },
     // 修改弹框
     handleSub (record) {
+      // console.log(record)
       // 地址的解析
-      record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
-      ]
-      record.placeDomicile = [
-        record.placeDomicileProvince,
-        record.placeDomicileCity,
-        record.placeDomicileRegion
-      ]
-      record.currentResidence = [
+      // 地址的解析
+      var arr = [
         record.currentResidenceProvince,
         record.currentResidenceCity,
         record.currentResidenceRegion,
         record.currentResidenceStreet,
         record.currentResidenceCommunity
       ]
-      record.currentResidences = record.currentResidence.join('/')
-      record.placeDomiciles = record.placeDomicile.join('/')
-      record.nativePlaces = record.nativePlace.join('/')
-      console.log(record.currentResidences)
+      var arr1 = [
+        record.placeDomicileProvince,
+        record.placeDomicileCity,
+        record.placeDomicileRegion
+      ]
+      var arr2 = [
+        record.nativePlaceProvince,
+        record.nativePlaceCity,
+        record.nativePlaceRegion
+      ]
+      if (record.nativePlaceProvince != null) {
+        record.nativePlaces = arr2.join('/')
+      } else {
+        record.nativePlaces = ''
+      }
+      if (record.placeDomicileProvince != null) {
+        record.placeDomiciles = arr1.join('/')
+      } else {
+        record.placeDomiciles = ''
+      }
+      if (record.currentResidenceProvince != null) {
+        record.currentResidences = arr.join('/')
+      } else {
+        record.currentResidences = ''
+      }
+      console.log(record.nativePlaces, record.placeDomiciles, record.currentResidences)
+      // console.log(record.currentResidences)
       this.openType = 2
       this.visible = true
       this.mdl = { ...record }

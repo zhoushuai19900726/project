@@ -350,13 +350,13 @@ export const asyncRouterMap = [
         redirect: '/userManagement/userManagement-List',
         meta: { title: '用户管理', icon: 'profile', permission: ['profile'] },
         children: [
-            {
-              path: '/userManagement/userManagement-List',
-              name: 'userManagementList',
-              component: () => import('@/views/userManagement/userManagement/List'),
-              meta: { title: '用户管理', permission: ['profile'] }
-            }
-          ]
+          {
+            path: '/userManagement/userManagement-List',
+            name: 'userManagementList',
+            component: () => import('@/views/userManagement/userManagement/List'),
+            meta: { title: '用户管理', permission: ['profile'] }
+          }
+        ]
       },
 
       {
@@ -367,10 +367,10 @@ export const asyncRouterMap = [
         meta: { title: '系统设置', icon: 'profile', permission: ['profile'] },
         children: [
           {
-            path: '/systemSetting/systemSetting-List',
+            path: '/systemSetting/dictionaryGroup-List',
             name: 'systemSetting',
-            component: () => import('@/views/systemSetting/systemSetting/List'),
-            meta: { title: '系统设置', permission: ['profile'] }
+            component: () => import('@/views/systemSetting/dictionaryGroup/List'),
+            meta: { title: '数据字典', permission: ['profile'] }
           }
         ]
       }
