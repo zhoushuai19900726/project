@@ -36,7 +36,7 @@
             v-for="d in data"
             :key="d.id"
           >
-            {{ d.fullName }}
+            {{ d.fullName }}  {{ d.idCard }}
           </a-select-option>
         </a-select>
         <a-button type="primary">搜索</a-button>

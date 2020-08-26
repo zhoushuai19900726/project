@@ -391,35 +391,254 @@
         :scroll="{ x:true}"
       >
 
+        <!-- 序号 -->
         <span
           slot="serial"
           slot-scope="text, record, index"
         >{{ index + 1 }}</span>
+
+        <!-- 身份证号为了防止超出 限制了显示的长度 -->
         <span
-          slot="status"
-          slot-scope="text"
+          slot="idCard"
+          slot-scope="text, record"
         >
-          <a-badge
-            :status="text | statusTypeFilter"
-            :text="text | statusFilter"
-          />
+          <ellipsis
+            :length="7"
+            tooltip
+          >
+            <!-- {{ text}} -->
+            {{record.governRealPopulation.idCard}}
+            <!-- {{index}} -->
+          </ellipsis>
+        </span>
+
+        <!-- 姓名的自定义 -->
+        <span
+          slot="fullName"
+          slot-scope="text,record"
+        >
+          <ellipsis
+            :length="7"
+            tooltip
+          >{{ record.governRealPopulation.fullName }}</ellipsis>
+        </span>
+
+        <!-- 曾用名的自定义 -->
+        <span
+          slot="nameUsedBefore"
+          slot-scope="text,record"
+        >
+          <ellipsis
+            :length="7"
+            tooltip
+          >{{ record.governRealPopulation.nameUsedBefore }}</ellipsis>
+        </span>
+
+        <!-- 性别 -->
+        <span
+          slot="gender"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.gender }}
+        </span>
+        <!-- 出生日期 -->
+
+        <span
+          slot="birthday"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.birthday }}
+        </span>
+
+        <!-- 民族 -->
+        <span
+          slot="nation"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nation }}
+        </span>
+
+        <!-- 籍贯(省市区) -->
+        <span
+          slot="nativePlaceCity"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlaceCity }}
         </span>
         <span
-          slot="description"
+          slot="nativePlaceRegion"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlaceRegion }}
+        </span>
+        <span
+          slot="nativePlace"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlace }}
+        </span>
+
+        <!-- 婚姻状况 -->
+        <span
+          slot="marital"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.marital }}
+        </span>
+
+        <!-- 政治面貌 -->
+        <span
+          slot="politicalOutlook"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.politicalOutlook }}
+        </span>
+
+        <!-- 学历 -->
+        <span
+          slot="education"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.education }}
+        </span>
+
+        <!-- 宗教信仰 -->
+        <span
+          slot="religiousBelife"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.religiousBelife }}
+        </span>
+
+        <!-- 职业类别 -->
+        <span
+          slot="occupationCatgory"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.occupationCatgory }}
+        </span>
+
+        <!-- 职业 -->
+        <span
+          slot="occupation"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.occupation }}
+        </span>
+
+        <!-- 服务处所 -->
+        <span
+          slot="servicePlace"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.servicePlace }}
+        </span>
+
+        <!-- 联系类型 -->
+        <span
+          slot="contactType"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.contactType }}
+        </span>
+        <!-- 联系方式的自定义 -->
+        <span
+          slot="contactInformation"
           slot-scope="text"
         >
           <ellipsis
-            :length="4"
+            :length="10"
+            tooltip
+          >{{ text }}</ellipsis>
+        </span>
+
+        <!-- 户籍地(省市区) -->
+        <span
+          slot="placeDomicileProvince"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.placeDomicileProvince }}
+        </span>
+        <span
+          slot="placeDomicileCity"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.placeDomicileCity }}
+        </span>
+        <span
+          slot="placeDomicileRegion"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.placeDomicileRegion }}
+        </span>
+
+        <!-- 户籍地 户籍地详细地址  现住址 现住详细地址 -->
+        <span
+          slot="placeDomicile"
+          slot-scope="text,record"
+        >
+          <ellipsis
+            :length="10"
+            tooltip
+          >{{ record.governRealPopulation.placeDomicile }}</ellipsis>
+        </span>
+
+        <span
+          slot="placeDomicileAddress"
+          slot-scope="text,record"
+        >
+          <ellipsis
+            :length="10"
+            tooltip
+          >{{ record.governRealPopulation.placeDomicileAddress }}</ellipsis>
+        </span>
+        <!-- 现住址(省市区) -->
+        <span
+          slot="currentResidenceProvince"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.currentResidenceProvince }}
+        </span>
+        <span
+          slot="currentResidenceCity"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.currentResidenceCity }}
+        </span>
+        <span
+          slot="currentResidenceRegion"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.currentResidenceRegion }}
+        </span>
+
+        <span
+          slot="currentResidence"
+          slot-scope="text"
+        >
+          <ellipsis
+            :length="10"
             tooltip
           >{{ text }}</ellipsis>
         </span>
 
         <span
+          slot="currentResidenceAddress"
+          slot-scope="text"
+        >
+          <ellipsis
+            :length="10"
+            tooltip
+          >{{ text }}</ellipsis>
+        </span>
+
+        <!-- 以后可能会有修改和显示的需求 -->
+        <span
           slot="action"
           slot-scope="text, record"
         >
           <template>
-            <a @click="handleEdit(record)">修改</a>
+            <a @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
@@ -444,6 +663,363 @@
         @ok="handleOk"
       />
     </a-card>
+    <a-drawer
+      title="学校周边重点人员查询"
+      :width="920"
+      :visible="visible"
+      :body-style="{ paddingBottom: '80px' }"
+      @close="onClose"
+    >
+      <a-form v-bind="formLayout">
+        <a-row>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="公民身份证号码">
+              <a-input
+                v-model="queryParam.idCard"
+                placeholder
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="姓名">
+              <a-input
+                v-model="queryParam.fullName"
+                placeholder
+              />
+            </a-form-item>
+          </a-col>
+          <template v-if="advanced">
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="曾用名">
+                <a-input-number
+                  v-model="queryParam.nameUsedBefore"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="性别">
+                <a-select
+                  v-model="queryParam.gender"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">男</a-select-option>
+                  <a-select-option value="1">女</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="出生日期">
+                <a-date-picker
+                  v-model="queryParam.birthday"
+                  style="width: 100%"
+                  placeholder="请输入出生日期"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="民族">
+                <a-select
+                  v-model="queryParam.nation"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">汉</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="籍贯(省市区)">
+                <a-cascader
+                  :options="options"
+                  placeholder="请选择"
+                  @change="onChange($event,'NATIVE')"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="籍贯">
+                <a-input
+                  v-model="queryParam.nativePlace"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="婚姻状况">
+                <a-select
+                  placeholder="请选择"
+                  v-model="queryParam.marital"
+                  default-value="0"
+                >
+                  <a-select-option value="0">已婚</a-select-option>
+                  <a-select-option value="1">未婚</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="政治面貌">
+                <a-select
+                  v-model="queryParam.politicalOutlook"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">党员</a-select-option>
+                  <a-select-option value="1">共青团员</a-select-option>
+                  <a-select-option value="3">群众</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="学历">
+                <a-select
+                  v-model="queryParam.education"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">高中</a-select-option>
+                  <a-select-option value="1">中专</a-select-option>
+                  <a-select-option value="2">大专</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="宗教信仰">
+                <a-select
+                  v-model="queryParam.religiousBelife"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="职业类别">
+                <a-select
+                  v-model="queryParam.occupationCatgory"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="职业">
+                <a-select
+                  v-model="queryParam.occupation"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="服务处所">
+                <a-input-number
+                  v-model="queryParam.servicePlace"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="联系类型">
+                <a-select
+                  v-model="queryParam.contactType"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="联系方式">
+                <a-input-number
+                  v-model="queryParam.contactInformation"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="户籍地(省市区)">
+                <a-cascader
+                  :options="options"
+                  placeholder="请选择"
+                  @change="onChange($event,'PLACE')"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="户籍地">
+                <a-input
+                  v-model="queryParam.placeDomicile"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="户籍地详址">
+                <a-input-number
+                  v-model="queryParam.placeDomicileAddress"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="现住地(省市区)">
+                <a-cascader
+                  :options="options"
+                  placeholder="请选择"
+                  @change="onChange($event,'CURRENT')"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="现住地">
+                <a-input
+                  v-model="queryParam.currentResidence"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="现住地详址">
+                <a-input-number
+                  v-model="queryParam.currentResidenceAddress"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="危害程度">
+                <a-select
+                  v-model="queryParam.harmDegree"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="12"
+            >
+              <a-form-item label="是否关注">
+                <a-select
+                  v-model="queryParam.concerned"
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col
+            :md="!advanced && 8 || 24"
+            :sm="24"
+          >
+              <span
+                class="table-page-search-submitButtons"
+                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+              >
+                <a-button
+                  type="primary"
+                  @click="$refs.table.refresh(true)"
+                >查询</a-button>
+                <a-button
+                  style="margin-left: 8px"
+                  @click="() => this.queryParam = {}"
+                >重置</a-button>
+                <a
+                  @click="toggleAdvanced"
+                  style="margin-left: 8px"
+                >
+                  {{ advanced ? '收起' : '展开' }}
+                  <a-icon :type="advanced ? 'up' : 'down'" />
+                </a>
+              </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </a-drawer>
   </page-header-wrapper>
 </template>
 
@@ -482,31 +1058,35 @@ const columns = [
   },
   {
     title: '性别',
-    dataIndex: 'gender'
-    // scopedSlots: { customRender: 'status' }
+    dataIndex: 'gender',
+    scopedSlots: { customRender: 'gender' }
   },
   {
     title: '出生日期',
     dataIndex: 'birthday',
-    sorter: true
+    sorter: true,
+    scopedSlots: { customRender: 'birthday' }
   },
   {
     title: '民族',
-    dataIndex: 'nation'
+    dataIndex: 'nation',
     // width: '150px',
-    // scopedSlots: { customRender: 'action' }
+    scopedSlots: { customRender: 'action' }
   },
   {
     title: '籍贯(省)',
-    dataIndex: 'nativePlaceProvince'
+    dataIndex: 'nativePlaceProvince',
+    scopedSlots: { customRender: 'nativePlaceProvince' }
   },
   {
     title: '籍贯(市)',
-    dataIndex: 'nativePlaceCity'
+    dataIndex: 'nativePlaceCity',
+    scopedSlots: { customRender: 'nativePlaceCity' }
   },
   {
     title: '籍贯(区)',
-    dataIndex: 'nativePlaceRegion'
+    dataIndex: 'nativePlaceRegion',
+    scopedSlots: { customRender: 'nativePlaceRegion' }
   },
   {
     title: '籍贯',
@@ -515,35 +1095,44 @@ const columns = [
   },
   {
     title: '婚姻状况',
-    dataIndex: 'marital'
+    dataIndex: 'marital',
+    scopedSlots: { customRender: 'marital' }
   },
   {
     title: '政治面貌',
-    dataIndex: 'politicalOutlook'
+    dataIndex: 'politicalOutlook',
+    scopedSlots: { customRender: 'politicalOutlook' }
   },
   {
     title: '学历',
-    dataIndex: 'education'
+    dataIndex: 'education',
+    scopedSlots: { customRender: 'education' }
+
   },
   {
     title: '宗教信仰',
-    dataIndex: 'religiousBelife'
+    dataIndex: 'religiousBelife',
+    scopedSlots: { customRender: 'religiousBelife' }
   },
   {
     title: '职业类别',
-    dataIndex: 'occupationCatgory'
+    dataIndex: 'occupationCatgory',
+    scopedSlots: { customRender: 'occupationCatgory' }
   },
   {
     title: '职业',
-    dataIndex: 'occupation'
+    dataIndex: 'occupation',
+    scopedSlots: { customRender: 'occupation' }
   },
   {
     title: '服务处所',
-    dataIndex: 'servicePlace'
+    dataIndex: 'servicePlace',
+    scopedSlots: { customRender: 'servicePlace' }
   },
   {
     title: '联系类型',
-    dataIndex: 'contactType'
+    dataIndex: 'contactType',
+    scopedSlots: { customRender: 'contactType' }
   },
   {
     title: '联系方式',
@@ -552,15 +1141,18 @@ const columns = [
   },
   {
     title: '户籍地(省)',
-    dataIndex: 'placeDomicileProvince'
+    dataIndex: 'placeDomicileProvince',
+    scopedSlots: { customRender: 'placeDomicileProvince' }
   },
   {
     title: '户籍地(市)',
-    dataIndex: 'placeDomicileCity'
+    dataIndex: 'placeDomicileCity',
+    scopedSlots: { customRender: 'placeDomicileCity' }
   },
   {
     title: '户籍地(区)',
-    dataIndex: 'placeDomicileRegion'
+    dataIndex: 'placeDomicileRegion',
+    scopedSlots: { customRender: 'placeDomicileRegion' }
   },
   {
     title: '户籍地',
@@ -568,26 +1160,29 @@ const columns = [
     scopedSlots: { customRender: 'placeDomicile' }
   },
   {
-    title: '户籍门(楼)详址',
+    title: '户籍门地详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
-  },
-  {
-    title: '现住址(省)',
-    dataIndex: 'currentResidenceProvince'
-  },
-  {
-    title: '现住址(市)',
-    dataIndex: 'currentResidenceCity'
-  },
-  {
-    title: '现住址(区)',
-    dataIndex: 'currentResidenceRegion'
   },
   {
     title: '现住址',
     dataIndex: 'currentResidence',
     scopedSlots: { customRender: 'currentResidence' }
+  },
+  {
+    title: '现住址(省)',
+    dataIndex: 'currentResidenceProvince',
+    scopedSlots: { customRender: 'currentResidenceProvince' }
+  },
+  {
+    title: '现住址(市)',
+    dataIndex: 'currentResidenceCity',
+    scopedSlots: { customRender: 'currentResidenceCity' }
+  },
+  {
+    title: '现住址(区)',
+    dataIndex: 'currentResidenceRegion',
+    scopedSlots: { customRender: 'currentResidenceRegion' }
   },
   {
     title: '现住地详址',
@@ -720,7 +1315,7 @@ export default {
     }
   },
   created () {
-    this.getAdr()
+    // this.getAdr()
     getRoleList({ t: new Date() })
   },
   computed: {
@@ -732,6 +1327,9 @@ export default {
     }
   },
   methods: {
+    onClose () {
+      this.visible = false
+    },
     // 接收子组件的值 更改openType
     changeType (type) {
       console.log(type)
@@ -837,6 +1435,7 @@ export default {
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
+      this.visible = true
     },
     resetSearchForm () {
       this.queryParam = {

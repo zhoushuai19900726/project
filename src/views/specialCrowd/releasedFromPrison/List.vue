@@ -1153,6 +1153,7 @@
         }
       }
       return {
+        visibleMore: false,
         type: 0,
         // 打开createform的类型 0 新增 1 修改 2 查看
         openType: 0,
@@ -1228,6 +1229,15 @@
       }
     },
     methods: {
+      // 查询
+      refresh () {
+        this.$refs.table.refresh(true)
+        this.visibleMore = false
+      },
+      // 关闭更多查询
+      onClose () {
+        this.visibleMore = false
+      },
       // 选择对数据进行增、查‘改
       changeOpenType (num) {
         this.openType = num
