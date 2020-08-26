@@ -2,9 +2,9 @@ import request from '@/utils/request'
 import qs from 'qs'
 
 // 基本链接
-// const baseUrl = 'http://60.205.246.7:'
+const baseUrl = 'http://60.205.246.7:'
 // 文佳406
-const baseUrl = 'http://192.168.1.106:'
+// const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
 // const baseUrl = 'http://192.168.1.112:'
 
@@ -148,7 +148,6 @@ const api = {
   select: baseUrl + '/smartCity/dictionaryGroup/findDictionaryGroupByCode',
   // 搜索人员档案
   searchArchiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationByLikeContent',
-
   // 获取人员档案
   archiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationPage',
   // 修改人员档案
@@ -166,7 +165,7 @@ const api = {
   // 刑满释放人口 删除
   deleteGovernReleasePrisoners: baseUrl + '/smartCity/governReleasePrisoners/deleteGovernReleasePrisoners',
   // 社区矫正人口 查询
-  getGovernCommunityCorrectionStaff: baseUrl + '/smartCity/governFloatingovernCommunityCorrectionStaffgPopulation/findGovernCommunityCorrectionStaffPage',
+  getGovernCommunityCorrectionStaff: baseUrl + '/smartCity/governCommunityCorrectionStaff/findGovernCommunityCorrectionStaffPage',
   // 社区矫正人口 详情
   governCommunityCorrectionStaffDetail: baseUrl + '/smartCity/governCommunityCorrectionStaff/echoGovernCommunityCorrectionStaff',
   // 社区矫正人口 添加/修改
@@ -392,7 +391,6 @@ export function deleteGovernReleasePrisoners (parameter) {
 // 社区矫正人口 查询
 export function getGovernCommunityCorrectionStaff (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.getGovernCommunityCorrectionStaff,
     method: 'post',
     data: parameter

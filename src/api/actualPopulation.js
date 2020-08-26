@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 基本链接
-// const baseUrl = 'http://127.0.0.1:'
+const baseUrl = 'http://60.205.246.7:'
 // 文佳406-1
-const baseUrl = 'http://192.168.1.106:'
+// const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
 // const baseUrl = 'http://192.168.1.112:'
 
@@ -85,7 +85,7 @@ const api = {
   // 就业失业人口 添加/修改
   editEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/insertGovernEmploymentServices',
   // 就业失业人口 删除
-  deleteEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/deleteGovernEmploymentServices',
+  deleteEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/deleteGovernEmploymentServices'
 }
 
 // 户籍人口 查询
