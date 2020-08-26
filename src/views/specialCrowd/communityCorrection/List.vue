@@ -1388,6 +1388,17 @@
         }
       }
       return {
+        // 新增的下拉框数组 ******
+        // 性别
+        sex: this.$root.sex,
+        // 民族
+        nation: this.$root.nation,
+        // 婚姻状况
+        marray: this.$root.marray,
+        // 政治面貌
+        politicalOutlook: this.$root.politicalOutlook,
+        // 学历
+        education: this.$root.education,
         visibleMore: false,
         type: 0,
         // 打开createform的类型 0 新增 1 修改 2 查看

@@ -36,7 +36,7 @@
             v-for="d in data"
             :key="d.id"
           >
-            {{ d.fullName }}  {{ d.idCard }}
+            {{d.fullName}}-{{ d.idCard }}
           </a-select-option>
         </a-select>
         <a-button type="primary">搜索</a-button>
@@ -47,6 +47,15 @@
         ref="common"
       >
         <a-card title="档案资料">
+          <a-form-item
+            v-show="false"
+            label="主键ID"
+          >
+            <a-input
+              v-decorator="['id']"
+              disabled
+            />
+          </a-form-item>
           <a-row>
             <a-col
               :md="8"
@@ -346,35 +355,11 @@
               :md="8"
               :sm="24"
             >
-              <a-form-item label="现住地街道">
-                <a-input
-                  :disabled="openType !== 3"
-                  v-decorator="['currentResidenceStreet']"
-                  placeholder="现住地街道"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="8"
-              :sm="24"
-            >
-              <a-form-item label="现住地">
-                <a-input
-                  :disabled="openType !== 3"
-                  v-decorator="['currentResidenceCommunity']"
-                  placeholder="现住地社区"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="8"
-              :sm="24"
-            >
               <a-form-item label="现住地详址">
                 <a-input
                   :disabled="openType !== 3"
                   v-decorator="['currentResidenceAddress']"
-                  placeholder="现住门(楼)详址"
+                  placeholder="现住地详址"
                 />
               </a-form-item>
             </a-col>
@@ -405,35 +390,33 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增学校周边重点人员信息">
+        <a-card title="重点人员资料">
           <a-row>
             <a-col
-              :md="8"
-              :sm="24"
+              :md="12"
+              :sm="12"
             >
               <a-form-item label="危害程度">
                 <a-select
+                  v-decorator="['harmDegree']"
                   placeholder="请选择"
-                  :disabled="openType === 2"
-                  v-decorator="['harmDegree', {rules: [{required: true, message: '请输入'}]}]"
+                  default-value="0"
                 >
-                  <a-select-option value="0">严重</a-select-option>
-                  <a-select-option value="1">一般</a-select-option>
+                  <a-select-option value="0">无</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col
-              :md="8"
-              :sm="24"
+              :md="12"
+              :sm="12"
             >
               <a-form-item label="是否关注">
                 <a-select
+                  v-decorator="['concerned']"
                   placeholder="请选择"
-                  :disabled="openType === 2"
-                  v-decorator="['concerned', {rules: [{required: true, message: '请输入'}]}]"
+                  default-value="0"
                 >
-                  <a-select-option value="0">是</a-select-option>
-                  <a-select-option value="1">否</a-select-option>
+                  <a-select-option value="0">无</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -459,12 +442,15 @@
 </template>
 
 <script>
+import moment from 'moment'
 import pick from 'lodash.pick'
 import debounce from 'lodash/debounce'
-import { searchArchiveManagement } from '@/api/manage'
+import { searchArchiveManagement, editArchiveManagement } from '@/api/manage'
+import { editKeyAroundSchool } from '@/api/aroundSchool'
 // 表单字段
 const fields = [
   // 'description',
+  'id',
   'idCard',
   'fullName',
   'nameUsedBefore',
@@ -496,9 +482,8 @@ const fields = [
   // 现住地社区
   'currentResidenceCommunity',
   'currentResidenceDetail',
-  // 危害程度
+  // 校外人员
   'harmDegree',
-  // 是否关注
   'concerned'
 ]
 
@@ -540,12 +525,15 @@ export default {
     // this.lastFetchId = 0
     this.fetchUser = debounce(this.fetchUser, 800)
     return {
+      // 更改档案管理的档案id
+      id: null,
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       isDisabled: {
         default: true,
         type: Boolean
       },
+      // 搜索框的列表
       data: [],
       value: [],
       fetching: false
@@ -567,10 +555,21 @@ export default {
     console.log(this.openType)
   },
   methods: {
+    // 将utc时间解析为本地时间
+    parseUtcTime (time) {
+      var date = moment.parseZone(time).local().format('YYYY-MM-DD')
+      console.log(date)
+      return date
+    },
     // 更改公共字段
     editCommon () {
-      console.log(3)
-      this.$emit('changeOpenType', 3)
+      if (this.id) {
+        console.log(3)
+        this.$emit('changeOpenType', 3)
+      } else {
+        this.$message.error('请先选择档案')
+        return false
+      }
     },
     // 保存公共字段
     submitCommon () {
@@ -578,13 +577,58 @@ export default {
       var form = this.$refs.common.form
       form.validateFieldsAndScroll((errors, values) => {
         console.log(values)
+        // console.log('values', values.birthday._d)
+        console.log(values)
+        var obj = values
+        var nativeArr = obj.nativePlace
+        // console.log(nativeArr)
+        var native = obj.nativePlaceDetail
+        obj.nativePlaceProvince = nativeArr[0]
+        obj.nativePlaceCity = nativeArr[1]
+        obj.nativePlaceRegion = nativeArr[2]
+        obj.nativePlace = native
+        // 删除无用的 nativePlaceDetail 字段
+        delete obj.nativePlaceDetail
+        obj.birthday = this.parseUtcTime(obj.birthday)
+        obj.placeDomicileProvince = obj.placeDomicile[0]
+        obj.placeDomicileCity = obj.placeDomicile[1]
+        obj.placeDomicileRegion = obj.placeDomicile[2]
+        obj.placeDomicile = obj.placeDomicileDetail
+        // 删除无用的 placeDomicile 字段
+        delete obj.placeDomicileDetail
+        console.log(obj.currentResidence)
+        obj.currentResidenceProvince = obj.currentResidence[0]
+        obj.currentResidenceCity = obj.currentResidence[1]
+        obj.currentResidenceRegion = obj.currentResidence[2]
+        obj.currentResidenceStreet = obj.currentResidence[3]
+        obj.currentResidenceCommunity = obj.currentResidence[4]
+        obj.currentResidence = obj.currentResidenceDetail
+        // 日期的处理
+        obj.birthday = obj.birthday + ' 00:00:00'
+        // 删除无用的 placeDomicile 字段
+        delete obj.currentResidenceDetail
+        delete obj.id
+        obj.id = this.id
+        return editArchiveManagement(obj).then((res) => {
+          console.log(res)
+          this.$message.info('修改成功')
+        })
       })
     },
     // 保存特殊字段
     submitSpecial () {
+      var that = this
       var form = this.$refs.special.form
+      console.log('打印的form', this.$refs.special)
       form.validateFields((errors, values) => {
         console.log(values)
+        if (!errors) {
+          var data = { ...values }
+          data.basicsId = that.id
+          return editKeyAroundSchool(data).then((res) => {
+            console.log('保存返回的信息', res)
+          })
+        }
       })
     },
     // 搜索框发生变化的时候请求搜索的内容
@@ -598,6 +642,7 @@ export default {
       return searchArchiveManagement(value).then((res) => {
         console.log(res)
         that.data = res.result.data
+        console.log(that.data)
         // return res.result
       })
       // fetch('https://randomuser.me/api/?results=5')
@@ -617,8 +662,42 @@ export default {
     },
     // 点击搜索到的列表 更改openType 并且更改父级的mdl (this.$emit('changeModel',obj))
     handleChange (value) {
-      console.log(value)
-      // this.
+      var that = this
+      console.log(value[0].label)
+      var name = value[0].label.split('-')[0].trim()
+      var idCard = value[0].label.split('-')[1].trim()
+      console.log(name.length)
+      var obj = {}
+      that.data.forEach(item => {
+        console.log(item)
+        if (item.fullName === name && item.idCard === idCard) {
+          obj = item
+          that.id = item.id
+        }
+      })
+      console.log(obj)
+      obj.nativePlaceDetail = obj.native
+      obj.nativePlace = [
+        obj.currentResidenceProvince,
+        obj.currentResidenceCity,
+        obj.currentResidenceRegion
+      ]
+      obj.placeDomicileDetail = obj.placeDomicile
+      obj.placeDomicile = [
+        obj.placeDomicileCity,
+        obj.placeDomicileProvince,
+        obj.placeDomicileRegion
+      ]
+      obj.currentResidenceDetail = obj.currentResidence
+      obj.currentResidence = [
+        obj.currentResidenceProvince,
+        obj.currentResidenceCity,
+        obj.currentResidenceRegion,
+        obj.currentResidenceStreet,
+        obj.currentResidenceCommunity
+      ]
+      console.log(obj)
+      this.$emit('changeModel', obj)
       Object.assign(this, {
         value,
         data: [],

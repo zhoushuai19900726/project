@@ -340,13 +340,12 @@
                   style="margin-left: 8px"
                   @click="() => this.queryParam = {}"
                 >重置</a-button>
-                <a
+                <a-button
                   @click="toggleAdvanced"
                   style="margin-left: 8px"
                 >
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'" />
-                </a>
+                 更多查询
+                </a-button>
               </span>
             </a-col>
           </a-row>
@@ -642,7 +641,19 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-            <a @click="handleDel(record)">删除</a>
+<!--            <a @click="handleDel(record)">删除</a>-->
+            <template>
+              <a-popconfirm
+                title="确定要删除此条数据吗"
+                placement="topRight"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="handleDel(record)"
+                @cancel="cancel"
+              >
+                <a href="#">删除</a>
+              </a-popconfirm>
+            </template>
           </template>
         </span>
       </s-table>
@@ -666,7 +677,7 @@
     <a-drawer
       title="学校周边重点人员查询"
       :width="920"
-      :visible="visible"
+      :visible="visibleMore"
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
     >
@@ -694,7 +705,6 @@
               />
             </a-form-item>
           </a-col>
-          <template v-if="advanced">
             <a-col
               :md="12"
               :sm="12"
@@ -991,9 +1001,8 @@
                 </a-select>
               </a-form-item>
             </a-col>
-          </template>
           <a-col
-            :md="!advanced && 8 || 24"
+            :md="24"
             :sm="24"
           >
               <span
@@ -1008,13 +1017,6 @@
                   style="margin-left: 8px"
                   @click="() => this.queryParam = {}"
                 >重置</a-button>
-                <a
-                  @click="toggleAdvanced"
-                  style="margin-left: 8px"
-                >
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'" />
-                </a>
               </span>
           </a-col>
         </a-row>
@@ -1028,6 +1030,7 @@ import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import { getRoleList } from '@/api/manage'
 import { getGovernKeyAroundSchool } from '@/api/campusSecurity'
+import { deleteKeyAroundSchool } from '@/api/aroundSchool'
 
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
@@ -1071,7 +1074,7 @@ const columns = [
     title: '民族',
     dataIndex: 'nation',
     // width: '150px',
-    scopedSlots: { customRender: 'action' }
+    scopedSlots: { customRender: 'nation' }
   },
   {
     title: '籍贯(省)',
@@ -1247,6 +1250,8 @@ export default {
       }
     }
     return {
+      // 侧边栏查询
+      visibleMore: false,
       // 弹出框的打开属性  0：新增 1： 编辑   2：修改
       openType: 0,
       // create model
@@ -1327,8 +1332,12 @@ export default {
     }
   },
   methods: {
+    // 取消删除
+    cancel () {
+      console.log('不删除')
+    },
     onClose () {
-      this.visible = false
+      this.visibleMore = false
     },
     // 接收子组件的值 更改openType
     changeType (type) {
@@ -1428,14 +1437,30 @@ export default {
     },
     handleDel (record) {
       //  执行删除的操作
+      console.log('删除操作', record)
+      let arr = {
+        type: Array,
+        default: null
+      }
+      arr = [record.id]
+      return deleteKeyAroundSchool(arr).then((res) => {
+        console.log('删除返回信息')
+        if (res.code === 200) {
+          this.$message.info('删除成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('删除失败')
+          this.$refs.table.refresh()
+        }
+      })
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
     toggleAdvanced () {
-      this.advanced = !this.advanced
-      this.visible = true
+      // this.advanced = !this.advanced
+      this.visibleMore = true
     },
     resetSearchForm () {
       this.queryParam = {

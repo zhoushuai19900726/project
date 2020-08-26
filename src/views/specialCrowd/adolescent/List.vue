@@ -919,8 +919,11 @@
                   placeholder="请选择"
                   default-value=""
                 >
-                  <a-select-option value="男">男</a-select-option>
-                  <a-select-option value="女">女</a-select-option>n>
+                  <a-select-option
+                    v-for="(item) in sex"
+                    :key="item.id"
+                    :value="item.dictionaryValue"
+                  >{{item.dictionaryName}}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -1724,6 +1727,17 @@
         }
       }
       return {
+        // 新增的下拉框数组 ******
+        // 性别
+        sex: this.$root.sex,
+        // 民族
+        nation: this.$root.nation,
+        // 婚姻状况
+        marray: this.$root.marray,
+        // 政治面貌
+        politicalOutlook: this.$root.politicalOutlook,
+        // 学历
+        education: this.$root.education,
         visibleMore: false,
         type: 0,
         // 打开createform的类型 0 新增 1 修改 2 查看
