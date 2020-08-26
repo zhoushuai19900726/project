@@ -505,13 +505,12 @@
                   style="margin-left: 8px"
                   @click="() => this.queryParam = {}"
                 >重置</a-button>
-                <a
+                <a-button
                   @click="toggleAdvanced"
                   style="margin-left: 8px"
                 >
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'" />
-                </a>
+                 更多查询
+                </a-button>
               </span>
             </a-col>
           </a-row>
@@ -807,7 +806,19 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-            <a @click="handleDel(record)">删除</a>
+<!--            <a @click="handleDel(record)">删除</a>-->
+            <template>
+              <a-popconfirm
+                title="确定要删除此条数据吗"
+                placement="topRight"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="handleDel(record)"
+                @cancel="cancel"
+              >
+                <a href="#">删除</a>
+              </a-popconfirm>
+            </template>
           </template>
         </span>
       </s-table>
@@ -817,7 +828,15 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :closeModal="closeModal"
+        @changeModel="changeModel"
+        :onChange="onChange"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
+        @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -826,6 +845,523 @@
         @ok="handleOk"
       />
     </a-card>
+    <a-drawer
+      title="重点青少年查询"
+      :width="920"
+      :visible="visibleMore"
+      :body-style="{ paddingBottom: '80px' }"
+      @close="onClose"
+    >
+      <a-form
+        v-bind="formLayout"
+      >
+        <a-row>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="公民身份证号码">
+              <a-input
+                v-model="queryParam.idCard"
+                placeholder
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="姓名">
+              <a-input
+                v-model="queryParam.fullName"
+                placeholder
+              />
+            </a-form-item>
+          </a-col>
+          <!--          <template v-if="advanced">-->
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="曾用名">
+              <a-input
+                v-model="queryParam.nameUsedBefore"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="性别">
+              <a-select
+                v-model="queryParam.gender"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option
+                  v-for="(item) in sex"
+                  :key="item.id"
+                  :value="item.dictionaryValue"
+                >{{item.dictionaryName}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="出生日期">
+              <a-date-picker
+                v-model="queryParam.birthday"
+                style="width: 100%"
+                placeholder="请输入出生日期"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="民族">
+              <a-select
+                v-model="queryParam.nation"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="汉">汉</a-select-option>
+                <a-select-option value="壮族">壮族</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="籍贯(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="options"
+                :loadData="loadDatas"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'NATIVE')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="籍贯">
+              <a-input
+                v-model="queryParam.nativePlace"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="婚姻状况">
+              <a-select
+                placeholder="请选择"
+                v-model="queryParam.marital"
+                default-value=""
+              >
+                <a-select-option value="已婚">已婚</a-select-option>
+                <a-select-option value="未婚">未婚</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="政治面貌">
+              <a-select
+                v-model="queryParam.politicalOutlook"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="党员">党员</a-select-option>
+                <a-select-option value="共青团员">共青团员</a-select-option>
+                <a-select-option value="群众">群众</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="学历">
+              <a-select
+                v-model="queryParam.education"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="高中">高中</a-select-option>
+                <a-select-option value="中专">中专</a-select-option>
+                <a-select-option value="大专">大专</a-select-option>
+                <a-select-option value="大学本科">大学本科</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="宗教信仰">
+              <a-select
+                v-model="queryParam.religiousBelife"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="职业类别">
+              <a-select
+                v-model="queryParam.occupationCatgory"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+                <a-select-option value="企业单位负责人">企业单位负责人</a-select-option>
+                <a-select-option value="务农">务农</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="职业">
+              <a-select
+                v-model="queryParam.occupation"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="服务处所">
+              <a-input
+                v-model="queryParam.servicePlace"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="联系类型">
+              <a-select
+                v-model="queryParam.contactType"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+                <a-select-option value="邮箱">邮箱</a-select-option>
+                <a-select-option value="手机号">手机号</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="联系方式">
+              <a-input
+                v-model="queryParam.contactInformation"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="options"
+                :loadData="loadDatas"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'PLACE')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地">
+              <a-input
+                v-model="queryParam.placeDomicile"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地详址">
+              <a-input
+                v-model="queryParam.placeDomicileAddress"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="optionss"
+                :loadData="loadDatass"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'CURRENT')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地">
+              <a-input
+                v-model="queryParam.currentResidence"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住址街道">
+              <a-input
+                v-model="queryParam.currentResidenceCommunity"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住址社区">
+              <a-input
+                v-model="queryParam.currentResidenceAddress"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地详址">
+              <a-input
+                v-model="queryParam.currentResidenceAddress"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="初次发现日期">
+              <a-date-picker
+                v-model="queryParam.firstDiscoveryDate"
+                style="width: 100%"
+                placeholder="请输入"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="管控情况">
+              <a-input
+                v-model="queryParam.managementContro"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="管控人姓名">
+              <a-input
+                v-model="queryParam.controllerName"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="管控人联系类型">
+              <a-select
+                v-model="queryParam.controllerContactType"
+                placeholder="请选择"
+                default-value="0"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="管控人联系方式">
+              <a-input
+                v-model="queryParam.controllerContactInformation"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="帮扶情况">
+              <a-input
+                v-model="queryParam.assistance"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="帮扶人姓名">
+              <a-input
+                v-model="queryParam.helperName"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="帮扶人联系类型">
+              <a-select
+                v-model="queryParam.helpersContactType"
+                placeholder="请选择"
+                default-value="0"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="帮扶人联系方式">
+              <a-input
+                v-model="queryParam.helpersContactInformation"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="有无犯罪史">
+              <a-select
+                v-model="queryParam.criminalHistory"
+                placeholder="请选择"
+                default-value="0"
+              >
+                <a-select-option value="0">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="犯罪情况">
+              <a-input
+                v-model="queryParam.crimeSituation"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="吸毒原因">
+              <a-input
+                v-model="queryParam.drugAbuseReasons"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="吸毒后果">
+              <a-input
+                v-model="queryParam.drugAbuseConsequences"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <!--          </template>-->
+          <a-col
+            :md="!advanced && 8 || 24"
+            :sm="24"
+          >
+              <span
+                class="table-page-search-submitButtons"
+                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+              >
+                <a-button
+                  type="primary"
+                  @click="refresh"
+                >查询</a-button>
+                <a-button
+                  style="margin-left: 8px"
+                  @click="() => this.queryParam = {}"
+                >重置</a-button>
+              </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </a-drawer>
   </page-header-wrapper>
 </template>
 
@@ -1107,6 +1643,17 @@
         }
       }
       return {
+        // 新增的下拉框数组 ******
+        // 性别
+        sex: this.$root.sex,
+        // 民族
+        nation: this.$root.nation,
+        // 婚姻状况
+        marray: this.$root.marray,
+        // 政治面貌
+        politicalOutlook: this.$root.politicalOutlook,
+        // 学历
+        education: this.$root.education,
         visibleMore: false,
         type: 0,
         // 打开createform的类型 0 新增 1 修改 2 查看
@@ -1183,6 +1730,50 @@
       }
     },
     methods: {
+      // 关闭侧边栏
+      closeSearch () {
+        this.$refs.table.refresh(true)
+        this.visibleMore = false
+      },
+      // 取消删除
+      cancel () {
+        console.log('不删除')
+      },
+      // 关闭createform
+      closeModal (trun) {
+        this.visible = false
+        if (trun) {
+          // 刷新表格
+          this.$refs.table.refresh()
+        } else {
+          this.visible = false
+          // 刷新表格
+          this.$refs.table.refresh()
+        }
+      },
+      // *************新增
+      // 1\解析性别
+      parseValue (arr, value) {
+        arr.forEach(item => {
+          if (item.dictionaryValue === value) {
+            return item.dictionaryName
+          }
+        })
+      },
+      // ****************
+      // 接收子组件的值 更改openType
+      changeType (type) {
+        console.log(type)
+        this.openType = type
+      },
+      // 当子组件查找到对应的档案管理的时候修改父级的mdl
+      changeModel (obj) {
+        console.log(obj)
+        console.log(this.mdl)
+        this.mdl = {
+          'governRealPopulation': obj
+        }
+      },
       // 查询
       refresh () {
         this.$refs.table.refresh(true)
@@ -1278,23 +1869,41 @@
       },
       // 编辑档案
       handleEdit (record) {
-        // 地址的解析
-        record.nativePlace = [
-          record.currentResidenceProvince,
-          record.currentResidenceCity,
-          record.currentResidenceRegion
-        ]
-        record.placeDomicile = [
-          record.placeDomicileCity,
-          record.placeDomicileProvince,
-          record.placeDomicileRegion
-        ]
-        record.currentResidence = [
-          record.currentResidenceCity,
-          record.currentResidenceProvince,
-          record.currentResidenceRegion
-        ]
         console.log(record)
+        // 地址的解析
+        var arr = [
+          record.governRealPopulation.nativePlaceProvince,
+          record.governRealPopulation.nativePlaceCity,
+          record.governRealPopulation.nativePlaceRegion
+        ]
+        var arr1 = [
+          record.governRealPopulation.placeDomicileProvince,
+          record.governRealPopulation.placeDomicileCity,
+          record.governRealPopulation.placeDomicileRegion
+        ]
+        var arr2 = [
+          record.governRealPopulation.currentResidenceProvince,
+          record.governRealPopulation.currentResidenceCity,
+          record.governRealPopulation.currentResidenceRegion,
+          record.governRealPopulation.currentResidenceStreet,
+          record.governRealPopulation.currentResidenceCommunity
+        ]
+        if (record.governRealPopulation.nativePlaceProvince != null) {
+          record.governRealPopulation.nativePlaces = arr.join('/')
+        } else {
+          record.governRealPopulation.nativePlaces = ''
+        }
+        if (record.governRealPopulation.placeDomicileProvince != null) {
+          record.governRealPopulation.placeDomiciles = arr1.join('/')
+        } else {
+          record.governRealPopulation.placeDomiciles = ''
+        }
+        if (record.governRealPopulation.currentResidenceProvince != null) {
+          record.governRealPopulation.currentResidences = arr2.join('/')
+        } else {
+          record.governRealPopulation.currentResidences = ''
+        }
+        // console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
         this.openType = 1
         this.visible = true
         this.mdl = { ...record }
@@ -1429,23 +2038,40 @@
       // 修改弹框
       handleSub (record) {
         // 地址的解析
-        record.nativePlace = [
-          record.currentResidenceProvince,
-          record.currentResidenceCity,
-          record.currentResidenceRegion
+        var arr = [
+          record.governRealPopulation.nativePlaceProvince,
+          record.governRealPopulation.nativePlaceCity,
+          record.governRealPopulation.nativePlaceRegion
         ]
-        record.placeDomicile = [
-          record.placeDomicileCity,
-          record.placeDomicileProvince,
-          record.placeDomicileRegion
+        var arr1 = [
+          record.governRealPopulation.placeDomicileProvince,
+          record.governRealPopulation.placeDomicileCity,
+          record.governRealPopulation.placeDomicileRegion
         ]
-        record.currentResidence = [
-          record.currentResidenceCity,
-          record.currentResidenceProvince,
-          record.currentResidenceRegion
+        var arr2 = [
+          record.governRealPopulation.currentResidenceProvince,
+          record.governRealPopulation.currentResidenceCity,
+          record.governRealPopulation.currentResidenceRegion,
+          record.governRealPopulation.currentResidenceStreet,
+          record.governRealPopulation.currentResidenceCommunity
         ]
-        console.log(record)
-        console.log(record)
+        if (record.governRealPopulation.nativePlaceProvince != null) {
+          record.governRealPopulation.nativePlaces = arr.join('/')
+        } else {
+          record.governRealPopulation.nativePlaces = ''
+        }
+        if (record.governRealPopulation.placeDomicileProvince != null) {
+          record.governRealPopulation.placeDomiciles = arr1.join('/')
+        } else {
+          record.governRealPopulation.placeDomiciles = ''
+        }
+        if (record.governRealPopulation.currentResidenceProvince != null) {
+          record.governRealPopulation.currentResidences = arr2.join('/')
+        } else {
+          record.governRealPopulation.currentResidences = ''
+        }
+        console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+
         this.openType = 2
         this.visible = true
         this.mdl = { ...record }
@@ -1455,7 +2081,8 @@
         this.selectedRows = selectedRows
       },
       toggleAdvanced () {
-        this.advanced = !this.advanced
+        // this.advanced = !this.advanced
+        this.visibleMore = true
       },
       resetSearchForm () {
         this.queryParam = {

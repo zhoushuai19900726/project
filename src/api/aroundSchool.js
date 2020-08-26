@@ -12,9 +12,9 @@ const api = {
   // 学校周边重点人口 查询
   getKeyAroundSchool: baseUrl + '/smartCity/governKeyAroundSchool/findGovernKeyAroundSchoolPage',
   // 学校周边重点人口 添加/修改
-  editKeyAroundSchool: baseUrl + '/smartCity/governKeyAroundSchool/findGovernKeyAroundSchoolPage',
+  editKeyAroundSchool: baseUrl + '/smartCity/governKeyAroundSchool/insertGovernKeyAroundSchool',
   // 学校周边重点人口 删除
-  deleteKeyAroundSchool: baseUrl + '/smartCity/governKeyAroundSchool/findGovernKeyAroundSchoolPage'
+  deleteKeyAroundSchool: baseUrl + '/smartCity/governKeyAroundSchool/deleteGovernKeyAroundSchool'
 }
 export default api
   // 学校周边重点人口 查询

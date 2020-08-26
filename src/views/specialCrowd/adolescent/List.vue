@@ -642,7 +642,7 @@
           slot="gender"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.gender }}
+          {{ parseValue(sex,record.governRealPopulation.gender) }}
         </span>
         <!-- 出生日期 -->
 
@@ -658,10 +658,15 @@
           slot="nation"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.nation }}
+          {{ parseValue(nation,record.governRealPopulation.nation) }}
         </span>
-
         <!-- 籍贯(省市区) -->
+        <span
+          slot="nativePlaceProvince"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlaceProvince }}
+        </span>
         <span
           slot="nativePlaceCity"
           slot-scope="text,record"
@@ -686,7 +691,7 @@
           slot="marital"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.marital }}
+          {{ parseValue(marray,record.governRealPopulation.marital) }}
         </span>
 
         <!-- 政治面貌 -->
@@ -694,7 +699,7 @@
           slot="politicalOutlook"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.politicalOutlook }}
+          {{ parseValue(politicalOutlook,record.governRealPopulation.politicalOutlook) }}
         </span>
 
         <!-- 学历 -->
@@ -702,7 +707,7 @@
           slot="education"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.education }}
+          {{ parseValue(education,record.governRealPopulation.education) }}
         </span>
 
         <!-- 宗教信仰 -->
@@ -845,7 +850,19 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-            <a @click="handleDel(record)">删除</a>
+            <!--            <a @click="handleDel(record)">删除</a>-->
+            <template>
+              <a-popconfirm
+                title="确定要删除此条数据吗"
+                placement="topRight"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="handleDel(record)"
+                @cancel="cancel"
+              >
+                <a href="#">删除</a>
+              </a-popconfirm>
+            </template>
           </template>
         </span>
       </s-table>
@@ -855,7 +872,15 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :closeModal="closeModal"
+        @changeModel="changeModel"
+        :onChange="onChange"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
+        @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -919,8 +944,11 @@
                   placeholder="请选择"
                   default-value=""
                 >
-                  <a-select-option value="男">男</a-select-option>
-                  <a-select-option value="女">女</a-select-option>n>
+                  <a-select-option
+                    v-for="(item) in sex"
+                    :key="item.id"
+                    :value="item.dictionaryValue"
+                  >{{item.dictionaryName}}</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -1724,6 +1752,17 @@
         }
       }
       return {
+        // 新增的下拉框数组 ******
+        // 性别
+        sex: this.$root.sex,
+        // 民族
+        nation: this.$root.nation,
+        // 婚姻状况
+        marray: this.$root.marray,
+        // 政治面貌
+        politicalOutlook: this.$root.politicalOutlook,
+        // 学历
+        education: this.$root.education,
         visibleMore: false,
         type: 0,
         // 打开createform的类型 0 新增 1 修改 2 查看
@@ -1800,13 +1839,56 @@
       }
     },
     methods: {
-      // 查询
-      refresh () {
+      // 关闭侧边栏
+      closeSearch () {
         this.$refs.table.refresh(true)
         this.visibleMore = false
       },
-      // 关闭更多查询
+      // 取消删除
+      cancel () {
+        console.log('不删除')
+      },
       onClose () {
+        this.visibleMore = false
+      },
+      // 关闭createform
+      closeModal (trun) {
+        this.visible = false
+        if (trun) {
+          // 刷新表格
+          this.$refs.table.refresh()
+        } else {
+          this.visible = false
+          // 刷新表格
+          this.$refs.table.refresh()
+        }
+      },
+      // *************新增
+      // 1\解析性别
+      parseValue (arr, value) {
+        arr.forEach(item => {
+          if (item.dictionaryValue === value) {
+            return item.dictionaryName
+          }
+        })
+      },
+      // ****************
+      // 接收子组件的值 更改openType
+      changeType (type) {
+        console.log(type)
+        this.openType = type
+      },
+      // 当子组件查找到对应的档案管理的时候修改父级的mdl
+      changeModel (obj) {
+        console.log(obj)
+        console.log(this.mdl)
+        this.mdl = {
+          'governRealPopulation': obj
+        }
+      },
+      // 查询
+      refresh () {
+        this.$refs.table.refresh(true)
         this.visibleMore = false
       },
       // 选择对数据进行增、查‘改
@@ -1895,23 +1977,41 @@
       },
       // 编辑档案
       handleEdit (record) {
-        // 地址的解析
-        record.nativePlace = [
-          record.currentResidenceProvince,
-          record.currentResidenceCity,
-          record.currentResidenceRegion
-        ]
-        record.placeDomicile = [
-          record.placeDomicileCity,
-          record.placeDomicileProvince,
-          record.placeDomicileRegion
-        ]
-        record.currentResidence = [
-          record.currentResidenceCity,
-          record.currentResidenceProvince,
-          record.currentResidenceRegion
-        ]
         console.log(record)
+        // 地址的解析
+        var arr = [
+          record.governRealPopulation.nativePlaceProvince,
+          record.governRealPopulation.nativePlaceCity,
+          record.governRealPopulation.nativePlaceRegion
+        ]
+        var arr1 = [
+          record.governRealPopulation.placeDomicileProvince,
+          record.governRealPopulation.placeDomicileCity,
+          record.governRealPopulation.placeDomicileRegion
+        ]
+        var arr2 = [
+          record.governRealPopulation.currentResidenceProvince,
+          record.governRealPopulation.currentResidenceCity,
+          record.governRealPopulation.currentResidenceRegion,
+          record.governRealPopulation.currentResidenceStreet,
+          record.governRealPopulation.currentResidenceCommunity
+        ]
+        if (record.governRealPopulation.nativePlaceProvince != null) {
+          record.governRealPopulation.nativePlaces = arr.join('/')
+        } else {
+          record.governRealPopulation.nativePlaces = ''
+        }
+        if (record.governRealPopulation.placeDomicileProvince != null) {
+          record.governRealPopulation.placeDomiciles = arr1.join('/')
+        } else {
+          record.governRealPopulation.placeDomiciles = ''
+        }
+        if (record.governRealPopulation.currentResidenceProvince != null) {
+          record.governRealPopulation.currentResidences = arr2.join('/')
+        } else {
+          record.governRealPopulation.currentResidences = ''
+        }
+        console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
         this.openType = 1
         this.visible = true
         this.mdl = { ...record }
@@ -1919,12 +2019,15 @@
         // this.mdl/
       },
       handleDel (record) {
-        // 执行删除的操作
-        console.log(record)
-        var id = record.id
-        var arr = [id]
+        //  执行删除的操作
+        console.log('删除操作', record)
+        let arr = {
+          type: Array,
+          default: null
+        }
+        arr = [record.id]
         return deleteGovernKeyYouth(arr).then((res) => {
-          console.log(res)
+          console.log('删除返回信息')
           if (res.code === 200) {
             this.$message.info('删除成功')
             this.$refs.table.refresh()
@@ -2044,25 +2147,43 @@
         form.resetFields() // 清理表单数据（可不做）
       },
       // 修改弹框
+      // 修改弹框
       handleSub (record) {
         // 地址的解析
-        record.nativePlace = [
-          record.currentResidenceProvince,
-          record.currentResidenceCity,
-          record.currentResidenceRegion
+        var arr = [
+          record.governRealPopulation.nativePlaceProvince,
+          record.governRealPopulation.nativePlaceCity,
+          record.governRealPopulation.nativePlaceRegion
         ]
-        record.placeDomicile = [
-          record.placeDomicileCity,
-          record.placeDomicileProvince,
-          record.placeDomicileRegion
+        var arr1 = [
+          record.governRealPopulation.placeDomicileProvince,
+          record.governRealPopulation.placeDomicileCity,
+          record.governRealPopulation.placeDomicileRegion
         ]
-        record.currentResidence = [
-          record.currentResidenceCity,
-          record.currentResidenceProvince,
-          record.currentResidenceRegion
+        var arr2 = [
+          record.governRealPopulation.currentResidenceProvince,
+          record.governRealPopulation.currentResidenceCity,
+          record.governRealPopulation.currentResidenceRegion,
+          record.governRealPopulation.currentResidenceStreet,
+          record.governRealPopulation.currentResidenceCommunity
         ]
-        console.log(record)
-        console.log(record)
+        if (record.governRealPopulation.nativePlaceProvince != null) {
+          record.governRealPopulation.nativePlaces = arr.join('/')
+        } else {
+          record.governRealPopulation.nativePlaces = ''
+        }
+        if (record.governRealPopulation.placeDomicileProvince != null) {
+          record.governRealPopulation.placeDomiciles = arr1.join('/')
+        } else {
+          record.governRealPopulation.placeDomiciles = ''
+        }
+        if (record.governRealPopulation.currentResidenceProvince != null) {
+          record.governRealPopulation.currentResidences = arr2.join('/')
+        } else {
+          record.governRealPopulation.currentResidences = ''
+        }
+        console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+
         this.openType = 2
         this.visible = true
         this.mdl = { ...record }

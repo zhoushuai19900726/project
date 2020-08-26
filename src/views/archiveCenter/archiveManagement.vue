@@ -159,11 +159,10 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option
-                      v-for="(item) in education"
-                      :key="item.id"
-                      :value="item.dictionaryValue"
-                    >{{item.dictionaryName}}</a-select-option>
+                    <a-select-option value="高中">高中</a-select-option>
+                    <a-select-option value="中专">中专</a-select-option>
+                    <a-select-option value="大专">大专</a-select-option>
+                    <a-select-option value="大学本科">大学本科</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -463,11 +462,6 @@
         >
           {{ parseValue(nation,text) }}
         </span>
-        <!-- ***************** -->
-
-        =======
-        >>>>>>> Stashed changes
-        <!-- 地址的自定义 -->
         <span
           slot="nativePlace"
           slot-scope="text"
@@ -617,8 +611,11 @@
                 placeholder="请选择"
                 default-value=""
               >
-                <a-select-option value="男">男</a-select-option>
-                <a-select-option value="女">女</a-select-option>n>
+                <a-select-option
+                  v-for="(item) in sex"
+                  :key="item.id"
+                  :value="item.dictionaryValue"
+                >{{item.dictionaryName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -644,8 +641,11 @@
                 placeholder="请选择"
                 default-value=""
               >
-                <a-select-option value="汉">汉</a-select-option>
-                <a-select-option value="壮族">壮族</a-select-option>
+                <a-select-option
+                  v-for="(item) in nation"
+                  :key="item.id"
+                  :value="item.dictionaryValue"
+                >{{item.dictionaryName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -685,8 +685,11 @@
                 v-model="queryParam.marital"
                 default-value=""
               >
-                <a-select-option value="已婚">已婚</a-select-option>
-                <a-select-option value="未婚">未婚</a-select-option>
+                <a-select-option
+                  v-for="(item) in marray"
+                  :key="item.id"
+                  :value="item.dictionaryValue"
+                >{{item.dictionaryName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -700,9 +703,11 @@
                 placeholder="请选择"
                 default-value=""
               >
-                <a-select-option value="党员">党员</a-select-option>
-                <a-select-option value="共青团员">共青团员</a-select-option>
-                <a-select-option value="群众">群众</a-select-option>
+                <a-select-option
+                  v-for="(item) in politicalOutlook"
+                  :key="item.id"
+                  :value="item.dictionaryValue"
+                >{{item.dictionaryName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -716,10 +721,11 @@
                 placeholder="请选择"
                 default-value=""
               >
-                <a-select-option value="高中">高中</a-select-option>
-                <a-select-option value="中专">中专</a-select-option>
-                <a-select-option value="大专">大专</a-select-option>
-                <a-select-option value="大学本科">大学本科</a-select-option>
+                <a-select-option
+                  v-for="(item) in education"
+                  :key="item.id"
+                  :value="item.dictionaryName"
+                >{{ item.dictionaryName }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -1191,7 +1197,6 @@ export default {
     }
   },
   methods: {
-    // *************新增
     // 1\解析下拉框的内容 arr是下拉框的数组
     parseValue (arr, value) {
       // console.log(value)
@@ -1204,7 +1209,6 @@ export default {
       })
       return str
     },
-    // ****************
     // 查询
     refresh () {
       this.$refs.table.refresh(true)
@@ -1214,7 +1218,6 @@ export default {
     onClose () {
       this.visibleMore = false
     },
-    // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
     },

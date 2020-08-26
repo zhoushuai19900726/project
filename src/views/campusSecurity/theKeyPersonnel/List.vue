@@ -340,13 +340,12 @@
                   style="margin-left: 8px"
                   @click="() => this.queryParam = {}"
                 >重置</a-button>
-                <a
+                <a-button
                   @click="toggleAdvanced"
                   style="margin-left: 8px"
                 >
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'" />
-                </a>
+                 更多查询
+                </a-button>
               </span>
             </a-col>
           </a-row>
@@ -642,7 +641,19 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-            <a @click="handleDel(record)">删除</a>
+<!--            <a @click="handleDel(record)">删除</a>-->
+            <template>
+              <a-popconfirm
+                title="确定要删除此条数据吗"
+                placement="topRight"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="handleDel(record)"
+                @cancel="cancel"
+              >
+                <a href="#">删除</a>
+              </a-popconfirm>
+            </template>
           </template>
         </span>
       </s-table>
@@ -652,8 +663,14 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :closeModal="closeModal"
         @changeModel="changeModel"
+        :onChange="onChange"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
         @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
@@ -666,7 +683,7 @@
     <a-drawer
       title="学校周边重点人员查询"
       :width="920"
-      :visible="visible"
+      :visible="visibleMore"
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
     >
@@ -694,7 +711,6 @@
               />
             </a-form-item>
           </a-col>
-          <template v-if="advanced">
             <a-col
               :md="12"
               :sm="12"
@@ -991,9 +1007,8 @@
                 </a-select>
               </a-form-item>
             </a-col>
-          </template>
           <a-col
-            :md="!advanced && 8 || 24"
+            :md="24"
             :sm="24"
           >
               <span
@@ -1002,19 +1017,12 @@
               >
                 <a-button
                   type="primary"
-                  @click="$refs.table.refresh(true)"
+                  @click="closeSearch"
                 >查询</a-button>
                 <a-button
                   style="margin-left: 8px"
                   @click="() => this.queryParam = {}"
                 >重置</a-button>
-                <a
-                  @click="toggleAdvanced"
-                  style="margin-left: 8px"
-                >
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'" />
-                </a>
               </span>
           </a-col>
         </a-row>
@@ -1026,8 +1034,9 @@
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList } from '@/api/manage'
+import { getRoleList, getAddress } from '@/api/manage'
 import { getGovernKeyAroundSchool } from '@/api/campusSecurity'
+import { deleteKeyAroundSchool } from '@/api/aroundSchool'
 
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
@@ -1071,7 +1080,7 @@ const columns = [
     title: '民族',
     dataIndex: 'nation',
     // width: '150px',
-    scopedSlots: { customRender: 'action' }
+    scopedSlots: { customRender: 'nation' }
   },
   {
     title: '籍贯(省)',
@@ -1247,6 +1256,19 @@ export default {
       }
     }
     return {
+      // 新增的下拉框数组 ******
+      // 性别
+      sex: this.$root.sex,
+      // 民族
+      nation: this.$root.nation,
+      // 婚姻状况
+      marray: this.$root.marray,
+      // 政治面貌
+      politicalOutlook: this.$root.politicalOutlook,
+      // 学历
+      education: this.$root.education,
+      // 侧边栏查询
+      visibleMore: false,
       // 弹出框的打开属性  0：新增 1： 编辑   2：修改
       openType: 0,
       // create model
@@ -1258,40 +1280,8 @@ export default {
       // 查询参数
       queryParam: {},
       // 籍贯的三级联动列表
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      options: [],
+      optionss: [],
       // 加载数据方法 必须为 Promise 对象
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
@@ -1315,8 +1305,22 @@ export default {
     }
   },
   created () {
-    // this.getAdr()
+    var that = this
     getRoleList({ t: new Date() })
+    var option = this.$root.address.concat([])
+    // console.log(option)
+    option.forEach(item => {
+      item.isLeaf = false
+    })
+    this.options = option
+    // *******
+    getAddress().then((res) => {
+      res.ret.forEach(item => {
+        item.isLeaf = false
+      })
+      that.optionss = res.ret
+      console.log(this.optionss)
+    })
   },
   computed: {
     rowSelection () {
@@ -1327,8 +1331,84 @@ export default {
     }
   },
   methods: {
-    onClose () {
+    // 关闭createform
+    closeModal (trun) {
       this.visible = false
+      if (trun) {
+        // 刷新表格
+        this.$refs.table.refresh()
+      } else {
+        this.visible = false
+        // 刷新表格
+        this.$refs.table.refresh()
+      }
+    },
+    // *************新增
+    // 1\解析性别
+    parseValue (arr, value) {
+      arr.forEach(item => {
+        if (item.dictionaryValue === value) {
+          return item.dictionaryName
+        }
+      })
+    },
+    loadDatas (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        console.log(this.type)
+        console.log(res)
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 2) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.options = [...this.options]
+      })
+    },
+    loadDatass (selectedOptions) {
+      // var that = this
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      // console.log(targetOption)
+      console.log(this.optionss)
+      targetOption.loading = true
+      // if(type=='籍贯' && selectedOptions ==5){
+      //   return
+      // }
+      getAddress(targetOption.code).then((res) => {
+        targetOption.loading = false
+        res.ret.forEach((item) => {
+          if (selectedOptions.length === 4) {
+            item.isLeaf = true
+          } else {
+            item.isLeaf = false
+          }
+        })
+        targetOption.children = res.ret
+        this.optionss = [...this.optionss]
+      })
+    },
+    // 关闭侧边栏
+    closeSearch () {
+      this.$refs.table.refresh(true)
+      this.visibleMore = false
+    },
+    // 取消删除
+    cancel () {
+      console.log('不删除')
+    },
+    onClose () {
+      this.visibleMore = false
     },
     // 接收子组件的值 更改openType
     changeType (type) {
@@ -1337,7 +1417,11 @@ export default {
     },
     // 当子组件查找到对应的档案管理的时候修改父级的mdl
     changeModel (obj) {
-      this.mdl = obj
+      console.log(obj)
+      console.log(this.mdl)
+      this.mdl = {
+        'governRealPopulation': obj
+      }
     },
     // 籍贯更改的时候
     onChange (e, type) {
@@ -1362,10 +1446,48 @@ export default {
       this.openType = 0
       this.visible = true
     },
+    // 编辑档案
     handleEdit (record) {
-      this.visible = true
+      console.log(record)
+      // 地址的解析
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
+      ]
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
+      ]
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
+      ]
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
       this.openType = 1
+      this.visible = true
       this.mdl = { ...record }
+      // 地址的处理
+      // this.mdl/
     },
     handleOk () {
       const form = this.$refs.createModal.form
@@ -1417,25 +1539,73 @@ export default {
       const form = this.$refs.createModal.form
       form.resetFields() // 清理表单数据（可不做）
     },
+    // 修改弹框
     handleSub (record) {
-      this.visible = true
+      // 地址的解析
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
+      ]
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
+      ]
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
+      ]
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+
       this.openType = 2
-      // if (record.status !== 0) {
-      //   this.$message.info(`${record.no} 订阅成功`)
-      // } else {
-      //   this.$message.error(`${record.no} 订阅失败，规则已关闭`)
-      // }
+      this.visible = true
+      this.mdl = { ...record }
     },
     handleDel (record) {
       //  执行删除的操作
+      console.log('删除操作', record)
+      let arr = {
+        type: Array,
+        default: null
+      }
+      arr = [record.id]
+      return deleteKeyAroundSchool(arr).then((res) => {
+        console.log('删除返回信息')
+        if (res.code === 200) {
+          this.$message.info('删除成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('删除失败')
+          this.$refs.table.refresh()
+        }
+      })
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
     toggleAdvanced () {
-      this.advanced = !this.advanced
-      this.visible = true
+      // this.advanced = !this.advanced
+      this.visibleMore = true
     },
     resetSearchForm () {
       this.queryParam = {
