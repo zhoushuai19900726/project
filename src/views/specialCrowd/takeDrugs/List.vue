@@ -876,7 +876,7 @@
       title: '民族',
       dataIndex: 'nation',
       // width: '150px',
-      scopedSlots: { customRender: 'action' }
+      scopedSlots: { customRender: 'nation' }
     },
     {
       title: '籍贯(省)',
