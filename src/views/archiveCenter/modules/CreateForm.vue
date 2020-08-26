@@ -60,7 +60,7 @@
         <a-form-item label="出生日期">
           <a-date-picker
             v-decorator="['birthday']"
-            placeholder="请输入出生日期"
+            placeholder="null"
             :disabled="openType ===2"
           />
         </a-form-item>
@@ -75,12 +75,20 @@
         </a-form-item>
         <a-form-item label="籍贯(省市区)">
           <a-cascader
+            v-if="openType !==2"
             placeholder="籍贯"
             :disabled="openType ===2"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="options"
+            @change="onChange($event,'NATIVE',true)"
             :loadData="loadDatas"
             v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
+          />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['nativePlaces']"
+            placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="籍贯">
@@ -177,12 +185,19 @@
         </a-form-item>
         <a-form-item label="户籍地(省市区)">
           <a-cascader
+            v-if="openType!==2"
             :disabled="openType ===2"
             placeholder="户籍地"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="options"
             :loadData="loadDatas"
             v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
+          />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['placeDomiciles']"
+            placeholder="现住地"
           />
         </a-form-item>
         <a-form-item label="户籍地">
@@ -201,6 +216,7 @@
         </a-form-item>
         <a-form-item label="现住址(省市区)">
           <a-cascader
+            v-if="openType!==2"
             :disabled="openType ===2"
             :field-names="{ label: 'name', value: 'name', children: 'children' }"
             :options="optionss"
@@ -208,26 +224,18 @@
             placeholder="请选择"
             v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
           />
+          <a-input
+            v-else
+            :disabled="openType ===2"
+            v-decorator="['currentResidences']"
+            placeholder="现住地"
+          />
         </a-form-item>
         <a-form-item label="现住地">
           <a-input
             :disabled="openType ===2"
             v-decorator="['currentResidenceDetail']"
             placeholder="现住地"
-          />
-        </a-form-item>
-        <a-form-item label="现住地街道">
-          <a-input
-            :disabled="openType === 2"
-            v-decorator="['currentResidenceStreet']"
-            placeholder="现住地街道"
-          />
-        </a-form-item>
-        <a-form-item label="现住地社区">
-          <a-input
-            :disabled="openType === 2"
-            v-decorator="['currentResidenceCommunity']"
-            placeholder="现住地社区"
           />
         </a-form-item>
         <a-form-item label="现住地详址">
@@ -243,7 +251,7 @@
 </template>
 
 <script>
-import { getAddress } from '@/api/manage'
+// import { getAddress } from '@/api/manage'
 import pick from 'lodash.pick'
 
 // 表单字段
@@ -276,11 +284,10 @@ const fields = [
   'currentResidence',
   // 现住地详址
   'currentResidenceAddress',
-  // 现住地街道
-  'currentResidenceStreet',
-  // 现住地社区
-  'currentResidenceCommunity',
-  'currentResidenceDetail'
+  'currentResidenceDetail',
+  'currentResidences',
+  'nativePlaces',
+  'placeDomiciles'
 ]
 
 export default {
@@ -300,6 +307,26 @@ export default {
     openType: {
       type: Number,
       default: () => null
+    },
+    loadDatas: {
+      type: Function,
+      default: null
+    },
+    loadDatass: {
+      type: Function,
+      default: null
+    },
+    options: {
+      type: Array,
+      default: null
+    },
+    optionss: {
+      type: Array,
+      default: null
+    },
+    onChange: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -314,13 +341,14 @@ export default {
       }
     }
     return {
-      form: this.$form.createForm(this),
-      options: [],
-      optionss: []
+      form: this.$form.createForm(this)
+      // options: [],
+      // optionss: []
     }
   },
   created () {
-    console.log(this.openType)
+    console.log(this.options)
+    console.log(this.model)
     // console.log('custom modal created')
 
     // 防止表单未注册
@@ -328,72 +356,28 @@ export default {
 
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
-      // console.log(this.model)
+      console.log(this.model)
+      console.log(this.options)
       this.model && this.form.setFieldsValue(pick(this.model, fields))
     })
 
     // *************
-    var that = this
-    var option = this.$root.address.concat([])
-    // console.log(option)
-    option.forEach(item => {
-      item.isLeaf = false
-    })
-    this.options = option
-    getAddress().then((res) => {
-      res.ret.forEach(item => {
-        item.isLeaf = false
-      })
-      that.optionss = res.ret
-      // console.log(this.optionss)
-    })
+    // var that = this
+    // var option = this.$root.address.concat([])
+    // // console.log(option)
+    // option.forEach(item => {
+    //   item.isLeaf = false
+    // })
+    // this.options = option
+    // getAddress().then((res) => {
+    //   res.ret.forEach(item => {
+    //     item.isLeaf = false
+    //   })
+    //   that.optionss = res.ret
+    //   // console.log(this.optionss)
+    // })
   },
   methods: {
-    loadDatas (selectedOptions) {
-      // var that = this
-      const targetOption = selectedOptions[selectedOptions.length - 1]
-      // console.log(targetOption)
-      // console.log(this.optionss)
-      targetOption.loading = true
-      // if(type=='籍贯' && selectedOptions ==5){
-      //   return
-      // }
-      getAddress(targetOption.code).then((res) => {
-        // console.log(res)
-        targetOption.loading = false
-        res.ret.forEach((item) => {
-          if (selectedOptions.length === 2) {
-            item.isLeaf = true
-          } else {
-            item.isLeaf = false
-          }
-        })
-        targetOption.children = res.ret
-        this.options = [...this.options]
-      })
-    },
-    loadDatass (selectedOptions) {
-      // var that = this
-      const targetOption = selectedOptions[selectedOptions.length - 1]
-      // console.log(targetOption)
-      // console.log(this.optionss)
-      targetOption.loading = true
-      // if(type=='籍贯' && selectedOptions ==5){
-      //   return
-      // }
-      getAddress(targetOption.code).then((res) => {
-        targetOption.loading = false
-        res.ret.forEach((item) => {
-          if (selectedOptions.length === 4) {
-            item.isLeaf = true
-          } else {
-            item.isLeaf = false
-          }
-        })
-        targetOption.children = res.ret
-        this.optionss = [...this.optionss]
-      })
-    }
   }
 }
 </script>

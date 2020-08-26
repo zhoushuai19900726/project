@@ -76,9 +76,9 @@ export default {
     //   }
     //   that.getSelect(item.name, item.type)
     // })
-    if (this.$root.address.length === 0) {
-      this.getAddress()
-    }
+    // if (this.$root.address.length === 0) {
+    //   this.getAddress()
+    // }
   },
   methods: {
     ...mapMutations(['addRecords']),
@@ -142,6 +142,10 @@ export default {
       localStorage.setItem('browseHistory', browseHistory)
       next()
     })
+
+    if (this.$root.address.length === 0) {
+      this.getAddress()
+    }
   }
 }
 </script>

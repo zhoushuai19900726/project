@@ -3,9 +3,7 @@
     <history></history>
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
-        <a-form
-          v-bind="formLayout"
-        >
+        <a-form v-bind="formLayout">
           <a-row>
             <a-col
               :md="8"
@@ -306,28 +304,6 @@
                 :md="8"
                 :sm="24"
               >
-                <a-form-item label="现住址街道">
-                  <a-input
-                    v-model="queryParam.currentResidenceCommunity"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item label="现住址社区">
-                  <a-input
-                    v-model="queryParam.currentResidenceAddress"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                :md="8"
-                :sm="24"
-              >
                 <a-form-item label="现住地详址">
                   <a-input
                     v-model="queryParam.currentResidenceAddress"
@@ -523,9 +499,14 @@
       <create-form
         ref="createModal"
         :visible="visible"
+        :onChange="onChange"
         :loading="confirmLoading"
         :model="mdl"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -602,6 +583,7 @@ const columns = [
     dataIndex: 'nativePlace',
     scopedSlots: { customRender: 'nativePlace' }
   },
+
   {
     title: '婚姻状况',
     dataIndex: 'marital'
@@ -640,11 +622,6 @@ const columns = [
     scopedSlots: { customRender: 'contactInformation' }
   },
   {
-    title: '户籍地',
-    dataIndex: 'placeDomicile',
-    scopedSlots: { customRender: 'placeDomicile' }
-  },
-  {
     title: '户籍地(省)',
     dataIndex: 'placeDomicileProvince'
   },
@@ -653,18 +630,18 @@ const columns = [
     dataIndex: 'placeDomicileCity'
   },
   {
-    title: '户籍地',
+    title: '户籍地(区)',
     dataIndex: 'placeDomicileRegion'
+  },
+  {
+    title: '户籍地',
+    dataIndex: 'placeDomicile',
+    scopedSlots: { customRender: 'placeDomicile' }
   },
   {
     title: '户籍地详址',
     dataIndex: 'placeDomicileAddress',
     scopedSlots: { customRender: 'placeDomicileAddress' }
-  },
-  {
-    title: '现住地',
-    dataIndex: 'currentResidence',
-    scopedSlots: { customRender: 'currentResidence' }
   },
   {
     title: '现住址(省)',
@@ -679,12 +656,9 @@ const columns = [
     dataIndex: 'currentResidenceRegion'
   },
   {
-    title: '现住址街道',
-    dataIndex: 'currentResidenceStreet'
-  },
-  {
-    title: '现住址社区',
-    dataIndex: 'currentResidenceCommunity'
+    title: '现住址',
+    dataIndex: 'currentResidence',
+    scopedSlots: { customRender: 'currentResidence' }
   },
   {
     title: '现住地详址',
@@ -865,7 +839,11 @@ export default {
       })
     },
     // 籍贯更改的时候
-    onChange (e, type) {
+    onChange (e, type, turn) {
+      console.log(turn)
+      // if (turn) {
+      //   this.options = []
+      // }
       // console.log(e.length)
       if (type === 'NATIVE' || type === 'PLACE') {
         this.type = 0
@@ -889,6 +867,8 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
+        this.queryParam.currentResidenceStreet = e[3]
+        this.queryParam.currentResidenceCommunity = e[4]
       }
       console.log(this.queryParam)
     },
@@ -902,9 +882,9 @@ export default {
     handleEdit (record) {
       // 地址的解析
       record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
+        record.nativePlaceProvince,
+        record.nativePlaceCity,
+        record.nativePlaceRegion
       ]
       record.placeDomicile = [
         record.placeDomicileCity,
@@ -914,9 +894,26 @@ export default {
       record.currentResidence = [
         record.currentResidenceCity,
         record.currentResidenceProvince,
-        record.currentResidenceRegion
+        record.currentResidenceRegion,
+        record.currentResidenceStreet,
+        record.currentResidenceCommunity
       ]
-      console.log(record)
+      console.log(record.nativePlaceProvince)
+      var list = this.options
+      list.forEach(item => {
+        if (item.name === record.nativePlaceProvince) {
+          item.children = []
+          item.children.push({ name: record.nativePlaceCity })
+          item.children.forEach(element => {
+            if (element.name === record.nativePlaceCity) {
+              element.children = []
+              element.children.push({ name: record.nativePlaceRegion })
+            }
+          })
+        }
+      })
+      console.log(list)
+      this.options = list
       this.openType = 1
       this.visible = true
       this.mdl = { ...record }
@@ -948,40 +945,43 @@ export default {
     handleOk () {
       const form = this.$refs.createModal.form
       this.confirmLoading = true
-      if (this.openType === 0) {
-        form.validateFields((errors, values) => {
-          if (!errors) {
-            // console.log('values', values.birthday._d)
-            console.log(values)
-            var obj = values
-            var nativeArr = obj.nativePlace
-            var native = obj.nativePlaceDetail
-            obj.nativePlaceProvince = nativeArr[0]
-            obj.nativePlaceCity = nativeArr[1]
-            obj.nativePlaceRegion = nativeArr[2]
-            obj.nativePlace = native
-            // 删除无用的 nativePlaceDetail 字段
-            delete obj.nativePlaceDetail
-            obj.birthday = this.parseUtcTime(obj.birthday)
-            obj.placeDomicileProvince = obj.placeDomicile[0]
-            obj.placeDomicileCity = obj.placeDomicile[1]
-            obj.placeDomicileRegion = obj.placeDomicile[2]
-            obj.placeDomicile = obj.placeDomicileDetail
-            // 删除无用的 placeDomicile 字段
-            delete obj.placeDomicileDetail
-            obj.currentResidenceProvince = obj.currentResidence[0]
-            obj.currentResidenceCity = obj.currentResidence[1]
-            obj.currentResidenceRegion = obj.currentResidence[2]
-            obj.currentResidence = obj.currentResidenceDetail
-            // 日期的处理
-            obj.birthday = obj.birthday + ' 00:00:00'
-            // 删除无用的 placeDomicile 字段
-            delete obj.currentResidenceDetail
-            delete obj.id
-            var arr = Object.keys(obj)
-            console.log(obj, arr.length)
-            // 调用接口进行修改
-
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          // console.log('values', values.birthday._d)
+          console.log(values)
+          var obj = values
+          var nativeArr = obj.nativePlace
+          // console.log(nativeArr)
+          var native = obj.nativePlaceDetail
+          obj.nativePlaceProvince = nativeArr[0]
+          obj.nativePlaceCity = nativeArr[1]
+          obj.nativePlaceRegion = nativeArr[2]
+          obj.nativePlace = native
+          // 删除无用的 nativePlaceDetail 字段
+          delete obj.nativePlaceDetail
+          obj.birthday = this.parseUtcTime(obj.birthday)
+          obj.placeDomicileProvince = obj.placeDomicile[0]
+          obj.placeDomicileCity = obj.placeDomicile[1]
+          obj.placeDomicileRegion = obj.placeDomicile[2]
+          obj.placeDomicile = obj.placeDomicileDetail
+          // 删除无用的 placeDomicile 字段
+          delete obj.placeDomicileDetail
+          console.log(obj.currentResidence)
+          obj.currentResidenceProvince = obj.currentResidence[0]
+          obj.currentResidenceCity = obj.currentResidence[1]
+          obj.currentResidenceRegion = obj.currentResidence[2]
+          obj.currentResidenceStreet = obj.currentResidence[3]
+          obj.currentResidenceCommunity = obj.currentResidence[4]
+          obj.currentResidence = obj.currentResidenceDetail
+          // 日期的处理
+          obj.birthday = obj.birthday + ' 00:00:00'
+          // 删除无用的 placeDomicile 字段
+          delete obj.currentResidenceDetail
+          delete obj.id
+          // var arr = Object.keys(obj)
+          // console.log(obj, arr.length)
+          // 调用接口进行修改
+          if (this.openType === 0) {
             return editArchiveManagement(obj).then((res) => {
               console.log(res)
               // return res.result
@@ -1010,37 +1010,65 @@ export default {
                 this.$refs.table.refresh()
               }
             })
+          } else if (this.openType === 1) {
+            // console.log(this.mdl.id)
+            obj.id = this.mdl.id
+            return editArchiveManagement(obj).then((res) => {
+              console.log(res)
+              // return res.result
+              if (res.code === 200) {
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    resolve()
+                  }, 1000)
+                }).then((res) => {
+                  this.visible = false
+                  this.confirmLoading = false
+                  // 重置表单数据
+                  form.resetFields()
+                  // 刷新表格
+                  this.$refs.table.refresh()
 
-            // if (values.id > 0) {
-            //   // 修改 e.g.
-            //   new Promise((resolve, reject) => {
-            //     setTimeout(() => {
-            //       resolve()
-            //     }, 1000)
-            //   }).then((res) => {
-            //     this.visible = false
-            //     this.confirmLoading = false
-            //     // 重置表单数据
-            //     form.resetFields()
-            //     // 刷新表格
-            //     this.$refs.table.refresh()
-
-            //     this.$message.info('修改成功')
-            //   })
-            // } else {
-            //   // 新增
-            // }
+                  this.$message.info('修改成功')
+                })
+              } else {
+                this.visible = false
+                this.confirmLoading = false
+                this.$message.error(res.msg)
+                // 重置表单数据
+                form.resetFields()
+                // 刷新表格
+                this.$refs.table.refresh()
+              }
+            })
           } else {
-            // console.log('youwentyi')
-            this.$message.error('请填写必要信息')
-            this.confirmLoading = false
+            return false
           }
-        })
-      } else if (this.openType === 1) {
+          // if (values.id > 0) {
+          //   // 修改 e.g.
+          //   new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       resolve()
+          //     }, 1000)
+          //   }).then((res) => {
+          //     this.visible = false
+          //     this.confirmLoading = false
+          //     // 重置表单数据
+          //     form.resetFields()
+          //     // 刷新表格
+          //     this.$refs.table.refresh()
 
-      } else {
-
-      }
+          //     this.$message.info('修改成功')
+          //   })
+          // } else {
+          //   // 新增
+          // }
+        } else {
+          // console.log('youwentyi')
+          this.$message.error('请填写必要信息')
+          this.confirmLoading = false
+        }
+      })
     },
     handleCancel () {
       this.visible = false
@@ -1057,17 +1085,21 @@ export default {
         record.currentResidenceRegion
       ]
       record.placeDomicile = [
-        record.placeDomicileCity,
         record.placeDomicileProvince,
+        record.placeDomicileCity,
         record.placeDomicileRegion
       ]
       record.currentResidence = [
-        record.currentResidenceCity,
         record.currentResidenceProvince,
-        record.currentResidenceRegion
+        record.currentResidenceCity,
+        record.currentResidenceRegion,
+        record.currentResidenceStreet,
+        record.currentResidenceCommunity
       ]
-      console.log(record)
-      console.log(record)
+      record.currentResidences = record.currentResidence.join('/')
+      record.placeDomiciles = record.placeDomicile.join('/')
+      record.nativePlaces = record.nativePlace.join('/')
+      console.log(record.currentResidences)
       this.openType = 2
       this.visible = true
       this.mdl = { ...record }

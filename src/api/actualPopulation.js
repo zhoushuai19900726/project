@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-
+import qs from 'qs'
 // 基本链接
-// const baseUrl = 'http://127.0.0.1:'
+const baseUrl = 'http://60.205.246.7:'
 // 文佳406-1
-const baseUrl = 'http://192.168.1.106:'
+// const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
 // const baseUrl = 'http://192.168.1.112:'
 
@@ -85,35 +85,36 @@ const api = {
   // 就业失业人口 添加/修改
   editEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/insertGovernEmploymentServices',
   // 就业失业人口 删除
-  deleteEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/deleteGovernEmploymentServices',
+  deleteEmploymentServices: baseUrl + '/smartCity/governEmploymentServices/deleteGovernEmploymentServices'
 }
 
 // 户籍人口 查询
 export function getRegisteredPopulation (parameter) {
   return request({
-    url: api.getGovernKeyAroundSchool,
+    url: api.getRegisteredPopulation,
     headers: {
       'content-type': 'application/x-www-form-urlencoded'
     },
     method: 'POST',
-    data: parameter
+    // data: parameter
+    data: qs.stringify(parameter)
   })
 }
 // 户籍人口 添加/修改
-export function editFloatingPopulation (parameter) {
+export function editRegisteredPopulation (parameter) {
   return request({
-    url: api.editFloatingPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    url: api.editRegisteredPopulation,
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
 }
 // 户籍人口 删除
-export function editFloatingPopulation (parameter) {
+export function deleteRegisteredPopulation (parameter) {
   return request({
-    url: api.getGovernKeyAroundSchool,
+    url: api.deleteRegisteredPopulation,
     headers: {
       'content-type': 'application/x-www-form-urlencoded'
     },
@@ -133,9 +134,9 @@ export function getFloatingPopulation (parameter) {
   })
 }
 // 流动人口 添加/修改
-export function getFloatingPopulation (parameter) {
+export function editFloatingPopulation (parameter) {
   return request({
-    url: api.getFloatingPopulation,
+    url: api.editFloatingPopulation,
     headers: {
       'content-type': 'application/x-www-form-urlencoded'
     },
