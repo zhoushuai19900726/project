@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="户籍人口"
+    title="留守人员"
     :width="1200"
     :visible="visible"
     :confirmLoading="loading"
@@ -139,12 +139,22 @@
               :sm="24"
             >
               <a-form-item label="籍贯(省市区)">
-                <a-cascader
-                  :options="options"
-                  placeholder="籍贯"
-                  :disabled="openType !== 3"
-                  v-decorator="['nativePlace', {rules: [{required: true, message: '请输入'}]}]"
+                <a-input
+                  disabled
+                  v-show="openType ===3"
+                  v-decorator="['nativePlaces']"
+                  placeholder="初始地址为空"
                 />
+                <a-cascader
+                  placeholder="请输入新地址"
+                  :disabled="openType !==3"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="options"
+                  @change="onChange($event,'NATIVE',true)"
+                  :loadData="loadDatas"
+                  v-decorator="['nativePlace']"
+                />
+
               </a-form-item>
             </a-col>
             <a-col
@@ -294,11 +304,18 @@
               :sm="24"
             >
               <a-form-item label="户籍地(省市区)">
+                <a-input
+                  disabled
+                  v-show="openType ===3"
+                  v-decorator="['placeDomiciles']"
+                  placeholder="初始地址为空"
+                />
                 <a-cascader
                   :disabled="openType !== 3"
                   :options="options"
-                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
-                  placeholder="请选择"
+                  :loadData="loadDatas"
+                  v-decorator="['placeDomicile']"
+                  placeholder="请选择新地址"
                 />
               </a-form-item>
             </a-col>
@@ -331,11 +348,18 @@
               :sm="24"
             >
               <a-form-item label="现住址(省市区)">
+                <a-input
+                  disabled
+                  v-show="openType ===3"
+                  v-decorator="['currentResidences']"
+                  placeholder="初始地址为空"
+                />
                 <a-cascader
                   :disabled="openType !== 3"
                   :options="options"
-                  placeholder="请选择"
-                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
+                  placeholder="请选择新地址"
+                  :loadData="loadDatass"
+                  v-decorator="['currentResidence']"
                 />
               </a-form-item>
             </a-col>
@@ -390,106 +414,169 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增户籍人口">
+        <a-card title="新增留守人员">
           <a-row>
             <a-col
-              :md="8"
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="健康状况">
+                <a-input
+                  v-decorator="['health']"
+                  placeholder="请输入健康状况"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="个人年收入">
+                <a-input
+                  v-decorator="['personalAnnualIncome']"
+                  placeholder="请输入个人年收入"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
               :sm="24"
             >
               <a-form-item label="人户一致标识">
                 <a-select
                   placeholder="请选择"
                   :disabled="openType === 2"
-                  v-decorator="['hoseholdIdentity', {rules: [{required: true, message: '请输入'}]}]"
+                  v-decorator="['householdIdentity', {rules: [{required: true, message: '请输入'}]}]"
                 >
                   <a-select-option value="0">无</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col
-              :md="8"
+              :md="12"
               :sm="24"
             >
-              <a-form-item label="户号">
+              <a-form-item label="留守人员类型">
+                <a-select
+                  placeholder="请选择"
+                  :disabled="openType === 2"
+                  v-decorator="['leftBehindType', {rules: [{required: true, message: '请输入'}]}]"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭主要成员身份证号码">
                 <a-input
-                  v-decorator="['accountNumber']"
-                  placeholder="请输入户号"
+                  v-decorator="['mainFamilyMemberIdCard']"
+                  placeholder="请输入"
                 />
               </a-form-item>
             </a-col>
             <a-col
-              :md="8"
+              :md="12"
               :sm="24"
             >
-              <a-form-item label="户主公民身份证号">
+              <a-form-item label="家庭主要成员姓名">
                 <a-input
-                  v-decorator="['householderIdCard']"
-                  placeholder="请输入户主公民身份证号"
+                  v-decorator="['mainFamilyMemberName']"
+                  placeholder="请输入"
                 />
               </a-form-item>
             </a-col>
             <a-col
-              :md="8"
+              :md="12"
               :sm="24"
             >
-              <a-form-item label="户主姓名">
+              <a-form-item label="家庭主要成员健康状况">
                 <a-input
-                  v-decorator="['householderName']"
+                  v-decorator="['mainFamilyMemberHealth']"
                   placeholder="请输入户主姓名"
                 />
               </a-form-item>
             </a-col>
             <a-col
-              :md="8"
+              :md="12"
               :sm="24"
             >
-              <a-form-item label="户主性别">
-                <a-select
-                  placeholder="请选择"
-                  :disabled="openType === 2"
-                  v-decorator="['hoseholdIdentity']"
-                >
-                  <a-select-option value="0">男</a-select-option>
-                  <a-select-option value="1">女</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="8"
-              :sm="24"
-            >
-              <a-form-item label="与户主关系">
-                <a-select
-                  placeholder="请选择"
-                  :disabled="openType === 2"
-                  v-decorator="['householderRelationship']"
-                >
-                  <a-select-option value="0">朋友</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="8"
-              :sm="24"
-            >
-              <a-form-item label="户主联系类型">
-                <a-select
-                  placeholder="请选择"
-                  :disabled="openType === 2"
-                  v-decorator="['householderContactType']"
-                >
-                  <a-select-option value="0">朋友</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="8"
-              :sm="24"
-            >
-              <a-form-item label="户主联系方式">
+              <a-form-item label="与留守人员关系">
                 <a-input
-                  v-decorator="['householderContactInformation']"
-                  placeholder="请输入户主姓名"
+                  v-decorator="['leftBehindRelationship']"
+                  placeholder="请输入"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭主要成员联系类型">
+                <a-select
+                  placeholder="请选择"
+                  :disabled="openType === 2"
+                  v-decorator="['mainFamilyMembersContactType']"
+                >
+                  <a-select-option value="0">无</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭主要成员联系方式">
+                <a-input
+                  v-decorator="['mainFamilyMembersContactInformation']"
+                  placeholder="请输入"
+                />
+              </a-form-item>
+            </a-col>
+            <!-- 缺一个三级联动 -->
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭主要成员工作详细地址">
+                <a-input
+                  v-decorator="['mainFamilyMembersWorkAddress']"
+                  placeholder="请输入"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭年收入">
+                <a-input
+                  v-decorator="['annulFamilyIncome']"
+                  placeholder="请输入"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="困难及诉求">
+                <a-input
+                  v-decorator="['difficultiesAndDemands']"
+                  placeholder="请输入"
+                />
+              </a-form-item>
+            </a-col>
+            <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="帮扶情况">
+                <a-input
+                  v-decorator="['assistance']"
+                  placeholder="请输入"
                 />
               </a-form-item>
             </a-col>
@@ -519,7 +606,7 @@ import moment from 'moment'
 import pick from 'lodash.pick'
 import debounce from 'lodash/debounce'
 import { searchArchiveManagement, editArchiveManagement } from '@/api/manage'
-import { editRegisteredPopulation } from '@/api/actualPopulation'
+import { editftBehindPopulation } from '@/api/actualPopulation'
 // 表单字段
 const fields = [
   // 'description',
@@ -550,21 +637,27 @@ const fields = [
   'currentResidence',
   // 现住地详址
   'currentResidenceAddress',
-  // 现住地街道
-  'currentResidenceStreet',
-  // 现住地社区
-  'currentResidenceCommunity',
   'currentResidenceDetail',
-  // 人户标识
-  'hoseholdIdentity',
-  // 户号
-  'accountNumber',
-  'householderIdCard',
-  'householderName',
-  'householderGender',
-  'householderRelationship',
-  'householderContactType',
-  'householderContactInformation'
+  'currentResidences',
+  'nativePlaces',
+  'placeDomiciles'
+]
+const field = [
+  'health',
+  'personalAnnualIncome',
+  'householdIdentity',
+  'leftBehindType',
+  'mainFamilyMemberIdCard',
+  'mainFamilyMemberName',
+  'mainFamilyMemberHealth',
+  'leftBehindRelationship',
+  'mainFamilyMembersContactType',
+  'mainFamilyMembersContactInformation',
+  'mainFamilyMembersWork',
+  'mainFamilyMembersWorkAddress',
+  'annulFamilyIncome',
+  'difficultiesAndDemands',
+  'assistance'
 ]
 
 export default {
@@ -581,14 +674,34 @@ export default {
       type: Object,
       default: () => null
     },
-    options: {
-      type: Array,
-      default: () => null
-    },
     // 打开modal的方式  0.新增/ 1.编辑/2.查看
     openType: {
       type: Number,
       default: () => 0
+    },
+    closeModal: {
+      type: Function,
+      default: null
+    },
+    loadDatas: {
+      type: Function,
+      default: null
+    },
+    loadDatass: {
+      type: Function,
+      default: null
+    },
+    options: {
+      type: Array,
+      default: () => null
+    },
+    optionss: {
+      type: Array,
+      default: null
+    },
+    onChange: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -607,6 +720,8 @@ export default {
     return {
       // 更改档案管理的档案id
       id: null,
+      // 更改特殊的时候的id
+      specialId: null,
       form: this.$form.createForm(this),
       form1: this.$form.createForm(this),
       isDisabled: {
@@ -624,11 +739,19 @@ export default {
 
     // 防止表单未注册
     fields.forEach(v => this.form.getFieldDecorator(v))
-
+    field.forEach(v => this.form1.getFieldDecorator(v))
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
-      console.log(this.model)
-      this.model && this.form.setFieldsValue(pick(this.model, fields))
+      console.log(this.openType)
+      if (this.model.id != null) {
+        this.specialId = this.model.id
+        this.id = this.model.governRealPopulation.id
+      }
+      console.log(this.model.governRealPopulation)
+      console.log(this.id)
+      this.model && this.form.setFieldsValue(pick(this.model.governRealPopulation, fields))
+      // console.log(this.form, this.form1)
+      this.model && this.form1.setFieldsValue(pick(this.model, field))
     })
   },
   mounted () {
@@ -653,6 +776,7 @@ export default {
     },
     // 保存公共字段
     submitCommon () {
+      var that = this
       this.$emit('changeOpenType', 1)
       var form = this.$refs.common.form
       form.validateFieldsAndScroll((errors, values) => {
@@ -663,35 +787,47 @@ export default {
         var nativeArr = obj.nativePlace
         // console.log(nativeArr)
         var native = obj.nativePlaceDetail
-        obj.nativePlaceProvince = nativeArr[0]
-        obj.nativePlaceCity = nativeArr[1]
-        obj.nativePlaceRegion = nativeArr[2]
+        if (nativeArr != null) {
+          obj.nativePlaceProvince = nativeArr[0]
+          obj.nativePlaceCity = nativeArr[1]
+          obj.nativePlaceRegion = nativeArr[2]
+        }
         obj.nativePlace = native
         // 删除无用的 nativePlaceDetail 字段
         delete obj.nativePlaceDetail
         obj.birthday = this.parseUtcTime(obj.birthday)
-        obj.placeDomicileProvince = obj.placeDomicile[0]
-        obj.placeDomicileCity = obj.placeDomicile[1]
-        obj.placeDomicileRegion = obj.placeDomicile[2]
+        if (obj.placeDomicile != null) {
+          obj.placeDomicileProvince = obj.placeDomicile[0]
+          obj.placeDomicileCity = obj.placeDomicile[1]
+          obj.placeDomicileRegion = obj.placeDomicile[2]
+        }
         obj.placeDomicile = obj.placeDomicileDetail
         // 删除无用的 placeDomicile 字段
         delete obj.placeDomicileDetail
         console.log(obj.currentResidence)
-        obj.currentResidenceProvince = obj.currentResidence[0]
-        obj.currentResidenceCity = obj.currentResidence[1]
-        obj.currentResidenceRegion = obj.currentResidence[2]
-        obj.currentResidenceStreet = obj.currentResidence[3]
-        obj.currentResidenceCommunity = obj.currentResidence[4]
+        if (obj.currentResidence != null) {
+          obj.currentResidenceProvince = obj.currentResidence[0]
+          obj.currentResidenceCity = obj.currentResidence[1]
+          obj.currentResidenceRegion = obj.currentResidence[2]
+          obj.currentResidenceStreet = obj.currentResidence[3]
+          obj.currentResidenceCommunity = obj.currentResidence[4]
+        }
+
         obj.currentResidence = obj.currentResidenceDetail
         // 日期的处理
         obj.birthday = obj.birthday + ' 00:00:00'
         // 删除无用的 placeDomicile 字段
         delete obj.currentResidenceDetail
         delete obj.id
+        delete obj.currentResidences
+        delete obj.nativePlaces
+        delete obj.placeDomiciles
         obj.id = this.id
+        console.log(obj.id)
         return editArchiveManagement(obj).then((res) => {
           console.log(res)
           this.$message.info('修改成功')
+          that.closeModal(true)
         })
       })
     },
@@ -699,12 +835,32 @@ export default {
     submitSpecial () {
       var that = this
       var form = this.$refs.special.form
+      var form1 = this.$refs.common.form
       form.validateFields((errors, values) => {
         console.log(values)
         if (!errors) {
           var data = { ...values }
           data.basicsId = that.id
-          return editRegisteredPopulation(data).then((res) => {
+          if (that.openType === 1) {
+            console.log('我是修改')
+            data.id = that.specialId
+          }
+          return editftBehindPopulation(data).then((res) => {
+            // 重置表单数据
+            form.resetFields()
+            form1.resetFields()
+            if (res.code === 200) {
+              form.resetFields()
+              that.closeModal()
+              if (that.openType === 1) {
+                this.$message.info('修改成功')
+              } else if (that.openType === 0) {
+                this.$message.info('新增成功')
+              }
+            } else {
+              this.$message.error(res.msg)
+              that.closeModal()
+            }
             console.log(res)
           })
         }
@@ -742,7 +898,15 @@ export default {
     // 点击搜索到的列表 更改openType 并且更改父级的mdl (this.$emit('changeModel',obj))
     handleChange (value) {
       var that = this
-      console.log(value[0].label)
+      if (!value[0]) {
+        var form = this.$refs.common.form
+        form.resetFields()
+        // console.log(this.value, 'meineirong')
+        this.value = []
+        this.$emit('changeModel', {})
+        return
+      }
+      console.log(value)
       var name = value[0].label.split('-')[0].trim()
       var idCard = value[0].label.split('-')[1].trim()
       console.log(name.length)

@@ -424,7 +424,7 @@
                 <a-select
                   placeholder="请选择"
                   :disabled="openType === 2"
-                  v-decorator="['hoseholdIdentity', {rules: [{required: true, message: '请输入'}]}]"
+                  v-decorator="['householdIdentity', {rules: [{required: true, message: '请输入'}]}]"
                 >
                   <a-select-option value="0">无</a-select-option>
                 </a-select>
@@ -471,7 +471,7 @@
                 <a-select
                   placeholder="请选择"
                   :disabled="openType === 2"
-                  v-decorator="['hoseholdIdentity']"
+                  v-decorator="['householdIdentity']"
                 >
                   <a-select-option value="0">男</a-select-option>
                   <a-select-option value="1">女</a-select-option>
@@ -513,7 +513,7 @@
               <a-form-item label="户主联系方式">
                 <a-input
                   v-decorator="['householderContactInformation']"
-                  placeholder="请输入户主姓名"
+                  placeholder="请输入"
                 />
               </a-form-item>
             </a-col>
@@ -581,7 +581,7 @@ const fields = [
 ]
 const field = [
   // 人户标识
-  'hoseholdIdentity',
+  'householdIdentity',
   // 户号
   'accountNumber',
   'householderIdCard',
@@ -767,6 +767,7 @@ export default {
     submitSpecial () {
       var that = this
       var form = this.$refs.special.form
+      var form1 = this.$refs.common.form
       form.validateFields((errors, values) => {
         console.log(values)
         if (!errors) {
@@ -781,8 +782,13 @@ export default {
             form.resetFields()
             if (res.code === 200) {
               form.resetFields()
+              form1.resetFields()
               that.closeModal()
-              this.$message.info('新增成功')
+              if (that.openType === 1) {
+                this.$message.info('修改成功')
+              } else if (that.openType === 0) {
+                this.$message.info('新增成功')
+              }
             } else {
               this.$message.error(res.msg)
               that.closeModal()

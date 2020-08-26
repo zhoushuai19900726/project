@@ -39,6 +39,7 @@
                   />
                 </a-form-item>
               </a-col>
+              <!-- ******* -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -47,13 +48,17 @@
                   <a-select
                     v-model="queryParam.gender"
                     placeholder="请选择"
-                    default-value=""
+                    default-value="0"
                   >
-                    <a-select-option value="男">男</a-select-option>
-                    <a-select-option value="女">女</a-select-option>n>
+                    <a-select-option
+                      v-for="(item) in sex"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
+              <!-- ***** -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -66,6 +71,7 @@
                   />
                 </a-form-item>
               </a-col>
+              <!-- ********* -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -76,11 +82,15 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="汉">汉</a-select-option>
-                    <a-select-option value="壮族">壮族</a-select-option>
+                    <a-select-option
+                      v-for="(item) in nation"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
+              <!-- ********* -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -107,6 +117,7 @@
                   />
                 </a-form-item>
               </a-col>
+              <!-- ***** -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -117,11 +128,15 @@
                     v-model="queryParam.marital"
                     default-value=""
                   >
-                    <a-select-option value="已婚">已婚</a-select-option>
-                    <a-select-option value="未婚">未婚</a-select-option>
+                    <a-select-option
+                      v-for="(item) in marray"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
+              <!-- ***** -->
               <a-col
                 :md="8"
                 :sm="24"
@@ -132,9 +147,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="党员">党员</a-select-option>
-                    <a-select-option value="共青团员">共青团员</a-select-option>
-                    <a-select-option value="群众">群众</a-select-option>
+                    <a-select-option
+                      v-for="(item) in politicalOutlook"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -148,10 +165,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="高中">高中</a-select-option>
-                    <a-select-option value="中专">中专</a-select-option>
-                    <a-select-option value="大专">大专</a-select-option>
-                    <a-select-option value="大学本科">大学本科</a-select-option>
+                    <a-select-option
+                      v-for="(item) in education"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -490,7 +508,7 @@
           slot="gender"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.gender }}
+          {{ parseValue(sex,record.governRealPopulation.gender) }}
         </span>
         <!-- 出生日期 -->
 
@@ -506,10 +524,15 @@
           slot="nation"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.nation }}
+          {{ parseValue(nation,record.governRealPopulation.nation) }}
         </span>
-
         <!-- 籍贯(省市区) -->
+        <span
+          slot="nativePlaceProvince"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlaceProvince }}
+        </span>
         <span
           slot="nativePlaceCity"
           slot-scope="text,record"
@@ -534,7 +557,7 @@
           slot="marital"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.marital }}
+          {{ parseValue(marray,record.governRealPopulation.marital) }}
         </span>
 
         <!-- 政治面貌 -->
@@ -542,7 +565,7 @@
           slot="politicalOutlook"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.politicalOutlook }}
+          {{ parseValue(politicalOutlook,record.governRealPopulation.politicalOutlook) }}
         </span>
 
         <!-- 学历 -->
@@ -550,7 +573,7 @@
           slot="education"
           slot-scope="text,record"
         >
-          {{ record.governRealPopulation.education }}
+          {{ parseValue(education,record.governRealPopulation.education) }}
         </span>
 
         <!-- 宗教信仰 -->
@@ -703,7 +726,15 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :closeModal="closeModal"
+        @changeModel="changeModel"
+        :onChange="onChange"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
+        @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -717,201 +748,271 @@
 
 <script>
 import moment from 'moment'
-import { STable, Ellipsis } from '@/components'
+import {
+  STable,
+  Ellipsis
+} from '@/components'
 // import { getRoleList, getServiceList } from '@/api/manage'
-import { getRoleList, editArchiveManagement, delArchiveManagement, getAddress } from '@/api/manage'
-import { getIdleYouth } from '@/api/actualPopulation'
+import {
+  getRoleList,
+  getAddress
+} from '@/api/manage'
+import {
+  getIdleYouth,
+  deleteIdleYouth
+} from '@/api/actualPopulation'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 
-const columns = [
-  {
-    title: '#',
-    scopedSlots: { customRender: 'serial' },
-    fixed: 'left'
+const columns = [{
+  title: '#',
+  scopedSlots: {
+    customRender: 'serial'
   },
-  {
-    title: '公民身份证号',
-    dataIndex: 'idCard',
-    width: '100',
-    scopedSlots: { customRender: 'idCard' }
-  },
-  {
-    title: '姓名',
-    dataIndex: 'fullName',
-    width: 100,
-    scopedSlots: { customRender: 'fullName' }
-  },
-  {
-    title: '曾用名',
-    dataIndex: 'nameUsedBefore',
-    width: 100,
-    scopedSlots: { customRender: 'nameUsedBefore' }
-  },
-  {
-    title: '性别',
-    dataIndex: 'gender',
-    scopedSlots: { customRender: 'gender' }
-  },
-  {
-    title: '出生日期',
-    dataIndex: 'birthday',
-    sorter: true,
-    scopedSlots: { customRender: 'birthday' }
-  },
-  {
-    title: '民族',
-    dataIndex: 'nation',
-    // width: '150px',
-    scopedSlots: { customRender: 'nation' }
-  },
-  {
-    title: '籍贯(省)',
-    dataIndex: 'nativePlaceProvince',
-    scopedSlots: { customRender: 'nativePlaceProvince' }
-  },
-  {
-    title: '籍贯(市)',
-    dataIndex: 'nativePlaceCity',
-    scopedSlots: { customRender: 'nativePlaceCity' }
-  },
-  {
-    title: '籍贯(区)',
-    dataIndex: 'nativePlaceRegion',
-    scopedSlots: { customRender: 'nativePlaceRegion' }
-  },
-  {
-    title: '籍贯',
-    dataIndex: 'nativePlace',
-    scopedSlots: { customRender: 'nativePlace' }
-  },
-  {
-    title: '婚姻状况',
-    dataIndex: 'marital',
-    scopedSlots: { customRender: 'marital' }
-  },
-  {
-    title: '政治面貌',
-    dataIndex: 'politicalOutlook',
-    scopedSlots: { customRender: 'politicalOutlook' }
-  },
-  {
-    title: '学历',
-    dataIndex: 'education',
-    scopedSlots: { customRender: 'education' }
-
-  },
-  {
-    title: '宗教信仰',
-    dataIndex: 'religiousBelife',
-    scopedSlots: { customRender: 'religiousBelife' }
-  },
-  {
-    title: '职业类别',
-    dataIndex: 'occupationCatgory',
-    scopedSlots: { customRender: 'occupationCatgory' }
-  },
-  {
-    title: '职业',
-    dataIndex: 'occupation',
-    scopedSlots: { customRender: 'occupation' }
-  },
-  {
-    title: '服务处所',
-    dataIndex: 'servicePlace',
-    scopedSlots: { customRender: 'servicePlace' }
-  },
-  {
-    title: '联系类型',
-    dataIndex: 'contactType',
-    scopedSlots: { customRender: 'contactType' }
-  },
-  {
-    title: '联系方式',
-    dataIndex: 'contactInformation',
-    scopedSlots: { customRender: 'contactInformation' }
-  },
-  {
-    title: '户籍地(省)',
-    dataIndex: 'placeDomicileProvince',
-    scopedSlots: { customRender: 'placeDomicileProvince' }
-  },
-  {
-    title: '户籍地(市)',
-    dataIndex: 'placeDomicileCity',
-    scopedSlots: { customRender: 'placeDomicileCity' }
-  },
-  {
-    title: '户籍地(区)',
-    dataIndex: 'placeDomicileRegion',
-    scopedSlots: { customRender: 'placeDomicileRegion' }
-  },
-  {
-    title: '户籍地',
-    dataIndex: 'placeDomicile',
-    scopedSlots: { customRender: 'placeDomicile' }
-  },
-  {
-    title: '户籍门地详址',
-    dataIndex: 'placeDomicileAddress',
-    scopedSlots: { customRender: 'placeDomicileAddress' }
-  },
-  {
-    title: '现住址',
-    dataIndex: 'currentResidence',
-    scopedSlots: { customRender: 'currentResidence' }
-  },
-  {
-    title: '现住址(省)',
-    dataIndex: 'currentResidenceProvince',
-    scopedSlots: { customRender: 'currentResidenceProvince' }
-  },
-  {
-    title: '现住址(市)',
-    dataIndex: 'currentResidenceCity',
-    scopedSlots: { customRender: 'currentResidenceCity' }
-  },
-  {
-    title: '现住址(区)',
-    dataIndex: 'currentResidenceRegion',
-    scopedSlots: { customRender: 'currentResidenceRegion' }
-  },
-  {
-    title: '现住地详址',
-    dataIndex: 'currentResidenceAddress',
-    scopedSlots: { customRender: 'currentResidenceAddress' }
-  },
-  {
-    title: '学习状况',
-    dataIndex: 'learningSituation',
-    scopedSlots: { customRender: 'learningSituation' }
-  },
-  {
-    title: '就业状况',
-    dataIndex: 'employmentStatus',
-    scopedSlots: { customRender: 'employmentStatus' }
-  },
-  {
-    title: '未就业或失业原因',
-    dataIndex: 'unemploymentReasons',
-    scopedSlots: { customRender: 'unemploymentReasons' }
-  },
-  {
-    title: '是否有不良行为',
-    dataIndex: 'badBehavior',
-    scopedSlots: { customRender: 'badBehavior' }
-  },
-  {
-    title: '是否有违法犯罪经历',
-    dataIndex: 'criminalExperience',
-    scopedSlots: { customRender: 'criminalExperience' }
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    scopedSlots: { customRender: 'action' },
-    fixed: 'right'
+  fixed: 'left'
+},
+{
+  title: '公民身份证号',
+  dataIndex: 'idCard',
+  width: '100',
+  scopedSlots: {
+    customRender: 'idCard'
   }
+},
+{
+  title: '姓名',
+  dataIndex: 'fullName',
+  width: 100,
+  scopedSlots: {
+    customRender: 'fullName'
+  }
+},
+{
+  title: '曾用名',
+  dataIndex: 'nameUsedBefore',
+  width: 100,
+  scopedSlots: {
+    customRender: 'nameUsedBefore'
+  }
+},
+{
+  title: '性别',
+  dataIndex: 'gender',
+  scopedSlots: {
+    customRender: 'gender'
+  }
+},
+{
+  title: '出生日期',
+  dataIndex: 'birthday',
+  sorter: true,
+  scopedSlots: {
+    customRender: 'birthday'
+  }
+},
+{
+  title: '民族',
+  dataIndex: 'nation',
+  // width: '150px',
+  scopedSlots: {
+    customRender: 'nation'
+  }
+},
+{
+  title: '籍贯(省)',
+  dataIndex: 'nativePlaceProvince',
+  scopedSlots: {
+    customRender: 'nativePlaceProvince'
+  }
+},
+{
+  title: '籍贯(市)',
+  dataIndex: 'nativePlaceCity',
+  scopedSlots: {
+    customRender: 'nativePlaceCity'
+  }
+},
+{
+  title: '籍贯(区)',
+  dataIndex: 'nativePlaceRegion',
+  scopedSlots: {
+    customRender: 'nativePlaceRegion'
+  }
+},
+{
+  title: '籍贯',
+  dataIndex: 'nativePlace',
+  scopedSlots: {
+    customRender: 'nativePlace'
+  }
+},
+{
+  title: '婚姻状况',
+  dataIndex: 'marital',
+  scopedSlots: {
+    customRender: 'marital'
+  }
+},
+{
+  title: '政治面貌',
+  dataIndex: 'politicalOutlook',
+  scopedSlots: {
+    customRender: 'politicalOutlook'
+  }
+},
+{
+  title: '学历',
+  dataIndex: 'education',
+  scopedSlots: {
+    customRender: 'education'
+  }
+
+},
+{
+  title: '宗教信仰',
+  dataIndex: 'religiousBelife',
+  scopedSlots: {
+    customRender: 'religiousBelife'
+  }
+},
+{
+  title: '职业类别',
+  dataIndex: 'occupationCatgory',
+  scopedSlots: {
+    customRender: 'occupationCatgory'
+  }
+},
+{
+  title: '职业',
+  dataIndex: 'occupation',
+  scopedSlots: {
+    customRender: 'occupation'
+  }
+},
+{
+  title: '服务处所',
+  dataIndex: 'servicePlace',
+  scopedSlots: {
+    customRender: 'servicePlace'
+  }
+},
+{
+  title: '联系类型',
+  dataIndex: 'contactType',
+  scopedSlots: {
+    customRender: 'contactType'
+  }
+},
+{
+  title: '联系方式',
+  dataIndex: 'contactInformation',
+  scopedSlots: {
+    customRender: 'contactInformation'
+  }
+},
+{
+  title: '户籍地(省)',
+  dataIndex: 'placeDomicileProvince',
+  scopedSlots: {
+    customRender: 'placeDomicileProvince'
+  }
+},
+{
+  title: '户籍地(市)',
+  dataIndex: 'placeDomicileCity',
+  scopedSlots: {
+    customRender: 'placeDomicileCity'
+  }
+},
+{
+  title: '户籍地(区)',
+  dataIndex: 'placeDomicileRegion',
+  scopedSlots: {
+    customRender: 'placeDomicileRegion'
+  }
+},
+{
+  title: '户籍地',
+  dataIndex: 'placeDomicile',
+  scopedSlots: {
+    customRender: 'placeDomicile'
+  }
+},
+{
+  title: '户籍门地详址',
+  dataIndex: 'placeDomicileAddress',
+  scopedSlots: {
+    customRender: 'placeDomicileAddress'
+  }
+},
+{
+  title: '现住址',
+  dataIndex: 'currentResidence',
+  scopedSlots: {
+    customRender: 'currentResidence'
+  }
+},
+{
+  title: '现住址(省)',
+  dataIndex: 'currentResidenceProvince',
+  scopedSlots: {
+    customRender: 'currentResidenceProvince'
+  }
+},
+{
+  title: '现住址(市)',
+  dataIndex: 'currentResidenceCity',
+  scopedSlots: {
+    customRender: 'currentResidenceCity'
+  }
+},
+{
+  title: '现住址(区)',
+  dataIndex: 'currentResidenceRegion',
+  scopedSlots: {
+    customRender: 'currentResidenceRegion'
+  }
+},
+{
+  title: '现住地详址',
+  dataIndex: 'currentResidenceAddress',
+  scopedSlots: {
+    customRender: 'currentResidenceAddress'
+  }
+},
+{
+  title: '学习状况',
+  dataIndex: 'learningSituation',
+  scopedSlots: { customRender: 'learningSituation' }
+},
+{
+  title: '就业状况',
+  dataIndex: 'employmentStatus',
+  scopedSlots: { customRender: 'employmentStatus' }
+},
+{
+  title: '未就业或失业原因',
+  dataIndex: 'unemploymentReasons',
+  scopedSlots: { customRender: 'unemploymentReasons' }
+},
+{
+  title: '是否有不良行为',
+  dataIndex: 'badBehavior',
+  scopedSlots: { customRender: 'badBehavior' }
+},
+{
+  title: '是否有违法犯罪经历',
+  dataIndex: 'criminalExperience',
+  scopedSlots: { customRender: 'criminalExperience' }
+},
+{
+  title: '操作',
+  dataIndex: 'action',
+  scopedSlots: {
+    customRender: 'action'
+  },
+  fixed: 'right'
+}
 ]
 
 const statusMap = {
@@ -945,15 +1046,35 @@ export default {
     this.columns = columns
     this.formLayout = {
       labelCol: {
-        xs: { span: 1 },
-        sm: { span: 7 }
+        xs: {
+          span: 1
+        },
+        sm: {
+          span: 7
+        }
       },
       wrapperCol: {
-        xs: { span: 2 },
-        sm: { span: 15 }
+        xs: {
+          span: 2
+        },
+        sm: {
+          span: 15
+        }
       }
     }
     return {
+      // 新增的下拉框数组 ******
+      // 性别
+      sex: this.$root.sex,
+      // 民族
+      nation: this.$root.nation,
+      // 婚姻状况
+      marray: this.$root.marray,
+      // 政治面貌
+      politicalOutlook: this.$root.politicalOutlook,
+      // 学历
+      education: this.$root.education,
+      // *************
       type: 0,
       // 打开createform的类型 0 新增 1 修改 2 查看
       openType: 0,
@@ -972,8 +1093,6 @@ export default {
       loadData: (parameter) => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        // console.log(getArchiveManagement)
-        // return false
         if (requestParameters.birthday) {
           requestParameters.birthday = this.parseUtcTime(requestParameters.birthday)
         }
@@ -982,14 +1101,6 @@ export default {
           return res.result
         })
       },
-
-      // loadData: (parameter) => {
-      //   const requestParameters = Object.assign({}, parameter, this.queryParam)
-      //   console.log('loadData request parameters:', requestParameters)
-      //   return getServiceList(requestParameters).then((res) => {
-      //     return res.result
-      //   })
-      // },
       selectedRowKeys: [],
       selectedRows: []
     }
@@ -1004,7 +1115,9 @@ export default {
   },
   created () {
     var that = this
-    getRoleList({ t: new Date() })
+    getRoleList({
+      t: new Date()
+    })
     var option = this.$root.address.concat([])
     // console.log(option)
     option.forEach(item => {
@@ -1017,7 +1130,7 @@ export default {
         item.isLeaf = false
       })
       that.optionss = res.ret
-      console.log(this.optionss)
+      // console.log(this.optionss)
     })
   },
   computed: {
@@ -1029,6 +1142,41 @@ export default {
     }
   },
   methods: {
+    // 关闭createform
+    closeModal (trun) {
+      this.visible = false
+      if (trun) {
+        // 刷新表格
+        this.$refs.table.refresh()
+      } else {
+        this.visible = false
+        // 刷新表格
+        this.$refs.table.refresh()
+      }
+    },
+    // *************新增
+    // 1\解析性别
+    parseValue (arr, value) {
+      arr.forEach(item => {
+        if (item.dictionaryValue === value) {
+          return item.dictionaryName
+        }
+      })
+    },
+    // ****************
+    // 接收子组件的值 更改openType
+    changeType (type) {
+      console.log(type)
+      this.openType = type
+    },
+    // 当子组件查找到对应的档案管理的时候修改父级的mdl
+    changeModel (obj) {
+      console.log(obj)
+      console.log(this.mdl)
+      this.mdl = {
+        'governRealPopulation': obj
+      }
+    },
     // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
@@ -1104,8 +1252,6 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
-        this.queryParam.currentResidenceStreet = e[3]
-        this.queryParam.currentResidenceCommunity = e[4]
       }
       console.log(this.queryParam)
     },
@@ -1117,27 +1263,47 @@ export default {
     },
     // 编辑档案
     handleEdit (record) {
+      console.log(record)
       // 地址的解析
-      record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
       ]
-      record.placeDomicile = [
-        record.placeDomicileCity,
-        record.placeDomicileProvince,
-        record.placeDomicileRegion
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
       ]
-      record.currentResidence = [
-        record.currentResidenceCity,
-        record.currentResidenceProvince,
-        record.currentResidenceRegion,
-        record.currentResidenceStreet,
-        record.currentResidenceCommunity
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
       ]
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation
+        .currentResidences)
       this.openType = 1
       this.visible = true
-      this.mdl = { ...record }
+      this.mdl = {
+        ...record
+      }
       // 地址的处理
       // this.mdl/
     },
@@ -1146,7 +1312,7 @@ export default {
       console.log(record)
       var id = record.id
       var arr = [id]
-      return delArchiveManagement(arr).then((res) => {
+      return deleteIdleYouth(arr).then((res) => {
         console.log(res)
         if (res.code === 200) {
           this.$message.info('删除成功')
@@ -1163,134 +1329,7 @@ export default {
       console.log(date)
       return date
     },
-    handleOk () {
-      const form = this.$refs.createModal.form
-      this.confirmLoading = true
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          // console.log('values', values.birthday._d)
-          console.log(values)
-          var obj = values
-          var nativeArr = obj.nativePlace
-          // console.log(nativeArr)
-          var native = obj.nativePlaceDetail
-          obj.nativePlaceProvince = nativeArr[0]
-          obj.nativePlaceCity = nativeArr[1]
-          obj.nativePlaceRegion = nativeArr[2]
-          obj.nativePlace = native
-          // 删除无用的 nativePlaceDetail 字段
-          delete obj.nativePlaceDetail
-          obj.birthday = this.parseUtcTime(obj.birthday)
-          obj.placeDomicileProvince = obj.placeDomicile[0]
-          obj.placeDomicileCity = obj.placeDomicile[1]
-          obj.placeDomicileRegion = obj.placeDomicile[2]
-          obj.placeDomicile = obj.placeDomicileDetail
-          // 删除无用的 placeDomicile 字段
-          delete obj.placeDomicileDetail
-          console.log(obj.currentResidence)
-          obj.currentResidenceProvince = obj.currentResidence[0]
-          obj.currentResidenceCity = obj.currentResidence[1]
-          obj.currentResidenceRegion = obj.currentResidence[2]
-          obj.currentResidenceStreet = obj.currentResidence[3]
-          obj.currentResidenceCommunity = obj.currentResidence[4]
-          obj.currentResidence = obj.currentResidenceDetail
-          // 日期的处理
-          obj.birthday = obj.birthday + ' 00:00:00'
-          // 删除无用的 placeDomicile 字段
-          delete obj.currentResidenceDetail
-          delete obj.id
-          // var arr = Object.keys(obj)
-          // console.log(obj, arr.length)
-          // 调用接口进行修改
-          if (this.openType === 0) {
-            return editArchiveManagement(obj).then((res) => {
-              console.log(res)
-              // return res.result
-              if (res.code === 200) {
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                }).then((res) => {
-                  this.visible = false
-                  this.confirmLoading = false
-                  // 重置表单数据
-                  form.resetFields()
-                  // 刷新表格
-                  this.$refs.table.refresh()
-
-                  this.$message.info('新增成功')
-                })
-              } else {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.error(res.msg)
-                // 重置表单数据
-                form.resetFields()
-                // 刷新表格
-                this.$refs.table.refresh()
-              }
-            })
-          } else if (this.openType === 1) {
-            // console.log(this.mdl.id)
-            obj.id = this.mdl.id
-            return editArchiveManagement(obj).then((res) => {
-              console.log(res)
-              // return res.result
-              if (res.code === 200) {
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                }).then((res) => {
-                  this.visible = false
-                  this.confirmLoading = false
-                  // 重置表单数据
-                  form.resetFields()
-                  // 刷新表格
-                  this.$refs.table.refresh()
-
-                  this.$message.info('修改成功')
-                })
-              } else {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.error(res.msg)
-                // 重置表单数据
-                form.resetFields()
-                // 刷新表格
-                this.$refs.table.refresh()
-              }
-            })
-          } else {
-            return false
-          }
-          // if (values.id > 0) {
-          //   // 修改 e.g.
-          //   new Promise((resolve, reject) => {
-          //     setTimeout(() => {
-          //       resolve()
-          //     }, 1000)
-          //   }).then((res) => {
-          //     this.visible = false
-          //     this.confirmLoading = false
-          //     // 重置表单数据
-          //     form.resetFields()
-          //     // 刷新表格
-          //     this.$refs.table.refresh()
-
-          //     this.$message.info('修改成功')
-          //   })
-          // } else {
-          //   // 新增
-          // }
-        } else {
-          // console.log('youwentyi')
-          this.$message.error('请填写必要信息')
-          this.confirmLoading = false
-        }
-      })
-    },
+    handleOk () { },
     handleCancel () {
       this.visible = false
 
@@ -1300,30 +1339,46 @@ export default {
     // 修改弹框
     handleSub (record) {
       // 地址的解析
-      record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
       ]
-      record.placeDomicile = [
-        record.placeDomicileProvince,
-        record.placeDomicileCity,
-        record.placeDomicileRegion
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
       ]
-      record.currentResidence = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion,
-        record.currentResidenceStreet,
-        record.currentResidenceCommunity
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
       ]
-      record.currentResidences = record.currentResidence.join('/')
-      record.placeDomiciles = record.placeDomicile.join('/')
-      record.nativePlaces = record.nativePlace.join('/')
-      console.log(record.currentResidences)
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation
+        .currentResidences)
+
       this.openType = 2
       this.visible = true
-      this.mdl = { ...record }
+      this.mdl = {
+        ...record
+      }
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys

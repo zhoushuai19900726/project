@@ -37,7 +37,7 @@ const api = {
   // 三无老人 添加/修改
   editThreeNonElderly: baseUrl + '/smartCity/governThreeNonElderly/insertGovernThreeNonElderly',
   // 三无老人 删除
-  deleteThreeNonElderly: baseUrl + '/smartCity/governThreeNonElderly/insertGovernThreeNonElderly',
+  deleteThreeNonElderly: baseUrl + '/smartCity/governThreeNonElderly/deleteGovernThreeNonElderly',
   // 空巢老人 查询
   getEmptyNesterPage: baseUrl + '/smartCity/governEmptyNester/findGovernEmptyNesterPage',
   // 空巢老人 添加/修改
@@ -138,9 +138,9 @@ export function getFloatingPopulation (parameter) {
 export function editFloatingPopulation (parameter) {
   return request({
     url: api.editFloatingPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -149,9 +149,9 @@ export function editFloatingPopulation (parameter) {
 export function deleteFloatingPopulation (parameter) {
   return request({
     url: api.deleteFloatingPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -171,9 +171,9 @@ export function getftBehindPopulation (parameter) {
 export function editftBehindPopulation (parameter) {
   return request({
     url: api.editftBehindPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -182,9 +182,9 @@ export function editftBehindPopulation (parameter) {
 export function deleteftBehindPopulation (parameter) {
   return request({
     url: api.deleteftBehindPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -204,9 +204,9 @@ export function getOverseasPersonnel (parameter) {
 export function editOverseasPersonnel (parameter) {
   return request({
     url: api.editOverseasPersonnel,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -215,9 +215,9 @@ export function editOverseasPersonnel (parameter) {
 export function deleteOverseasPersonnel (parameter) {
   return request({
     url: api.deleteOverseasPersonnel,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -237,9 +237,9 @@ export function getThreeNonElderly (parameter) {
 export function editThreeNonElderly (parameter) {
   return request({
     url: api.editThreeNonElderly,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -248,9 +248,9 @@ export function editThreeNonElderly (parameter) {
 export function deleteThreeNonElderly (parameter) {
   return request({
     url: api.deleteThreeNonElderly,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -270,9 +270,9 @@ export function getEmptyNesterPage (parameter) {
 export function editEmptyNesterPage (parameter) {
   return request({
     url: api.editEmptyNesterPage,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -281,9 +281,9 @@ export function editEmptyNesterPage (parameter) {
 export function deleteEmptyNesterPage (parameter) {
   return request({
     url: api.deleteEmptyNesterPage,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -303,9 +303,9 @@ export function getDeadPopulation (parameter) {
 export function editDeadPopulation (parameter) {
   return request({
     url: api.editDeadPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -314,9 +314,9 @@ export function editDeadPopulation (parameter) {
 export function deleteDeadPopulation (parameter) {
   return request({
     url: api.deleteDeadPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -336,9 +336,9 @@ export function getDisabledPersons (parameter) {
 export function editDisabledPersons (parameter) {
   return request({
     url: api.editDisabledPersons,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -347,9 +347,9 @@ export function editDisabledPersons (parameter) {
 export function deleteDisabledPersons (parameter) {
   return request({
     url: api.deleteDisabledPersons,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -369,9 +369,9 @@ export function getSubsistence (parameter) {
 export function editSubsistence (parameter) {
   return request({
     url: api.editSubsistence,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -380,9 +380,9 @@ export function editSubsistence (parameter) {
 export function deleteSubsistence (parameter) {
   return request({
     url: api.deleteSubsistence,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -402,9 +402,9 @@ export function getExtremelyPoorPeople (parameter) {
 export function editExtremelyPoorPeople (parameter) {
   return request({
     url: api.editExtremelyPoorPeople,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -413,9 +413,9 @@ export function editExtremelyPoorPeople (parameter) {
 export function deleteExtremelyPoorPeople (parameter) {
   return request({
     url: api.deleteExtremelyPoorPeople,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -435,9 +435,9 @@ export function getIdleYouth (parameter) {
 export function editIdleYouth (parameter) {
   return request({
     url: api.editIdleYouth,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -446,9 +446,9 @@ export function editIdleYouth (parameter) {
 export function deleteIdleYouth (parameter) {
   return request({
     url: api.deleteIdleYouth,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -468,9 +468,9 @@ export function getReproductive (parameter) {
 export function editReproductive (parameter) {
   return request({
     url: api.editReproductive,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -479,9 +479,9 @@ export function editReproductive (parameter) {
 export function deleteReproductive (parameter) {
   return request({
     url: api.deleteReproductive,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -501,9 +501,9 @@ export function getEmploymentServices (parameter) {
 export function editEmploymentServices (parameter) {
   return request({
     url: api.editEmploymentServices,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })
@@ -512,9 +512,9 @@ export function editEmploymentServices (parameter) {
 export function deleteEmploymentServices (parameter) {
   return request({
     url: api.deleteEmploymentServices,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })

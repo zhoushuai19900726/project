@@ -335,7 +335,7 @@
               >
                 <a-form-item label="人户一致标识">
                   <a-select
-                    v-model="queryParam.hoseholdIdentity"
+                    v-model="queryParam.householdIdentity"
                     placeholder="请选择"
                     default-value="0"
                   >
@@ -954,8 +954,8 @@ const columns = [
   },
   {
     title: '人户一致标识',
-    dataIndex: 'hoseholdIdentity',
-    scopedSlots: { customRender: 'hoseholdIdentity' }
+    dataIndex: 'householdIdentity',
+    scopedSlots: { customRender: 'householdIdentity' }
   },
   {
     title: '户号',

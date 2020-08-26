@@ -78,7 +78,7 @@
             disabled
             v-if="openType ===1 || openType ===2 "
             v-decorator="['nativePlaces']"
-            placeholder="初始地址为空"
+            placeholder="籍贯"
           />
           <a-cascader
             v-if="openType !==2"
@@ -93,7 +93,7 @@
         <a-form-item label="籍贯">
           <a-input
             v-decorator="['nativePlaceDetail']"
-            placeholder="籍贯"
+            placeholder="初始地址为空"
             :disabled="openType ===2"
           />
         </a-form-item>
