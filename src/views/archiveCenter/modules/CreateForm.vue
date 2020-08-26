@@ -347,7 +347,7 @@ export default {
     }
   },
   created () {
-    console.log(this.options)
+    // console.log(this.options)
     console.log(this.model)
     // console.log('custom modal created')
 

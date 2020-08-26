@@ -10,8 +10,7 @@
 import { domTitle, setDocumentTitle } from '@/utils/domUtil'
 import { i18nRender } from '@/locales'
 import { mapState, mapMutations } from 'vuex'
-// import { getSelect } from '@/api/manage'
-import { getAddress } from '@/api/manage'
+import { getSelect, getAddress, group } from '@/api/manage'
 export default {
   data () {
     return {
@@ -69,26 +68,36 @@ export default {
     })
   },
   created () {
-    // var that = this
-    // this.commonSelect.forEach(item => {
-    //   if (that.$root[item.type].length !== 0) {
-    //     return false
-    //   }
-    //   that.getSelect(item.name, item.type)
-    // })
+    var that = this
+    this.commonSelect.forEach(item => {
+      if (that.$root[item.type].length !== 0) {
+        return false
+      }
+      that.getSelect(item.name, item.type)
+    })
     // if (this.$root.address.length === 0) {
     //   this.getAddress()
     // }
+    this.getGroup()
   },
   methods: {
     ...mapMutations(['addRecords']),
-    // getSelect (text, type) {
-    //   var that = this
-    //   return getSelect(text).then((res) => {
-    //     // console.log(res)
-    //     console.log(that.$root[type])
-    //   })
-    // }
+    // 根据id查询字典组
+    getGroup () {
+      return group().then(res => {
+        console.log(res)
+      })
+    },
+    getSelect (text, type) {
+      var that = this
+      return getSelect(text).then((res) => {
+        // console.log(res)
+        if (res.ret !== null) {
+          that.$root[type] = res.ret.dictionaryList
+          console.log(that.$root[type])
+        }
+      })
+    },
     getAddress () {
       var that = this
       return getAddress().then((res) => {

@@ -49,8 +49,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="男">男</a-select-option>
-                    <a-select-option value="女">女</a-select-option>n>
+                    <a-select-option
+                      v-for="(item) in sex"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -76,8 +79,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="汉">汉</a-select-option>
-                    <a-select-option value="壮族">壮族</a-select-option>
+                    <a-select-option
+                      v-for="(item) in nation"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -117,8 +123,11 @@
                     v-model="queryParam.marital"
                     default-value=""
                   >
-                    <a-select-option value="已婚">已婚</a-select-option>
-                    <a-select-option value="未婚">未婚</a-select-option>
+                    <a-select-option
+                      v-for="(item) in marray"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -132,9 +141,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="党员">党员</a-select-option>
-                    <a-select-option value="共青团员">共青团员</a-select-option>
-                    <a-select-option value="群众">群众</a-select-option>
+                    <a-select-option
+                      v-for="(item) in politicalOutlook"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -148,10 +159,11 @@
                     placeholder="请选择"
                     default-value=""
                   >
-                    <a-select-option value="高中">高中</a-select-option>
-                    <a-select-option value="中专">中专</a-select-option>
-                    <a-select-option value="大专">大专</a-select-option>
-                    <a-select-option value="大学本科">大学本科</a-select-option>
+                    <a-select-option
+                      v-for="(item) in education"
+                      :key="item.id"
+                      :value="item.dictionaryValue"
+                    >{{item.dictionaryName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -418,6 +430,44 @@
           >{{ text }}</ellipsis>
         </span>
 
+        <!-- ********* -->
+        <!-- 性别解析 -->
+        <span
+          slot="gender"
+          slot-scope="text"
+        >
+          {{ parseValue(sex,text) }}
+        </span>
+        <!-- 婚姻状况解析 -->
+        <span
+          slot="marital"
+          slot-scope="text"
+        >
+          {{ parseValue(marray,text) }}
+        </span>
+        <!-- 政治面貌解析 -->
+        <span
+          slot="politicalOutlook"
+          slot-scope="text"
+        >
+          {{ parseValue(politicalOutlook,text) }}
+        </span>
+        <!-- 学历解析 -->
+        <span
+          slot="education"
+          slot-scope="text"
+        >
+          {{ parseValue(education,text) }}
+        </span>
+        <!-- 民族解析 -->
+        <span
+          slot="nation"
+          slot-scope="text"
+        >
+          {{ parseValue(nation,text) }}
+        </span>
+        <!-- ***************** -->
+
         <!-- 地址的自定义 -->
         <span
           slot="nativePlace"
@@ -552,8 +602,8 @@ const columns = [
   },
   {
     title: '性别',
-    dataIndex: 'gender'
-    // scopedSlots: { customRender: 'status' }
+    dataIndex: 'gender',
+    scopedSlots: { customRender: 'gender' }
   },
   {
     title: '出生日期',
@@ -562,9 +612,9 @@ const columns = [
   },
   {
     title: '民族',
-    dataIndex: 'nation'
+    dataIndex: 'nation',
     // width: '150px',
-    // scopedSlots: { customRender: 'action' }
+    scopedSlots: { customRender: 'nation' }
   },
   {
     title: '籍贯(省)',
@@ -586,15 +636,18 @@ const columns = [
 
   {
     title: '婚姻状况',
-    dataIndex: 'marital'
+    dataIndex: 'marital',
+    scopedSlots: { customRender: 'marital' }
   },
   {
     title: '政治面貌',
-    dataIndex: 'politicalOutlook'
+    dataIndex: 'politicalOutlook',
+    scopedSlots: { customRender: 'politicalOutlook' }
   },
   {
     title: '学历',
-    dataIndex: 'education'
+    dataIndex: 'education',
+    scopedSlots: { customRender: 'education' }
   },
   {
     title: '宗教信仰',
@@ -713,6 +766,18 @@ export default {
       }
     }
     return {
+      // 新增的下拉框数组 ******
+      // 性别
+      sex: this.$root.sex,
+      // 民族
+      nation: this.$root.nation,
+      // 婚姻状况
+      marray: this.$root.marray,
+      // 政治面貌
+      politicalOutlook: this.$root.politicalOutlook,
+      // 学历
+      education: this.$root.education,
+      // *************
       type: 0,
       // 打开createform的类型 0 新增 1 修改 2 查看
       openType: 0,
@@ -788,6 +853,20 @@ export default {
     }
   },
   methods: {
+    // *************新增
+    // 1\解析下拉框的内容 arr是下拉框的数组
+    parseValue (arr, value) {
+      // console.log(value)
+      var str = ''
+      arr.forEach(item => {
+        // console.log(item.dictionaryValue)
+        if (item.dictionaryValue === value) {
+          str = item.dictionaryName
+        }
+      })
+      return str
+    },
+    // ****************
     // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
