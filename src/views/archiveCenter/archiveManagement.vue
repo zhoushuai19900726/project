@@ -1194,8 +1194,6 @@ export default {
     }
   },
   methods: {
-<<<<<<< Updated upstream
-    // *************新增
     // 1\解析下拉框的内容 arr是下拉框的数组
     parseValue (arr, value) {
       // console.log(value)
@@ -1208,8 +1206,6 @@ export default {
       })
       return str
     },
-    // ****************
-=======
     // 查询
     refresh () {
       this.$refs.table.refresh(true)
@@ -1219,8 +1215,6 @@ export default {
     onClose () {
       this.visibleMore = false
     },
->>>>>>> Stashed changes
-    // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
     },
