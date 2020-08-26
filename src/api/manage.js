@@ -375,7 +375,7 @@ export function getGovernReleasePrisoners (parameter) {
 // 刑满释放人口 添加/修改
 export function editGovernReleasePrisoners (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernReleasePrisoners,
     method: 'post',
     data: parameter
@@ -385,7 +385,7 @@ export function editGovernReleasePrisoners (parameter) {
 // 刑满释放人口 删除
 export function deleteGovernReleasePrisoners (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernReleasePrisoners,
     method: 'post',
     data: parameter
@@ -403,7 +403,7 @@ export function getGovernCommunityCorrectionStaff (parameter) {
 // 社区矫正人口 添加/修改
 export function editgovernCommunityCorrectionStaff (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editgovernCommunityCorrectionStaff,
     method: 'post',
     data: parameter
@@ -412,7 +412,7 @@ export function editgovernCommunityCorrectionStaff (parameter) {
 // 社区矫正人口 删除
 export function deletegovernCommunityCorrectionStaff (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deletegovernCommunityCorrectionStaff,
     method: 'post',
     data: parameter
@@ -430,7 +430,7 @@ export function getGovernMentalDisordersPage (parameter) {
 // 肇事 精神障碍患者 添加/修改
 export function editGovernMentalDisorders (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernMentalDisorders,
     method: 'post',
     data: parameter
@@ -439,7 +439,7 @@ export function editGovernMentalDisorders (parameter) {
 // 肇事 精神障碍患者 删除
 export function deleteGovernMentalDisorders (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernMentalDisorders,
     method: 'post',
     data: parameter
@@ -457,7 +457,7 @@ export function getGovernDrugAddicts (parameter) {
 // 吸毒人口 添加/修改
 export function editGovernDrugAddicts (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernDrugAddicts,
     method: 'post',
     data: parameter
@@ -466,7 +466,7 @@ export function editGovernDrugAddicts (parameter) {
 // 吸毒人口 删除
 export function deleteGovernDrugAddicts (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernDrugAddicts,
     method: 'post',
     data: parameter
@@ -484,7 +484,7 @@ export function getGovernAidsRisk (parameter) {
 // 艾滋病人 添加/修改
 export function editGovernAidsRisk (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernAidsRisk,
     method: 'post',
     data: parameter
@@ -493,7 +493,7 @@ export function editGovernAidsRisk (parameter) {
 // 艾滋病人 删除
 export function deleteGovernAidsRisk (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernAidsRisk,
     method: 'post',
     data: parameter
@@ -511,7 +511,7 @@ export function getGovernKeyYouth (parameter) {
 // 重点青少年人口 修改/新增
 export function editGovernKeyYouth (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernKeyYouth,
     method: 'post',
     data: parameter
@@ -520,7 +520,7 @@ export function editGovernKeyYouth (parameter) {
 // 重点青少年人口 删除
 export function deleteGovernKeyYouth (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernKeyYouth,
     method: 'post',
     data: parameter
@@ -538,7 +538,7 @@ export function getGovernKeyPetitioners (parameter) {
 // 重点信访人口 添加/修改
 export function editGovernKeyPetitioners (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.editGovernKeyPetitioners,
     method: 'post',
     data: parameter
@@ -547,7 +547,7 @@ export function editGovernKeyPetitioners (parameter) {
 // 重点信访人口 删除
 export function deleteGovernKeyPetitioners (parameter) {
   return request({
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: api.deleteGovernKeyPetitioners,
     method: 'post',
     data: parameter
