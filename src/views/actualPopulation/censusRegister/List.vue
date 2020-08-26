@@ -566,8 +566,13 @@
         >
           {{ parseValue(nation,record.governRealPopulation.nation) }}
         </span>
-
         <!-- 籍贯(省市区) -->
+        <span
+          slot="nativePlaceProvince"
+          slot-scope="text,record"
+        >
+          {{ record.governRealPopulation.nativePlaceProvince }}
+        </span>
         <span
           slot="nativePlaceCity"
           slot-scope="text,record"
@@ -761,8 +766,14 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :closeModal="closeModal"
         @changeModel="changeModel"
+        :onChange="onChange"
+        :options="options"
+        :optionss="optionss"
         :openType="openType"
+        :loadDatas="loadDatas"
+        :loadDatass="loadDatass"
         @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
@@ -779,8 +790,8 @@
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 // import { getRoleList, getServiceList } from '@/api/manage'
-import { getRoleList, editArchiveManagement, delArchiveManagement, getAddress } from '@/api/manage'
-import { getRegisteredPopulation } from '@/api/actualPopulation'
+import { getRoleList, getAddress } from '@/api/manage'
+import { getRegisteredPopulation, deleteRegisteredPopulation } from '@/api/actualPopulation'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 
@@ -1106,6 +1117,18 @@ export default {
     }
   },
   methods: {
+    // 关闭createform
+    closeModal (trun) {
+      this.visible = false
+      if (trun) {
+        // 刷新表格
+        this.$refs.table.refresh()
+      } else {
+        this.visible = false
+        // 刷新表格
+        this.$refs.table.refresh()
+      }
+    },
     // *************新增
     // 1\解析性别
     parseValue (arr, value) {
@@ -1123,7 +1146,11 @@ export default {
     },
     // 当子组件查找到对应的档案管理的时候修改父级的mdl
     changeModel (obj) {
-      this.mdl = obj
+      console.log(obj)
+      console.log(this.mdl)
+      this.mdl = {
+        'governRealPopulation': obj
+      }
     },
     // 选择对数据进行增、查‘改
     changeOpenType (num) {
@@ -1211,23 +1238,41 @@ export default {
     },
     // 编辑档案
     handleEdit (record) {
-      // 地址的解析
-      record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
-      ]
-      record.placeDomicile = [
-        record.placeDomicileCity,
-        record.placeDomicileProvince,
-        record.placeDomicileRegion
-      ]
-      record.currentResidence = [
-        record.currentResidenceCity,
-        record.currentResidenceProvince,
-        record.currentResidenceRegion
-      ]
       console.log(record)
+      // 地址的解析
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
+      ]
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
+      ]
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
+      ]
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
       this.openType = 1
       this.visible = true
       this.mdl = { ...record }
@@ -1239,7 +1284,7 @@ export default {
       console.log(record)
       var id = record.id
       var arr = [id]
-      return delArchiveManagement(arr).then((res) => {
+      return deleteRegisteredPopulation(arr).then((res) => {
         console.log(res)
         if (res.code === 200) {
           this.$message.info('删除成功')
@@ -1256,103 +1301,7 @@ export default {
       console.log(date)
       return date
     },
-    handleOk () {
-      const form = this.$refs.createModal.form
-      this.confirmLoading = true
-      if (this.openType === 0) {
-        form.validateFields((errors, values) => {
-          if (!errors) {
-            // console.log('values', values.birthday._d)
-            console.log(values)
-            var obj = values
-            var nativeArr = obj.nativePlace
-            var native = obj.nativePlaceDetail
-            obj.nativePlaceProvince = nativeArr[0]
-            obj.nativePlaceCity = nativeArr[1]
-            obj.nativePlaceRegion = nativeArr[2]
-            obj.nativePlace = native
-            // 删除无用的 nativePlaceDetail 字段
-            delete obj.nativePlaceDetail
-            obj.birthday = this.parseUtcTime(obj.birthday)
-            obj.placeDomicileProvince = obj.placeDomicile[0]
-            obj.placeDomicileCity = obj.placeDomicile[1]
-            obj.placeDomicileRegion = obj.placeDomicile[2]
-            obj.placeDomicile = obj.placeDomicileDetail
-            // 删除无用的 placeDomicile 字段
-            delete obj.placeDomicileDetail
-            obj.currentResidenceProvince = obj.currentResidence[0]
-            obj.currentResidenceCity = obj.currentResidence[1]
-            obj.currentResidenceRegion = obj.currentResidence[2]
-            obj.currentResidence = obj.currentResidenceDetail
-            // 日期的处理
-            obj.birthday = obj.birthday + ' 00:00:00'
-            // 删除无用的 placeDomicile 字段
-            delete obj.currentResidenceDetail
-            delete obj.id
-            var arr = Object.keys(obj)
-            console.log(obj, arr.length)
-            // 调用接口进行修改
-
-            return editArchiveManagement(obj).then((res) => {
-              console.log(res)
-              // return res.result
-              if (res.code === 200) {
-                new Promise((resolve, reject) => {
-                  setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                }).then((res) => {
-                  this.visible = false
-                  this.confirmLoading = false
-                  // 重置表单数据
-                  form.resetFields()
-                  // 刷新表格
-                  this.$refs.table.refresh()
-
-                  this.$message.info('新增成功')
-                })
-              } else {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.error(res.msg)
-                // 重置表单数据
-                form.resetFields()
-                // 刷新表格
-                this.$refs.table.refresh()
-              }
-            })
-
-            // if (values.id > 0) {
-            //   // 修改 e.g.
-            //   new Promise((resolve, reject) => {
-            //     setTimeout(() => {
-            //       resolve()
-            //     }, 1000)
-            //   }).then((res) => {
-            //     this.visible = false
-            //     this.confirmLoading = false
-            //     // 重置表单数据
-            //     form.resetFields()
-            //     // 刷新表格
-            //     this.$refs.table.refresh()
-
-            //     this.$message.info('修改成功')
-            //   })
-            // } else {
-            //   // 新增
-            // }
-          } else {
-            // console.log('youwentyi')
-            this.$message.error('请填写必要信息')
-            this.confirmLoading = false
-          }
-        })
-      } else if (this.openType === 1) {
-
-      } else {
-
-      }
-    },
+    handleOk () { },
     handleCancel () {
       this.visible = false
 
@@ -1362,23 +1311,40 @@ export default {
     // 修改弹框
     handleSub (record) {
       // 地址的解析
-      record.nativePlace = [
-        record.currentResidenceProvince,
-        record.currentResidenceCity,
-        record.currentResidenceRegion
+      var arr = [
+        record.governRealPopulation.nativePlaceProvince,
+        record.governRealPopulation.nativePlaceCity,
+        record.governRealPopulation.nativePlaceRegion
       ]
-      record.placeDomicile = [
-        record.placeDomicileCity,
-        record.placeDomicileProvince,
-        record.placeDomicileRegion
+      var arr1 = [
+        record.governRealPopulation.placeDomicileProvince,
+        record.governRealPopulation.placeDomicileCity,
+        record.governRealPopulation.placeDomicileRegion
       ]
-      record.currentResidence = [
-        record.currentResidenceCity,
-        record.currentResidenceProvince,
-        record.currentResidenceRegion
+      var arr2 = [
+        record.governRealPopulation.currentResidenceProvince,
+        record.governRealPopulation.currentResidenceCity,
+        record.governRealPopulation.currentResidenceRegion,
+        record.governRealPopulation.currentResidenceStreet,
+        record.governRealPopulation.currentResidenceCommunity
       ]
-      console.log(record)
-      console.log(record)
+      if (record.governRealPopulation.nativePlaceProvince != null) {
+        record.governRealPopulation.nativePlaces = arr.join('/')
+      } else {
+        record.governRealPopulation.nativePlaces = ''
+      }
+      if (record.governRealPopulation.placeDomicileProvince != null) {
+        record.governRealPopulation.placeDomiciles = arr1.join('/')
+      } else {
+        record.governRealPopulation.placeDomiciles = ''
+      }
+      if (record.governRealPopulation.currentResidenceProvince != null) {
+        record.governRealPopulation.currentResidences = arr2.join('/')
+      } else {
+        record.governRealPopulation.currentResidences = ''
+      }
+      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+
       this.openType = 2
       this.visible = true
       this.mdl = { ...record }

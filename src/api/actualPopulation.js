@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 import qs from 'qs'
 // 基本链接
-// const baseUrl = 'http://60.205.246.7:'
+const baseUrl = 'http://60.205.246.7:'
 // 文佳406-1
-const baseUrl = 'http://192.168.1.106:'
+// const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
 // const baseUrl = 'http://192.168.1.112:'
 
@@ -113,11 +113,12 @@ export function editRegisteredPopulation (parameter) {
 }
 // 户籍人口 删除
 export function deleteRegisteredPopulation (parameter) {
+  console.log(parameter)
   return request({
     url: api.deleteRegisteredPopulation,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
+    // headers: {
+    //   'content-type': 'application/x-www-form-urlencoded'
+    // },
     method: 'POST',
     data: parameter
   })

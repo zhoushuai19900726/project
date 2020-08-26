@@ -6,7 +6,7 @@ const baseUrl = 'http://60.205.246.7:'
 // 文佳406
 // const baseUrl = 'http://192.168.1.106:'
 // 周帅gaopin02
-// const baseUrl = 'http://192.168.1.112:'
+// const baseUrl = 'http://192.168.1.115:'
 
 const selectArr = [
   {
@@ -146,10 +146,6 @@ const api = {
   address: baseUrl + '/smartCity/addressLibrary/findSubordinateAddressLibrary',
   // 获取下拉的内容
   select: baseUrl + '/smartCity/dictionaryGroup/findDictionaryGroupByCode',
-  // 根据id查询字典组
-  group: baseUrl + '/smartCity/dictionaryGroup/findDictionaryGroupById',
-  // 更新字典组
-  updateGroup: baseUrl + '/smartCity/dictionaryGroup/saveOrUpdateDictionaryGroup',
   // 搜索人员档案
   searchArchiveManagement: baseUrl + '/smartCity/governRealPopulation/findGovernRealPopulationByLikeContent',
   // 获取人员档案
@@ -212,36 +208,6 @@ const api = {
 }
 
 export default api
-// 根据id查询字典组
-export function group (parameter) {
-  var data = {}
-  data.id = 6
-  data = qs.stringify(data)
-  console.log(data)
-  return request({
-    url: api.group,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    method: 'post',
-    data: data
-  })
-}
-// 更新字典组
-export function updateGroup (parameter) {
-  var data = {}
-  data.id = 6
-  data = qs.stringify(data)
-  console.log(data)
-  return request({
-    url: api.updateGroup,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    method: 'post',
-    data: data
-  })
-}
 // 获取所有省份的地址
 export function getAddress (parameter) {
   var data = {}

@@ -589,6 +589,10 @@ export default {
     openType: {
       type: Number,
       default: () => 0
+    },
+    closeModal: {
+      type: Function,
+      default: null
     }
   },
   data () {
@@ -691,7 +695,11 @@ export default {
         obj.id = this.id
         return editArchiveManagement(obj).then((res) => {
           console.log(res)
-          this.$message.info('修改成功')
+          if (res.code === 200) {
+            this.$message.info('修改成功')
+          } else {
+            this.$message.info(res.msg)
+          }
         })
       })
     },
@@ -705,6 +713,16 @@ export default {
           var data = { ...values }
           data.basicsId = that.id
           return editRegisteredPopulation(data).then((res) => {
+            // 重置表单数据
+            form.resetFields()
+            if (res.code === 200) {
+              form.resetFields()
+              that.closeModal()
+              this.$message.info('新增成功')
+            } else {
+              this.$message.error(res.msg)
+              that.closeModal()
+            }
             console.log(res)
           })
         }
