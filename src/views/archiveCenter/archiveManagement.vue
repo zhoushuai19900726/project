@@ -428,9 +428,6 @@
             tooltip
           >{{ text }}</ellipsis>
         </span>
-<<<<<<< Updated upstream
-
-        <!-- ********* -->
         <!-- 性别解析 -->
         <span
           slot="gender"
@@ -468,8 +465,8 @@
         </span>
         <!-- ***************** -->
 
-=======
->>>>>>> Stashed changes
+        =======
+        >>>>>>> Stashed changes
         <!-- 地址的自定义 -->
         <span
           slot="nativePlace"
@@ -598,309 +595,309 @@
               />
             </a-form-item>
           </a-col>
-<!--         <template v-if="advanced">-->
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="曾用名">
-                <a-input
-                  v-model="queryParam.nameUsedBefore"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="性别">
-                <a-select
-                  v-model="queryParam.gender"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="男">男</a-select-option>
-                  <a-select-option value="女">女</a-select-option>n>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="出生日期">
-                <a-date-picker
-                  v-model="queryParam.birthday"
-                  style="width: 100%"
-                  placeholder="请输入出生日期"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="民族">
-                <a-select
-                  v-model="queryParam.nation"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="汉">汉</a-select-option>
-                  <a-select-option value="壮族">壮族</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="籍贯(省市区)">
-                <a-cascader
-                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
-                  :options="options"
-                  :loadData="loadDatas"
-                  placeholder="请选择"
-                  changeOnSelect
-                  @change="onChange($event,'NATIVE')"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="籍贯">
-                <a-input
-                  v-model="queryParam.nativePlace"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="婚姻状况">
-                <a-select
-                  placeholder="请选择"
-                  v-model="queryParam.marital"
-                  default-value=""
-                >
-                  <a-select-option value="已婚">已婚</a-select-option>
-                  <a-select-option value="未婚">未婚</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="政治面貌">
-                <a-select
-                  v-model="queryParam.politicalOutlook"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="党员">党员</a-select-option>
-                  <a-select-option value="共青团员">共青团员</a-select-option>
-                  <a-select-option value="群众">群众</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="学历">
-                <a-select
-                  v-model="queryParam.education"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="高中">高中</a-select-option>
-                  <a-select-option value="中专">中专</a-select-option>
-                  <a-select-option value="大专">大专</a-select-option>
-                  <a-select-option value="大学本科">大学本科</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="宗教信仰">
-                <a-select
-                  v-model="queryParam.religiousBelife"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="">无</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="职业类别">
-                <a-select
-                  v-model="queryParam.occupationCatgory"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="">无</a-select-option>
-                  <a-select-option value="企业单位负责人">企业单位负责人</a-select-option>
-                  <a-select-option value="务农">务农</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="职业">
-                <a-select
-                  v-model="queryParam.occupation"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="">无</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="服务处所">
-                <a-input
-                  v-model="queryParam.servicePlace"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="联系类型">
-                <a-select
-                  v-model="queryParam.contactType"
-                  placeholder="请选择"
-                  default-value=""
-                >
-                  <a-select-option value="">无</a-select-option>
-                  <a-select-option value="邮箱">邮箱</a-select-option>
-                  <a-select-option value="手机号">手机号</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="联系方式">
-                <a-input
-                  v-model="queryParam.contactInformation"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="户籍地(省市区)">
-                <a-cascader
-                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
-                  :options="options"
-                  :loadData="loadDatas"
-                  placeholder="请选择"
-                  changeOnSelect
-                  @change="onChange($event,'PLACE')"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="户籍地">
-                <a-input
-                  v-model="queryParam.placeDomicile"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="户籍地详址">
-                <a-input
-                  v-model="queryParam.placeDomicileAddress"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="现住地(省市区)">
-                <a-cascader
-                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
-                  :options="optionss"
-                  :loadData="loadDatass"
-                  placeholder="请选择"
-                  changeOnSelect
-                  @change="onChange($event,'CURRENT')"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="现住地">
-                <a-input
-                  v-model="queryParam.currentResidence"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col
-              :md="12"
-              :sm="12"
-            >
-              <a-form-item label="现住地详址">
-                <a-input
-                  v-model="queryParam.currentResidenceAddress"
-                  style="width: 100%"
-                />
-              </a-form-item>
-            </a-col>
-<!--          </template>-->
+          <!--         <template v-if="advanced">-->
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="曾用名">
+              <a-input
+                v-model="queryParam.nameUsedBefore"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="性别">
+              <a-select
+                v-model="queryParam.gender"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="男">男</a-select-option>
+                <a-select-option value="女">女</a-select-option>n>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="出生日期">
+              <a-date-picker
+                v-model="queryParam.birthday"
+                style="width: 100%"
+                placeholder="请输入出生日期"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="民族">
+              <a-select
+                v-model="queryParam.nation"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="汉">汉</a-select-option>
+                <a-select-option value="壮族">壮族</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="籍贯(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="options"
+                :loadData="loadDatas"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'NATIVE')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="籍贯">
+              <a-input
+                v-model="queryParam.nativePlace"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="婚姻状况">
+              <a-select
+                placeholder="请选择"
+                v-model="queryParam.marital"
+                default-value=""
+              >
+                <a-select-option value="已婚">已婚</a-select-option>
+                <a-select-option value="未婚">未婚</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="政治面貌">
+              <a-select
+                v-model="queryParam.politicalOutlook"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="党员">党员</a-select-option>
+                <a-select-option value="共青团员">共青团员</a-select-option>
+                <a-select-option value="群众">群众</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="学历">
+              <a-select
+                v-model="queryParam.education"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="高中">高中</a-select-option>
+                <a-select-option value="中专">中专</a-select-option>
+                <a-select-option value="大专">大专</a-select-option>
+                <a-select-option value="大学本科">大学本科</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="宗教信仰">
+              <a-select
+                v-model="queryParam.religiousBelife"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="职业类别">
+              <a-select
+                v-model="queryParam.occupationCatgory"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+                <a-select-option value="企业单位负责人">企业单位负责人</a-select-option>
+                <a-select-option value="务农">务农</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="职业">
+              <a-select
+                v-model="queryParam.occupation"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="服务处所">
+              <a-input
+                v-model="queryParam.servicePlace"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="联系类型">
+              <a-select
+                v-model="queryParam.contactType"
+                placeholder="请选择"
+                default-value=""
+              >
+                <a-select-option value="">无</a-select-option>
+                <a-select-option value="邮箱">邮箱</a-select-option>
+                <a-select-option value="手机号">手机号</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="联系方式">
+              <a-input
+                v-model="queryParam.contactInformation"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="options"
+                :loadData="loadDatas"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'PLACE')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地">
+              <a-input
+                v-model="queryParam.placeDomicile"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="户籍地详址">
+              <a-input
+                v-model="queryParam.placeDomicileAddress"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地(省市区)">
+              <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                :options="optionss"
+                :loadData="loadDatass"
+                placeholder="请选择"
+                changeOnSelect
+                @change="onChange($event,'CURRENT')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地">
+              <a-input
+                v-model="queryParam.currentResidence"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :md="12"
+            :sm="12"
+          >
+            <a-form-item label="现住地详址">
+              <a-input
+                v-model="queryParam.currentResidenceAddress"
+                style="width: 100%"
+              />
+            </a-form-item>
+          </a-col>
+          <!--          </template>-->
           <a-col
             :md="24"
             :sm="1"
             style=""
           >
-              <span
-                class="table-page-search-submitButtons"
-                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
-              >
-                <a-button
-                  type="primary"
-                  @click="refresh"
-                >查询</a-button>
-                <a-button
-                  style="margin-left: 8px"
-                  @click="() => this.queryParam = {}"
-                >重置</a-button>
-              </span>
+            <span
+              class="table-page-search-submitButtons"
+              :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+            >
+              <a-button
+                type="primary"
+                @click="refresh"
+              >查询</a-button>
+              <a-button
+                style="margin-left: 8px"
+                @click="() => this.queryParam = {}"
+              >重置</a-button>
+            </span>
           </a-col>
         </a-row>
       </a-form>
@@ -1194,7 +1191,6 @@ export default {
     }
   },
   methods: {
-<<<<<<< Updated upstream
     // *************新增
     // 1\解析下拉框的内容 arr是下拉框的数组
     parseValue (arr, value) {
@@ -1209,7 +1205,6 @@ export default {
       return str
     },
     // ****************
-=======
     // 查询
     refresh () {
       this.$refs.table.refresh(true)
@@ -1219,7 +1214,6 @@ export default {
     onClose () {
       this.visibleMore = false
     },
->>>>>>> Stashed changes
     // 选择对数据进行增、查‘改
     changeOpenType (num) {
       this.openType = num
