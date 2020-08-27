@@ -334,10 +334,15 @@
                 :sm="24"
               >
                 <a-form-item label="学习状况">
-                  <a-input
+                  <a-select
                     v-model="queryParam.learningSituation"
-                    style="width: 100%"
-                  />
+                    placeholder="请选择"
+                    default-value=""
+                  >
+                    <a-select-option value="0">优</a-select-option>
+                    <a-select-option value="1">良</a-select-option>
+                    <a-select-option value="2">差</a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
               <a-col
@@ -345,10 +350,14 @@
                 :sm="24"
               >
                 <a-form-item label="就业状况">
-                  <a-input
+                  <a-select
                     v-model="queryParam.employmentStatus"
-                    style="width: 100%"
-                  />
+                    placeholder="请选择"
+                    default-value=""
+                  >
+                    <a-select-option value="0">失业</a-select-option>
+                    <a-select-option value="1">就业</a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
               <a-col
@@ -1571,6 +1580,9 @@ export default {
     }
   },
   methods: {
+    cancel () {
+      return false
+    },
     // // 查询
     refresh () {
       this.$refs.table.refresh(true)

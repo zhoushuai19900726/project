@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -356,10 +357,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -438,7 +440,24 @@
                 />
               </a-form-item>
             </a-col>
-            <!-- 国籍未加 -->
+            <a-col
+              :md="8"
+              :sm="24"
+            >
+              <!-- 国籍字段 -->
+              <a-form-item label="国籍">
+                <a-select
+                  v-decorator="['nationality']"
+                  placeholder="请选择"
+                >
+                  <a-select-option
+                    v-for="item in countries"
+                    :key="item.id"
+                    :value="item.id"
+                  >{{item.nationName}}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
             <a-col
               :md="8"
               :sm="24"
@@ -556,6 +575,10 @@ export default {
     model: {
       type: Object,
       default: () => null
+    },
+    countries: {
+      type: Array,
+      default: null
     },
     // 打开modal的方式  0.新增/ 1.编辑/2.查看
     openType: {

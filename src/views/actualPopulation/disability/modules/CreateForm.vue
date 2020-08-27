@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -356,10 +357,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>

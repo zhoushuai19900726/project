@@ -1548,6 +1548,9 @@ export default {
     }
   },
   methods: {
+    cancel () {
+      return false
+    },
     // // 查询
     refresh () {
       this.$refs.table.refresh(true)

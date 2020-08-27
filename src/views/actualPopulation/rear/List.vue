@@ -1307,8 +1307,11 @@
           >
             <a-form-item label="家庭主要成员工作地">
               <a-cascader
+                :field-names="{ label: 'name', value: 'name', children: 'children' }"
                 :options="options"
+                :loadData="loadDatas"
                 placeholder="请选择"
+                changeOnSelect
                 @change="onChange($event,'Family')"
               />
             </a-form-item>
@@ -1590,8 +1593,16 @@ const columns = [
     dataIndex: 'mainFamilyMembersContactInformation'
   },
   {
-    title: '家庭主要成员工作地',
-    dataIndex: 'mainFamilyMembersWork'
+    title: '家庭主要成员工作地(省)',
+    dataIndex: 'mainFamilyMembersWorkProvince'
+  },
+  {
+    title: '家庭主要成员工作地(市)',
+    dataIndex: 'mainFamilyMembersWorkCity'
+  },
+  {
+    title: '家庭主要成员工作地(区)',
+    dataIndex: 'mainFamilyMembersWorkRegion'
   },
   {
     title: '家庭主要成员工作详细地址',
@@ -1736,6 +1747,9 @@ export default {
     }
   },
   methods: {
+    cancel () {
+      return false
+    },
     // // 查询
     refresh () {
       this.$refs.table.refresh(true)
@@ -1841,13 +1855,13 @@ export default {
       // console.log(this.type)
       // var that = this
       console.log(e, this.type)
-      if (this.type === 0 && e.length === 3) {
+      if (type === 'NATIVE' && e.length === 3) {
         console.log(22222)
         this.queryParam.nativePlaceProvince = e[0]
         this.queryParam.nativePlaceCity = e[1]
         this.queryParam.nativePlaceRegion = e[2]
         console.log(this.queryParam)
-      } else if (this.type === 0 && e.length === 3) {
+      } else if (type === 'PLACE' && e.length === 3) {
         this.queryParam.placeDomicileProvince = e[0]
         this.queryParam.placeDomicileCity = e[1]
         this.queryParam.placeDomicileRegion = e[2]
@@ -1855,7 +1869,12 @@ export default {
         this.queryParam.currentResidenceProvince = e[0]
         this.queryParam.currentResidenceCity = e[1]
         this.queryParam.currentResidenceRegion = e[2]
+      } else if (type === 'family' && e.length === 3) {
+        this.queryParam.mainFamilyMembersWorkProvince = e[0]
+        this.queryParam.mainFamilyMembersWorkCity = e[1]
+        this.queryParam.mainFamilyMembersWorkRegion = e[2]
       }
+
       console.log(this.queryParam)
     },
     // 新增档案
@@ -1885,6 +1904,11 @@ export default {
         record.governRealPopulation.currentResidenceStreet,
         record.governRealPopulation.currentResidenceCommunity
       ]
+      var arr3 = [
+        record.mainFamilyMembersProvince,
+        record.mainFamilyMembersWorkCity,
+        record.mainFamilyMembersRegion
+      ]
       if (record.governRealPopulation.nativePlaceProvince != null) {
         record.governRealPopulation.nativePlaces = arr.join('/')
       } else {
@@ -1900,7 +1924,12 @@ export default {
       } else {
         record.governRealPopulation.currentResidences = ''
       }
-      console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+      if (record.mainFamilyMembersProvince !== null) {
+        record.mainFamilyMemberss = arr3.join('/')
+      } else {
+        record.mainFamilyMemberss = ''
+      }
+      // console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
       this.openType = 1
       this.visible = true
       this.mdl = { ...record }
@@ -1956,6 +1985,11 @@ export default {
         record.governRealPopulation.currentResidenceStreet,
         record.governRealPopulation.currentResidenceCommunity
       ]
+      var arr3 = [
+        record.mainFamilyMembersProvince,
+        record.mainFamilyMembersWorkCity,
+        record.mainFamilyMembersRegion
+      ]
       if (record.governRealPopulation.nativePlaceProvince != null) {
         record.governRealPopulation.nativePlaces = arr.join('/')
       } else {
@@ -1970,6 +2004,11 @@ export default {
         record.governRealPopulation.currentResidences = arr2.join('/')
       } else {
         record.governRealPopulation.currentResidences = ''
+      }
+      if (record.mainFamilyMembersProvince !== null) {
+        record.mainFamilyMemberss = arr3.join('/')
+      } else {
+        record.mainFamilyMemberss = ''
       }
       console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
 

@@ -361,8 +361,11 @@
                     placeholder="请选择"
                     default-value="0"
                   >
-                    <a-select-option value="0">新加披</a-select-option>
-                    <a-select-option value="1">加拿大</a-select-option>
+                    <a-select-option
+                      v-for="item in countries"
+                      :key="item.id"
+                      :value="item.id"
+                    >{{item.nationName}}</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -758,6 +761,7 @@
         @changeOpenType="changeType"
         @cancel="handleCancel"
         @ok="handleOk"
+        :countries="countries"
       />
       <step-by-step-modal
         ref="modal"
@@ -1124,8 +1128,11 @@
                 placeholder="请选择"
                 default-value="0"
               >
-                <a-select-option value="0">新加披</a-select-option>
-                <a-select-option value="1">加拿大</a-select-option>
+                <a-select-option
+                  v-for="item in countries"
+                  :key="item.id"
+                  :value="item.id"
+                >{{item.nationName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -1199,7 +1206,8 @@ import {
 // import { getRoleList, getServiceList } from '@/api/manage'
 import {
   getRoleList,
-  getAddress
+  getAddress,
+  getCountries
 } from '@/api/manage'
 import {
   getOverseasPersonnel,
@@ -1525,6 +1533,8 @@ export default {
       politicalOutlook: this.$root.politicalOutlook,
       // 学历
       education: this.$root.education,
+      // 国籍
+      countries: [],
       // *************
       type: 0,
       // 打开createform的类型 0 新增 1 修改 2 查看
@@ -1583,6 +1593,8 @@ export default {
       that.optionss = res.ret
       // console.log(this.optionss)
     })
+    // 获取国籍数据
+    this.getCountries()
   },
   computed: {
     rowSelection () {
@@ -1593,6 +1605,18 @@ export default {
     }
   },
   methods: {
+    cancel () {
+      return false
+    },
+    // 国籍
+    getCountries () {
+      var that = this
+      return getCountries().then((res) => {
+        console.log(res)
+        that.countries = res.ret
+        // return res.result
+      })
+    },
     // // 查询
     refresh () {
       this.$refs.table.refresh(true)

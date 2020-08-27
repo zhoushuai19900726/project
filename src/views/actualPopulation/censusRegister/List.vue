@@ -453,7 +453,7 @@
                   @click="toggleAdvanced"
                   style="margin-left: 8px"
                 >
-                 更多查询
+                  更多查询
                 </a-button>
               </span>
             </a-col>
@@ -755,7 +755,7 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-<!--            <a @click="handleDel(record)">删除</a>-->
+            <!--            <a @click="handleDel(record)">删除</a>-->
             <template>
               <a-popconfirm
                 title="确定要删除此条数据吗"
@@ -801,9 +801,7 @@
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
     >
-      <a-form
-        v-bind="formLayout"
-      >
+      <a-form v-bind="formLayout">
         <a-row>
           <a-col
             :md="12"
@@ -1244,19 +1242,19 @@
             :md="24"
             :sm="24"
           >
-              <span
-                class="table-page-search-submitButtons"
-                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
-              >
-                <a-button
-                  type="primary"
-                  @click="refresh"
-                >查询</a-button>
-                <a-button
-                  style="margin-left: 8px"
-                  @click="() => this.queryParam = {}"
-                >重置</a-button>
-              </span>
+            <span
+              class="table-page-search-submitButtons"
+              :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+            >
+              <a-button
+                type="primary"
+                @click="refresh"
+              >查询</a-button>
+              <a-button
+                style="margin-left: 8px"
+                @click="() => this.queryParam = {}"
+              >重置</a-button>
+            </span>
           </a-col>
         </a-row>
       </a-form>
@@ -1584,7 +1582,7 @@ export default {
         item.isLeaf = false
       })
       that.optionss = res.ret
-      // console.log(this.optionss)
+      console.log(this.optionss)
     })
   },
   computed: {

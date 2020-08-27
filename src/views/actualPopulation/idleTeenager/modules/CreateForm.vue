@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -356,10 +357,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -421,10 +423,15 @@
               :sm="24"
             >
               <a-form-item label="学习状况">
-                <a-input
+                <a-select
+                  placeholder="请选择"
+                  :disabled="openType === 2"
                   v-decorator="['learningSituation']"
-                  placeholder="请输入"
-                />
+                >
+                  <a-select-option value="0">优</a-select-option>
+                  <a-select-option value="1">良</a-select-option>
+                  <a-select-option value="2">差</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col
@@ -432,10 +439,14 @@
               :sm="24"
             >
               <a-form-item label="就业状况">
-                <a-input
+                <a-select
+                  placeholder="请选择"
+                  :disabled="openType === 2"
                   v-decorator="['employmentStatus']"
-                  placeholder="请输入"
-                />
+                >
+                  <a-select-option value="0">失业</a-select-option>
+                  <a-select-option value="1">就业</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col

@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -356,10 +357,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -536,6 +538,25 @@
               </a-form-item>
             </a-col>
             <!-- 缺一个三级联动 -->
+            <!-- <a-col
+              :md="12"
+              :sm="24"
+            >
+              <a-form-item label="家庭主要成员工作地(省市区)">
+                <a-input
+                  disabled
+                  v-show="openType ===3"
+                  v-decorator="['mainFamilyMemberss']"
+                  placeholder="初始地址为空"
+                />
+                <a-cascader
+                  :options="options"
+                  placeholder="请选择新地址"
+                  :loadData="loadDatas"
+                  v-decorator="['mainFamilyMembers']"
+                />
+              </a-form-item>
+            </a-col> -->
             <a-col
               :md="12"
               :sm="24"
@@ -657,7 +678,11 @@ const field = [
   'mainFamilyMembersWorkAddress',
   'annulFamilyIncome',
   'difficultiesAndDemands',
-  'assistance'
+  'assistance',
+  // 家庭主要成员工作地址的字符串
+  'mainFamilyMemberss',
+  // 家庭主要成员工作地址
+  'mainFamilyMembers'
 ]
 
 export default {
@@ -735,6 +760,7 @@ export default {
     }
   },
   created () {
+    console.log(this.options)
     console.log('custom modal created')
 
     // 防止表单未注册
@@ -841,6 +867,11 @@ export default {
         if (!errors) {
           var data = { ...values }
           data.basicsId = that.id
+          if (data.mainFamilyMembers.length !== 0) {
+            data.mainFamilyMembersProvince = data.mainFamilyMembers[0]
+            data.mainFamilyMembersWorkCity = data.mainFamilyMembers[1]
+            data.mainFamilyMembersRegion = data.mainFamilyMembers[2]
+          }
           if (that.openType === 1) {
             console.log('我是修改')
             data.id = that.specialId

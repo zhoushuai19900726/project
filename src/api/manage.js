@@ -138,6 +138,8 @@ const api = {
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree',
+  // 国籍
+  country: baseUrl + '/smartCity/nation/findAllNation',
   // 获取所有的省份地址
   address: baseUrl + '/smartCity/addressLibrary/findSubordinateAddressLibrary',
   // 获取下拉的内容
@@ -204,6 +206,17 @@ const api = {
 }
 
 export default api
+// 查询国籍
+export function getCountries (parameter) {
+  return request({
+    url: api.country,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    method: 'post'
+    // data: qs.stringify(parameter)
+  })
+}
 // 获取所有省份的地址
 export function getAddress (parameter) {
   var data = {}
