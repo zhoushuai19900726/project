@@ -1,12 +1,8 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
-// 基本链接
-const baseUrl = 'http://60.205.246.7:'
-// 文佳406
-// const baseUrl = 'http://192.168.1.106:'
-// 周帅gaopin02
-// const baseUrl = 'http://192.168.1.115:'
+// 获取基本链接的地址
+import baseUrl from '@/api/baseurl'
 
 const selectArr = [
   {
