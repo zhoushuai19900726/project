@@ -534,7 +534,19 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-            <a @click="handleDel(record)">删除</a>
+<!--            <a @click="handleDel(record)">删除</a>-->
+            <template>
+              <a-popconfirm
+                title="确定要删除此条数据吗"
+                placement="topRight"
+                ok-text="确定"
+                cancel-text="取消"
+                @confirm="handleDel(record)"
+                @cancel="cancel"
+              >
+                <a href="#">删除</a>
+              </a-popconfirm>
+            </template>
           </template>
         </span>
       </s-table>
@@ -1197,6 +1209,7 @@ export default {
     }
   },
   methods: {
+    cancel () {},
     // 1\解析下拉框的内容 arr是下拉框的数组
     parseValue (arr, value) {
       // console.log(value)
@@ -1352,8 +1365,11 @@ export default {
     handleDel (record) {
       // 执行删除的操作
       console.log(record)
-      var id = record.id
-      var arr = [id]
+      let arr = {
+        type: Array,
+        default: null
+      }
+      arr = [record.id]
       return delArchiveManagement(arr).then((res) => {
         console.log(res)
         if (res.code === 200) {
