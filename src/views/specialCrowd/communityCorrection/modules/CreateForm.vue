@@ -1,7 +1,7 @@
 <template>
   <a-modal
-    title="户籍人口"
-    :width="1200"
+    title="社区矫正人口"
+    :width="1300"
     :visible="visible"
     :confirmLoading="loading"
     :footer="null"
@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -355,12 +356,11 @@
                   placeholder="初始地址为空"
                 />
                 <a-cascader
-                  :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
-                />
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]" />
               </a-form-item>
             </a-col>
             <a-col
@@ -414,7 +414,7 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增户籍人口">
+        <a-card title="社区矫正人员详情">
           <a-row>
             <a-col
               :md="8"
@@ -463,8 +463,8 @@
                   placeholder="请选择"
                   default-value="0"
                 >
-                  <a-select-option value="0">轻度矫正</a-select-option>
-                  <a-select-option value="0">无需矫正</a-select-option>
+                  <a-select-option value="0">一般</a-select-option>
+                  <a-select-option value="1">严重</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -495,7 +495,7 @@
               :sm="24"
             >
               <a-form-item label="原判刑开始日期">
-                <a-input
+                <a-date-picker
                   v-decorator="['originalSentenceStartingDate']"
                   style="width: 100%"
                 />
@@ -506,7 +506,7 @@
               :sm="24"
             >
               <a-form-item label="原判刑结束日期">
-                <a-input
+                <a-date-picker
                   v-decorator="['originalSentenceEndDate']"
                   style="width: 100%"
                 />
@@ -517,7 +517,7 @@
               :sm="24"
             >
               <a-form-item label="矫正开始日期">
-                <a-input
+                <a-date-picker
                   v-decorator="['correctionStartDate']"
                   style="width: 100%"
                 />
@@ -528,7 +528,7 @@
               :sm="24"
             >
               <a-form-item label="矫正结束日期">
-                <a-input
+                <a-date-picker
                   v-decorator="['correctionEndDate']"
                   style="width: 100%"
                 />
@@ -1044,6 +1044,26 @@ export default {
         if (!errors) {
           var data = { ...values }
           data.basicsId = that.id
+          if (data.originalSentenceStartingDate) {
+            data.originalSentenceStartingDate = this.parseUtcTime(data.originalSentenceStartingDate) + ' 00:00:00'
+          } else {
+            delete data.originalSentenceStartingDate
+          }
+          if (data.originalSentenceEndDate) {
+            data.originalSentenceEndDate = this.parseUtcTime(data.originalSentenceEndDate) + ' 00:00:00'
+          } else {
+            delete data.originalSentenceEndDate
+          }
+          if (data.correctionStartDate) {
+            data.correctionStartDate = this.parseUtcTime(data.correctionStartDate) + ' 00:00:00'
+          } else {
+            delete data.correctionStartDate
+          }
+          if (data.correctionEndDate) {
+            data.correctionEndDate = this.parseUtcTime(data.correctionEndDate) + ' 00:00:00'
+          } else {
+            delete data.correctionEndDate
+          }
           if (that.openType === 1) {
             console.log('我是修改')
             data.id = that.specialId

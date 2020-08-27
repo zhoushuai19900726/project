@@ -824,7 +824,7 @@
         @ok="handleOk"
       />
       <a-drawer
-        title="重点青少年查询"
+        title="艾滋病危险人员查询"
         :width="920"
         :visible="visibleMore"
         :body-style="{ paddingBottom: '80px' }"

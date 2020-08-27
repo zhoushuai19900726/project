@@ -906,7 +906,7 @@
       />
     </a-card>
     <a-drawer
-      title="重点青少年查询"
+      title="肇事肇祸等精神障碍患者查询"
       :width="920"
       :visible="visibleMore"
       :body-style="{ paddingBottom: '80px' }"

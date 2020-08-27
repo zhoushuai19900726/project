@@ -1,7 +1,7 @@
 <template>
   <a-modal
-    title="户籍人口"
-    :width="1200"
+    title="肇事肇祸等严重精神障碍患者"
+    :width="1400"
     :visible="visible"
     :confirmLoading="loading"
     :footer="null"
@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -355,12 +356,11 @@
                   placeholder="初始地址为空"
                 />
                 <a-cascader
-                  :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
-                />
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]" />
               </a-form-item>
             </a-col>
             <a-col
@@ -414,7 +414,7 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增户籍人口">
+        <a-card title="肇事肇祸等严重精神障碍患者详情">
           <a-row>
             <a-col
               :md="8"
@@ -432,10 +432,14 @@
               :sm="24"
             >
               <a-form-item label="是否纳入低保">
-                <a-input
+                <a-select
                   v-decorator="['subsistenceAllowances']"
-                  style="width: 100%"
-                />
+                  placeholder="请选择"
+                  default-value="0"
+                >
+                  <a-select-option value="0">是</a-select-option>
+                  <a-select-option value="1">否</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col
@@ -893,12 +897,12 @@ export default {
           var data = { ...values }
           data.basicsId = that.id
           if (data.firstOnsetDate) {
-            data.firstOnsetDate = this.parseUtcTime(data.firstOnsetDate) + ' 00:00:00'
+            data.firstOnsetDate = this.parseUtcTime(data.firstOnsetDate) + ' 00:00:00'
           } else {
             delete data.firstOnsetDate
           }
           if (data.lastIncidentDate) {
-            data.lastIncidentDate = this.parseUtcTime(data.lastIncidentDate) + ' 00:00:00'
+            data.lastIncidentDate = this.parseUtcTime(data.lastIncidentDate) + ' 00:00:00'
           } else {
             delete data.lastIncidentDate
           }

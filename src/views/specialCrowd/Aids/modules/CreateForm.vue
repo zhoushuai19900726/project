@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="户籍人口"
+    title="艾滋病危险人员"
     :width="1200"
     :visible="visible"
     :confirmLoading="loading"
@@ -36,7 +36,7 @@
             v-for="d in data"
             :key="d.id"
           >
-            {{d.fullName}}-{{ d.idCard }}
+            {{ d.fullName }}-{{ d.idCard }}
           </a-select-option>
         </a-select>
         <a-button type="primary">搜索</a-button>
@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -355,12 +356,11 @@
                   placeholder="初始地址为空"
                 />
                 <a-cascader
-                  :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
-                />
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]" />
               </a-form-item>
             </a-col>
             <a-col
