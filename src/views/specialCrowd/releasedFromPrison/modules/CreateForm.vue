@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="户籍人口"
+    title="刑满释放人员"
     :width="1200"
     :visible="visible"
     :confirmLoading="loading"
@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -355,12 +356,11 @@
                   placeholder="初始地址为空"
                 />
                 <a-cascader
-                  :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
-                />
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]" />
               </a-form-item>
             </a-col>
             <a-col
@@ -414,7 +414,7 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增户籍人口">
+        <a-card title="刑满释放人员信息">
           <a-row>
             <a-col
               :md="8"
@@ -511,7 +511,7 @@
                 <!--                    style="width: 100%"-->
                 <!--                  />-->
                 <a-date-picker
-                  v-decorator="['accountNumber']"
+                  v-decorator="['connectingDate']"
                   @change="onChange"
                   style="width: 100%"
                 >
@@ -680,7 +680,7 @@ const field = [
   'nonResettlementReasons',
   'resettlement',
   'connection',
-  'accountNumber',
+  'connectingDate',
   'riskAssessmentType',
   'servicePlaces',
   'originalSentence',
@@ -872,6 +872,21 @@ export default {
         if (!errors) {
           var data = { ...values }
           data.basicsId = that.id
+          if (data.releaseDate) {
+            data.releaseDate = this.parseUtcTime(data.releaseDate) + ' 00:00:00'
+          } else {
+            delete data.releaseDate
+          }
+          if (data.connectingDate) {
+            data.connectingDate = this.parseUtcTime(data.connectingDate) + ' 00:00:00'
+          } else {
+            delete data.connectingDate
+          }
+          if (data.placementDate) {
+            data.placementDate = this.parseUtcTime(data.placementDate) + ' 00:00:00'
+          } else {
+            delete data.placementDate
+          }
           if (that.openType === 1) {
             console.log('我是修改')
             data.id = that.specialId

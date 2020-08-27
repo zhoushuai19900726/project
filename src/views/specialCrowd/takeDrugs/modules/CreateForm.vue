@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="户籍人口"
+    title="吸毒人员"
     :width="1200"
     :visible="visible"
     :confirmLoading="loading"
@@ -312,10 +312,11 @@
                 />
                 <a-cascader
                   :disabled="openType !== 3"
+                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
                   :loadData="loadDatas"
-                  v-decorator="['placeDomicile']"
-                  placeholder="请选择新地址"
+                  v-decorator="['placeDomicile', {rules: [{required: true, message: '请输入'}]}]"
                 />
               </a-form-item>
             </a-col>
@@ -355,12 +356,11 @@
                   placeholder="初始地址为空"
                 />
                 <a-cascader
-                  :disabled="openType !== 3"
-                  :options="options"
-                  placeholder="请选择新地址"
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
+                  :options="optionss"
                   :loadData="loadDatass"
-                  v-decorator="['currentResidence']"
-                />
+                  placeholder="请选择新地址"
+                  v-decorator="['currentResidence', {rules: [{required: true, message: '请输入'}]}]" />
               </a-form-item>
             </a-col>
             <a-col
@@ -414,7 +414,7 @@
         v-bind="formLayout"
         ref="special"
       >
-        <a-card title="新增户籍人口">
+        <a-card title="新增吸毒人员">
           <a-row>
             <a-col
               :md="8"
@@ -434,7 +434,7 @@
             >
               <a-form-item label="管控情况">
                 <a-input
-                  v-decorator="['managementContro']"
+                  v-decorator="['managementControl']"
                   style="width: 100%"
                 />
               </a-form-item>
@@ -641,8 +641,9 @@ const field = [
   'controllerContactInformation',
   'controllerContactType',
   'controllerName',
-  'managementContro',
+  'managementControl',
   'firstDiscoveryDate'
+
 ]
 
 export default {
@@ -743,12 +744,6 @@ export default {
     console.log(this.openType)
   },
   methods: {
-    // 将utc时间解析为本地时间
-    parseUtcTime (time) {
-      var date = moment.parseZone(time).local().format('YYYY-MM-DD')
-      console.log(date)
-      return date
-    },
     // 更改公共字段
     editCommon () {
       if (this.id) {
@@ -758,6 +753,12 @@ export default {
         this.$message.error('请先选择档案')
         return false
       }
+    },
+    // 将utc时间解析为本地时间
+    parseUtcTime (time) {
+      var date = moment.parseZone(time).local().format('YYYY-MM-DD')
+      console.log(date)
+      return date
     },
     // 保存公共字段
     submitCommon () {
@@ -800,7 +801,7 @@ export default {
 
         obj.currentResidence = obj.currentResidenceDetail
         // 日期的处理
-        obj.birthday = obj.birthday + ' 00:00:00'
+        obj.birthday = this.parseUtcTime(obj.birthday) + ' 00:00:00'
         // 删除无用的 placeDomicile 字段
         delete obj.currentResidenceDetail
         delete obj.id
@@ -827,7 +828,7 @@ export default {
           var data = { ...values }
           data.basicsId = that.id
           if (data.firstDiscoveryDate) {
-            data.firstDiscoveryDate = this.parseUtcTime(data.firstDiscoveryDate) + ' 00:00:00'
+            data.firstDiscoveryDate = this.parseUtcTime(data.firstDiscoveryDate) + ' 00:00:00'
           } else {
             delete data.firstDiscoveryDate
           }

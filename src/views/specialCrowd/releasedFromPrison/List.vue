@@ -887,7 +887,7 @@
       />
     </a-card>
     <a-drawer
-      title="重点青少年查询"
+      title="刑满释放人员查询"
       :width="920"
       :visible="visibleMore"
       :body-style="{ paddingBottom: '80px' }"
