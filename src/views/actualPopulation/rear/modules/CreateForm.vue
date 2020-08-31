@@ -1,4 +1,5 @@
 <template>
+  <!-- @cancel="() => { $emit('cancel') }" -->
   <a-modal
     title="留守人员"
     :width="1200"
@@ -6,7 +7,7 @@
     :confirmLoading="loading"
     :footer="null"
     @ok="() => { $emit('ok') }"
-    @cancel="() => { $emit('cancel') }"
+    @cancel="resetForm"
   >
     <a-spin :spinning="loading">
       <div
@@ -538,25 +539,28 @@
               </a-form-item>
             </a-col>
             <!-- 缺一个三级联动 -->
-            <!-- <a-col
+            <a-col
               :md="12"
               :sm="24"
             >
               <a-form-item label="家庭主要成员工作地(省市区)">
                 <a-input
                   disabled
-                  v-show="openType ===3"
+                  v-show="openType !==0 "
                   v-decorator="['mainFamilyMemberss']"
                   placeholder="初始地址为空"
                 />
                 <a-cascader
+                  placeholder="请输入新地址"
+                  v-show="openType ===0 || openType ===1 "
+                  :field-names="{ label: 'name', value: 'name', children: 'children' }"
                   :options="options"
-                  placeholder="请选择新地址"
+                  @change="onChange($event,'family',true)"
                   :loadData="loadDatas"
                   v-decorator="['mainFamilyMembers']"
                 />
               </a-form-item>
-            </a-col> -->
+            </a-col>
             <a-col
               :md="12"
               :sm="24"
@@ -681,7 +685,7 @@ const field = [
   'assistance',
   // 家庭主要成员工作地址的字符串
   'mainFamilyMemberss',
-  // 家庭主要成员工作地址
+  // 家庭主要成员工作地址数组
   'mainFamilyMembers'
 ]
 
@@ -760,7 +764,7 @@ export default {
     }
   },
   created () {
-    console.log(this.options)
+    // console.log(this.options)
     console.log('custom modal created')
 
     // 防止表单未注册
@@ -784,6 +788,14 @@ export default {
     console.log(this.openType)
   },
   methods: {
+    // 点击阴影或者x符号清空表格
+    resetForm () {
+      var form = this.$refs.special.form
+      var form1 = this.$refs.common.form
+      form.resetFields()
+      form1.resetFields()
+      this.$emit('cancel')
+    },
     // 将utc时间解析为本地时间
     parseUtcTime (time) {
       var date = moment.parseZone(time).local().format('YYYY-MM-DD')
@@ -867,15 +879,16 @@ export default {
         if (!errors) {
           var data = { ...values }
           data.basicsId = that.id
-          if (data.mainFamilyMembers.length !== 0) {
-            data.mainFamilyMembersProvince = data.mainFamilyMembers[0]
+          if (data.mainFamilyMembers) {
+            data.mainFamilyMembersWorkProvince = data.mainFamilyMembers[0]
             data.mainFamilyMembersWorkCity = data.mainFamilyMembers[1]
-            data.mainFamilyMembersRegion = data.mainFamilyMembers[2]
+            data.mainFamilyMembersWorkRegion = data.mainFamilyMembers[2]
           }
           if (that.openType === 1) {
             console.log('我是修改')
             data.id = that.specialId
           }
+          console.log('留守人口的参数 ', data)
           return editftBehindPopulation(data).then((res) => {
             // 重置表单数据
             form.resetFields()

@@ -173,4 +173,21 @@ export default {
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.5);
 }
+
+//
+.ant-pro-basicLayout-content {
+  margin: 0;
+  margin-right: 24px;
+  // padding-top: 24px;
+}
+.ant-pro-page-header-wrap-children-content {
+  margin: 0;
+  margin-top: 24px;
+}
+.ant-pro-grid-content.wide {
+  max-width: 100vw;
+}
+.ant-pro-basicLayout-content .ant-pro-page-header-wrap {
+  margin: 0;
+}
 </style>

@@ -477,7 +477,7 @@
                   @click="toggleAdvanced"
                   style="margin-left: 8px"
                 >
-                 更多查询
+                  更多查询
                 </a-button>
               </span>
             </a-col>
@@ -779,7 +779,7 @@
             <a-divider type="vertical" />
             <a @click="handleSub(record)">查看</a>
             <a-divider type="vertical" />
-<!--            <a @click="handleDel(record)">删除</a>-->
+            <!--            <a @click="handleDel(record)">删除</a>-->
             <template>
               <a-popconfirm
                 title="确定要删除此条数据吗"
@@ -825,9 +825,7 @@
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
     >
-      <a-form
-        v-bind="formLayout"
-      >
+      <a-form v-bind="formLayout">
         <a-row>
           <a-col
             :md="12"
@@ -1292,19 +1290,19 @@
             :md="!advanced && 8 || 24"
             :sm="24"
           >
-              <span
-                class="table-page-search-submitButtons"
-                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
-              >
-                <a-button
-                  type="primary"
-                  @click="refresh"
-                >查询</a-button>
-                <a-button
-                  style="margin-left: 8px"
-                  @click="() => this.queryParam = {}"
-                >重置</a-button>
-              </span>
+            <span
+              class="table-page-search-submitButtons"
+              :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+            >
+              <a-button
+                type="primary"
+                @click="refresh"
+              >查询</a-button>
+              <a-button
+                style="margin-left: 8px"
+                @click="() => this.queryParam = {}"
+              >重置</a-button>
+            </span>
           </a-col>
         </a-row>
       </a-form>
@@ -1777,6 +1775,46 @@ export default {
     changeModel (obj) {
       console.log(obj)
       console.log(this.mdl)
+
+      // 地址的解析
+      var arr = [
+        obj.nativePlaceProvince,
+        obj.nativePlaceCity,
+        obj.nativePlaceRegion
+      ]
+      var arr1 = [
+        obj.placeDomicileProvince,
+        obj.placeDomicileCity,
+        obj.placeDomicileRegion
+      ]
+      var arr2 = [
+        obj.currentResidenceProvince,
+        obj.currentResidenceCity,
+        obj.currentResidenceRegion,
+        obj.currentResidenceStreet,
+        obj.currentResidenceCommunity
+      ]
+      if (obj.nativePlaceProvince != null) {
+        obj.nativePlaces = arr.join('/')
+      } else {
+        obj.nativePlaces = ''
+      }
+      if (obj.placeDomicileProvince != null) {
+        obj.placeDomiciles = arr1.join('/')
+      } else {
+        obj.placeDomiciles = ''
+      }
+      if (obj.currentResidenceProvince != null) {
+        obj.currentResidences = arr2.join('/')
+      } else {
+        obj.currentResidences = ''
+      }
+      // console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+      // 删除nativePlace等字段 防止和createform中的有冲突
+      delete obj.nativePlace
+      delete obj.placeDomicile
+      delete obj.currentResidence
+      console.log(obj)
       this.mdl = {
         'governRealPopulation': obj
       }

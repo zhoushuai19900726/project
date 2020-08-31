@@ -1558,6 +1558,46 @@ export default {
     changeModel (obj) {
       console.log(obj)
       console.log(this.mdl)
+
+      // 地址的解析
+      var arr = [
+        obj.nativePlaceProvince,
+        obj.nativePlaceCity,
+        obj.nativePlaceRegion
+      ]
+      var arr1 = [
+        obj.placeDomicileProvince,
+        obj.placeDomicileCity,
+        obj.placeDomicileRegion
+      ]
+      var arr2 = [
+        obj.currentResidenceProvince,
+        obj.currentResidenceCity,
+        obj.currentResidenceRegion,
+        obj.currentResidenceStreet,
+        obj.currentResidenceCommunity
+      ]
+      if (obj.nativePlaceProvince != null) {
+        obj.nativePlaces = arr.join('/')
+      } else {
+        obj.nativePlaces = ''
+      }
+      if (obj.placeDomicileProvince != null) {
+        obj.placeDomiciles = arr1.join('/')
+      } else {
+        obj.placeDomiciles = ''
+      }
+      if (obj.currentResidenceProvince != null) {
+        obj.currentResidences = arr2.join('/')
+      } else {
+        obj.currentResidences = ''
+      }
+      // console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+      // 删除nativePlace等字段 防止和createform中的有冲突
+      delete obj.nativePlace
+      delete obj.placeDomicile
+      delete obj.currentResidence
+      console.log(obj)
       this.mdl = {
         'governRealPopulation': obj
       }

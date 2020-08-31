@@ -1681,6 +1681,7 @@ export default {
       politicalOutlook: this.$root.politicalOutlook,
       // 学历
       education: this.$root.education,
+      // specialarr
       // *************
       type: 0,
       // 打开createform的类型 0 新增 1 修改 2 查看
@@ -1790,6 +1791,46 @@ export default {
     changeModel (obj) {
       console.log(obj)
       console.log(this.mdl)
+
+      // 地址的解析
+      var arr = [
+        obj.nativePlaceProvince,
+        obj.nativePlaceCity,
+        obj.nativePlaceRegion
+      ]
+      var arr1 = [
+        obj.placeDomicileProvince,
+        obj.placeDomicileCity,
+        obj.placeDomicileRegion
+      ]
+      var arr2 = [
+        obj.currentResidenceProvince,
+        obj.currentResidenceCity,
+        obj.currentResidenceRegion,
+        obj.currentResidenceStreet,
+        obj.currentResidenceCommunity
+      ]
+      if (obj.nativePlaceProvince != null) {
+        obj.nativePlaces = arr.join('/')
+      } else {
+        obj.nativePlaces = ''
+      }
+      if (obj.placeDomicileProvince != null) {
+        obj.placeDomiciles = arr1.join('/')
+      } else {
+        obj.placeDomiciles = ''
+      }
+      if (obj.currentResidenceProvince != null) {
+        obj.currentResidences = arr2.join('/')
+      } else {
+        obj.currentResidences = ''
+      }
+      // console.log(record.governRealPopulation.nativePlaces, record.governRealPopulation.placeDomiciles, record.governRealPopulation.currentResidences)
+      // 删除nativePlace等字段 防止和createform中的有冲突
+      delete obj.nativePlace
+      delete obj.placeDomicile
+      delete obj.currentResidence
+      console.log(obj)
       this.mdl = {
         'governRealPopulation': obj
       }
@@ -1905,9 +1946,9 @@ export default {
         record.governRealPopulation.currentResidenceCommunity
       ]
       var arr3 = [
-        record.mainFamilyMembersProvince,
+        record.mainFamilyMembersWorkProvince,
         record.mainFamilyMembersWorkCity,
-        record.mainFamilyMembersRegion
+        record.mainFamilyMembersWorkRegion
       ]
       if (record.governRealPopulation.nativePlaceProvince != null) {
         record.governRealPopulation.nativePlaces = arr.join('/')
@@ -1924,7 +1965,7 @@ export default {
       } else {
         record.governRealPopulation.currentResidences = ''
       }
-      if (record.mainFamilyMembersProvince !== null) {
+      if (record.mainFamilyMembersWorkProvince !== null) {
         record.mainFamilyMemberss = arr3.join('/')
       } else {
         record.mainFamilyMemberss = ''
@@ -1960,8 +2001,9 @@ export default {
     },
     handleOk () { },
     handleCancel () {
+      console.log(1111)
       this.visible = false
-
+      console.log(this.$refs.createModal)
       const form = this.$refs.createModal.form
       form.resetFields() // 清理表单数据（可不做）
     },
@@ -1986,9 +2028,9 @@ export default {
         record.governRealPopulation.currentResidenceCommunity
       ]
       var arr3 = [
-        record.mainFamilyMembersProvince,
+        record.mainFamilyMembersWorkProvince,
         record.mainFamilyMembersWorkCity,
-        record.mainFamilyMembersRegion
+        record.mainFamilyMembersWorkRegion
       ]
       if (record.governRealPopulation.nativePlaceProvince != null) {
         record.governRealPopulation.nativePlaces = arr.join('/')
@@ -2005,7 +2047,7 @@ export default {
       } else {
         record.governRealPopulation.currentResidences = ''
       }
-      if (record.mainFamilyMembersProvince !== null) {
+      if (record.mainFamilyMembersWorkProvince !== null) {
         record.mainFamilyMemberss = arr3.join('/')
       } else {
         record.mainFamilyMemberss = ''
