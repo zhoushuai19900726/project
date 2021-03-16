@@ -10,6 +10,7 @@
             >
               <a-form-item label="公民身份证号码">
                 <a-input
+                  style = "width:100%"
                   v-model="queryParam.idCard"
                   placeholder
                 />
